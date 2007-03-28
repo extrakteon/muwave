@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{amssymb}
+
+\title{MATLAB Milou Toolbox}
+\author{Kristoffer Andersson}
+\begin{document}
+\maketitle
+
+\section{ArrayMatrix}
+ArrayMatrix holds an array of square matrices (typical a suite of measured S-parameters). The class can perform various operations on this array.
+
+\subsection*{arraymatrix}
+M = arraymatrix
+returns an empty structure with matrix dimension 2
+
+M = arraymatrix(A), where A is a matrix of size n*n*m.
+returns a structure containingA with matrix dimension n and length m.
+
+M = arraymatrix(A,m), where A is a matrix of size n*n and m is a positive scalar.
+returns an structure with A repeated m times.
+
+M = arraymatrix(n,m), where n and m is positive scalars.
+returns a structure containing zeros with matrix dimension n and length m.
+
+\subsection*{display}
+Displays the matrix dimension and number of elements in a arraymatrix-object.
+
+\subsection*{inv}
+X = inv(M), where M is a arraymatrix.
+returns the inverse of matrix M. If dimension of M is equal to two a explicit algorithm is used, otherwise for-loops are used.
+
+\subsection*{mtimes}
+Overloads the multiplication operator *. This routine handles multiplication with scalars, square matrices and other ArrayMatrix-objects. The routine uses for-loops, could possibly be rewritten to use explicit algorithm when n=2.
+
+\subsection*{rdivide}
+Overloads the division operator /. This routine handles division with scalars, square matrices and other ArrayMatrix-objects. The routine uses for-loops, could possibly be rewritten to use explicit algorithm when n=2.
+
+\subsection*{plus}
+Overloadsthe addition operator -. This routine handles addition with scalars, square matrices and other ArrayMatrix-objects. 
+
+\subsection*{minus}
+Overloads the subtraction operator -. This routine handles subtraction with scalars, square matrices and other ArrayMatrix-objects. 
+
+\subsection*{uminus}
+Overloads the unary minus operator.
+
+\subsection*{subsref}
+Overloads the index operator (). Two formats are supported: x=A(m) or x=A(x,y). In the former case x returns the m'th object in the array in the latter x returns the (x,y)-element in the array.
+
+\subsection*{subsasgn}
+Overloads the assigment index operator (). Operates almost like the inverse of the above. The constructor is run on the right-hand-side thus enabling a wide range of input. Calling the method with A(m)=B. Sets the m'th element equal to the matrix B. Calling with A(x,y) = b, sets each (x,y)-element in A equal to the vector b.
+
+\subsection*{length}
+Returns the number of elements in the ArrayMatrix.
+
+\subsection*{get}
+Provides access to the internals of the class. x=get(A,property). Valid properties are 'n','m' and 'mtrx'.
+
+\subsection*{conj}
+Calculates the conjugate of each matrix in the array.
+
+\subsection*{real}
+Calculates the real of each matrix in the array.
+
+\subsection*{imag}
+Calculates the imaginary of each matrix in the array.
+
+\subsection*{abs}
+Calculates the absolute value of each matrix-value in the array.
+
+\subsection*{angle}
+Calculates the angle (in radians) of each matrix-value in the array.
+
+\subsection*{det}
+Calculates the determinant of each matrix in the array.
+
+\subsection*{ident}
+Returns an appropriate identity matrix. Quite useless provided for backwards compatibility.
+
+\subsection*{skip}
+Skips (or drops) the selected row and column in each matrix. C = skip(A,[x y]) drops the x'th row and y'th column in each matrix.
+
+
+ \end{document}
