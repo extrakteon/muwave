@@ -1,0 +1,241 @@
+% $Header$
+% $Author: fager $
+% $Date: 2005-02-27 19:32:56 +0100 (Sun, 27 Feb 2005) $
+% $Revision: 241 $
+% $Log$
+% Revision 1.4  2005/02/27 18:32:56  fager
+% Correction from BH implemented.
+%
+% Revision 1.3  2005/02/22 07:31:00  fager
+% Corrections from M.Kelly implemented
+%
+% Revision 1.2  2004/10/21 18:59:06  fager
+% Version logging added. Comments from KA implemented.
+%
+\section{X-parameter data access and manipulation}\label{sec:SPMod}
+The most valuable feature of Milou is for most users the
+possibility to handle and manipulate S/Y/Z/T\footnote{Hereafter
+``X-parameter'' is used to refer either of the
+S/Y/Z/T-parameters.} in a convenient way. This section gives an
+overview of the variety of possibilities offered.
+
+\subsection{Direct parameter access}
+Any of the X-parameters can be directly accessed from the
+\verb"meassp" object by using the ``dot-operator'' notation or a
+get command:
+
+\begin{small}
+\begin{verbatim}
+    >> msp.Z11
+    ans =
+    1.0e+002 *
+    1.0467 - 5.6792i
+    0.8499 - 3.9010i
+    ...
+
+    >> 20*log10(abs(get(msp,'S21')))
+    ans =
+    11.9806
+    12.0251
+    11.9318
+    ...
+\end{verbatim}
+\end{small}
+
+By this it was also illustrated how Milou automatically converts
+from the S-para\-meters in \verb"msp" into the desired type, as in
+\verb"msp.Z11". Note that these functions all return a row vector
+that can be involved in any complex mathematical vector
+manipulation that \matlab supports.
+
+\subsection{Parameter assignment}
+It is also possible to assign new values for a particular
+X-parameter data using a simple assignment:
+\begin{small}
+\begin{verbatim}
+    >> msp.S11 = 0.1*msp.S11;
+\end{verbatim}
+\end{small}
+If the parameter type being assigned differs from the type of the
+\verb"meassp" object it is operating on, a conversion takes place
+to match the type of parameter that is being assigned:
+\begin{small}
+\begin{verbatim}
+    >> msp
+    ...
+    Measurement Data
+    xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  101
+    ...
+    >> msp.Z11 = zeros(length(msp.freq),1);
+    >> msp
+    ...
+    Measurement Data
+    xparam-object
+        type:  Z
+        reference: 50
+        ports: 2
+        elements:  101
+    ...
+\end{verbatim}
+\end{small}
+
+\subsection{Matrix operations}
+There are three levels one can choose from when doing matrix
+operations on one or several X-parameter objects. Which to choose
+depends on the complexity of the operations involved.
+
+\subsubsection{xparam}
+On the highest level it is possible to operate directly with the
+\verb"xparam"-objects. The \verb"xparam"-object is extracted from
+the \verb"meassp" object using:
+\begin{small}
+\begin{verbatim}
+    >> xp = msp.S
+    xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  101
+\end{verbatim}
+\end{small}
+where, again, the dot-operator has been applied to the
+\verb"meassp" object.
+
+The \verb"xparam" objects contain information about i.e. the type
+of data (S/Z/Y/T). Milou therefore automatically converts between
+these types so that they match i.e. when adding two objects.
+\begin{small}
+\begin{verbatim}
+    >> Zp = msp.Z;
+    >> Yp = msp.Y;
+    >> Zp_sum = Zp + Yp
+    Warning: XPARAM.PLUS: Arguments not of same type.
+        Conversion performed
+    > In matlab_milou\@xparam\plus.m at line 25
+    xparam-object
+        type:  Z
+        reference: 50
+        ports: 2
+        elements:  101
+\end{verbatim}
+\end{small}
+Although only shown for addition here, a lot of other algebraic
+manipulations have been implemented for the \verb"xparam" class.
+However, be careful that the conversions sometimes taking place
+when operating on \verb"xparam" objects of different type may give
+undesired results. Please check out the online help for details on
+how each operation works.
+
+It often turns out to be more reliable to operate on the data
+directly by accessing the underlying \verb"arraymatrix" object.
+
+\subsubsection{arraymatrix}
+The \verb"arraymatrix" is accessed from the \verb"xparam" object:
+\begin{small}
+\begin{verbatim}
+    >> Sp = msp.S;
+    >> Sp_array = get(Sp,'arraymatrix')
+    arraymatrix-object
+        dimension:  2 x 2
+        elements:   101
+    First matrix element:
+    0.9921 - 0.0697i   0.0009 + 0.0037i
+    -3.9645 + 0.2474i   0.8495 - 0.0128i
+\end{verbatim}
+\end{small}
+The \verb"arraymatrix" can also be directly accessed from the
+\verb"meassp" object by
+\begin{small}
+\begin{verbatim}
+    >> Sp_array = get(msp,'arraymatrix');
+\end{verbatim}
+\end{small}
+
+Individual parameters of the \verb"arraymatrix" object are
+accessed and assigned using parentheses \verb"()",
+\begin{small}
+\begin{verbatim}
+    >> Sp_array2 = Sp_array;
+    >> Sp_array2(1,1) = Sp_array2(2,2)
+    arraymatrix-object
+        dimension:  2 x 2
+        elements:   101
+    First matrix element:
+    0.8495 - 0.0128i   0.0009 + 0.0037i
+    -3.9645 + 0.2474i   0.8495 - 0.0128i
+\end{verbatim}
+\end{small}
+
+Matrix operations are carried out in a similar straightforward fashion,
+\begin{small}
+\begin{verbatim}
+    >> Sp_array3 = Sp_array2*Sp_array
+    arraymatrix-object
+        dimension:  2 x 2
+        elements:   101
+    First matrix element:
+    0.8376 - 0.0866i   0.0016 + 0.0063i
+    -7.2809 + 0.7830i   0.7172 - 0.0365i
+\end{verbatim}
+\end{small}
+where the matrix multiplication of \verb"Sp_array2" and
+\verb"Sp_array" is carried out independently for each frequency
+point. A variety of other algebraic operations are implemented for
+the \verb"arraymatrix" class.
+
+Finally, it is usually to put the manipulated \verb"arraymatrix"
+object back into the \verb"meassp" context:
+\begin{small}
+\begin{verbatim}
+    >> Sp = xparam(Sp_array3,'S',50);
+    >> msp_new = msp;
+    >> msp_new.data = Sp;
+\end{verbatim}
+\end{small}
+
+\subsubsection{3d-matrix}
+In rare cases, the functions implemented for the
+\verb"arraymatrix" class are not sufficient to solve a particular
+problem. The way out is then to access the X-parameter data in its
+raw form, i.e. in the way it is \emph{actually} stored in \matlab.
+
+The data is stored as a 3-dimensional matrix, where the first two
+dimensions correspond to the row and columns of the X-parameter
+matrix at each frequency. The third dimension is the frequency.
+This means that, e.g. a two-port S-parameter measurement with 101
+frequency points will be stored as a 2x2x101-sized complex vector.
+
+This raw data matrix can be accessed directly from the
+\verb"xparam", \verb"arraymatrix", or the \verb"meassp" objects by
+getting the \verb"mtrx" property:
+\begin{small}
+\begin{verbatim}
+    >> Sp = msp.S;
+    >> raw_data = get(Sp,'mtrx')
+    raw_data(:,:,1) =
+    0.9921 - 0.0697i   0.0009 + 0.0037i
+    -3.9645 + 0.2474i   0.8495 - 0.0128i
+
+    raw_data(:,:,2) =
+    0.9887 - 0.1027i   0.0011 + 0.0053i
+    -3.9762 + 0.3613i   0.8527 - 0.0303i
+    ...
+    ...
+    raw_data(:,:,101) =
+    -0.5639 - 0.5608i   0.0775 + 0.0227i
+    1.1758 + 1.5074i   0.2195 - 0.7032i
+\end{verbatim}
+\end{small}
+After manipulation, it can be used to create an \verb"arraymatrix"
+object,
+\begin{small}
+\begin{verbatim}
+    >> new_array = arraymatrix(raw_data);
+\end{verbatim}
+\end{small}
+which, in turn can be converted back into \verb"xparam" and
+\verb"meassp" objects as was described above.

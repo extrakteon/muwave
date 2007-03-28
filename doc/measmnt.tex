@@ -1,0 +1,114 @@
+\chapter{Measmnt}
+Stores measurement information, such as date, device properties,
+origin, and operator.
+\section{measmnt}\hypertarget{measmnt} %%%%%% MEASMNT
+Class constructor.
+\subsection{Syntax}
+\begin{verbatim}
+    M = measmnt
+    M = measmnt(A)
+\end{verbatim}
+
+\subsection{Description}
+\verb"M = measmnt" returns a default meamnt object including only information about when the object was created.\\
+\verb"M = measmnt(A)", where \verb"M" is a measmnt object, returns a new measmnt object with same properties as \verb"A".\\
+\subsection{Examples}
+\begin{verbatim}
+    >> measmnt
+    Date = 15-Jul-2003 17:04:40
+\end{verbatim}
+\subsection{Syntax}
+\begin{verbatim}
+    M = measmnt
+    M = measmnt(A)
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% DISPLAY
+\vspace{3mm} \hrule
+\section{display}\hypertarget{measmnt_display}
+Display measmnt object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    display(M)
+\end{verbatim}
+
+\subsection{Description}
+\verb"display(M)" displays the non-empty properties of a measmnt object. \\
+
+%%%%%%%%%%%%%%%%%%%%%%%%% SET
+\vspace{3mm} \hrule
+\section{set}\hypertarget{measmnt_set}
+Set measmnt object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    set(M)
+    M = set(M,'P1',V1,'P2',V2,...)
+\end{verbatim}
+
+\subsection{Description}
+\verb"set(M)" displays the non-empty properties and their values
+of the
+measmnt object \verb"M". \\
+\verb"M = set(M,P1,V1,P2,V2,...)" assigns the the properties \verb"P1" and \verb"P2" the values \verb"V2" and \verb"V2",
+respectively. \\
+
+\subsection{Examples}
+\begin{verbatim}
+>> set(M)
+Date = 15-Jul-2003 17:26:03
+
+>> M=set(M,'Date','01-Mar-2000')
+Date = 01-Mar-2000
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% ADDPROP
+\vspace{3mm} \hrule
+\section{addprop}\hypertarget{measmnt_addprop}
+Add measmnt object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    M = addprop(M,'P1',V1,'P2',V2,...)
+\end{verbatim}
+
+\subsection{Description}
+\verb"M = addprop(M,P1,V1,P2,V2,...)" adds the the properties \verb"P1" and \verb"P2" with values \verb"V2" and \verb"V2",
+respectively, to the measmnt object M. \\
+
+\subsection{Examples}
+\begin{verbatim}
+>> M=measmnt
+    Date : 16-Jul-2003 15:51:34
+>> M=addprop(M,'Batch',1)
+    Date : 16-Jul-2003 15:51:34
+    Batch : 1
+\end{verbatim}
+\subsection{See Also}
+\hyperlink{measmnt_set}{measmnt/set}, \hyperlink{measmnt_get}{measmnt/get}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% GET
+\vspace{3mm} \hrule
+\section{get}\hypertarget{measmnt_get}
+Get measmnt object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    v = get(M,'P1')
+    v = get(M)
+\end{verbatim}
+
+\subsection{Description}
+\verb"get(M,'P1')" returns the value of the \verb"M" property \verb"P1". \\
+\verb"get(M)" returns a cell list of the properties defined for \verb"M". \\
+
+\subsection{Examples}
+\begin{verbatim}
+>> v=get(M,'Batch')
+v =
+     1
+
+>> get(M)
+ans =
+    'Date'    'Origin'    'Operator'
+'Info'    'Batch'
+\end{verbatim}
+\subsection{See Also}
+\hyperlink{measmnt_set}{measmnt/set}
