@@ -1,0 +1,55 @@
+% $Header$
+% $Author: fager $
+% $Date: 2004-10-21 20:59:19 +0200 (Thu, 21 Oct 2004) $
+% $Revision: 223 $
+% $Log$
+% Revision 1.2  2004/10/21 18:59:06  fager
+% Version logging added. Comments from KA implemented.
+%
+\section{Installation}%\hypertarget{Installation}
+Milou has been developed using \matlab v.6.5 (Release 13), which
+is assumed to be installed on the user's computer. Please check
+the Help/About menu to make sure you are running this or a later
+version.
+
+The installation of the Milou-toolbox consists of a few simple
+steps:
+\begin{enumerate}
+    \item Download the latest version from the Milou web page at \newline http://www.mc2.chalmers.se/mc2/mel/edu/g\_courses/emp\_mod/milou/.
+    \newline The downloaded zip-file contains all \matlab m-files and
+documentation necessary.
+    \item Extract all files to a directory of your choice. In WinZip, make
+    sure to have the ''Use folder names'' option checked.
+    \item Add Milou to \matlab's path. This is done from the
+    File menu by selecting ''Set Path...''. Click ''Add Folder''
+    in the dialog box that appears and browse to select the ''matlab\_milou''
+    directory, which was created where you extracted the
+    zip-file. Please make sure to press the ''Save button''
+    before closing the Set Path dialog box.
+    \item Normally, Milou is now ready for action. However, it
+    may in rare cases be necessary to execute the following line before
+    Milou is used the first time:
+    \begin{verbatim}
+        >> clear classes; rehash;
+    \end{verbatim}
+\end{enumerate}
+You can verify that Milou has been successfully installed by
+creating an empty measurement object. This is done by executing:
+\verb">> meassp". The following should be displayed at the command
+prompt:
+\begin{verbatim}
+    >> meassp
+    Measurement info
+        Date : 18-Oct-2004 20:33:57
+        Origin :
+        Operator :
+        Info :
+    Measurement state
+        MeasType:   SP
+    Measurement Data
+    xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  0
+\end{verbatim}

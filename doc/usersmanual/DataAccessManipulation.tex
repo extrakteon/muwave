@@ -1,0 +1,187 @@
+% $Header$
+% $Author: fager $
+% $Date: 2004-10-21 20:59:19 +0200 (Thu, 21 Oct 2004) $
+% $Revision: 223 $
+% $Log$
+% Revision 1.2  2004/10/21 18:59:06  fager
+% Version logging added. Comments from KA implemented.
+%
+\section{Basic access and manipulation of properties}\label{sec:DACManip}
+Once the measurement data has been read into an \verb"meassp"
+object, there are several methods implemented to access and
+manipulate their contents.
+
+First, it will be described how to access and manipulate the
+\verb"measstate" and \verb"measmnt" object properties. The
+S-parameter data, which is stored in an \verb"xparam" object is
+treated separately in \secref{SPMod}.
+
+\subsection{set and get}
+Generally, the two functions \verb"set" and \verb"get" are used to
+manipulate and access the properties of an \verb"meassp" object.
+It is important to note that these functions can be applied
+directly to the \verb"meassp" object, although the property that
+is being accessed is in fact member of the \verb"measmnt" or
+\verb"measstate" sub-classes. A typical usage of them is shown
+below:
+
+\begin{small}
+\begin{verbatim}
+    >> msp = read_touchstone(meassp,...
+        'matlab_milou/test/d0509/d0509_20');
+    >> get(msp,'Date')
+    ans =
+    2002-10-25, 08:50
+
+    >> get(msp,'Ids')
+    ans =
+        0.0197
+
+    >> get(msp,'Freq')
+    ans =
+    1.0e+010 *
+        0.1000
+        0.1490
+        ...
+
+    >> msp = set(msp,'Operator','Tintin','Igs',1,...
+        'Date',datestr(now))
+    Measurement info
+        Date : 19-Oct-2004 15:28:00
+        Origin : matlab_milou\test\d0509\d0509_20
+        Operator : Tintin
+        Info :
+    Measurement state
+        MeasType:   SP
+        Vgs:    -0.1
+        Vds:    1.5
+        Igs:    1
+        Ids:    0.019745
+        Freq,min:   1E+009
+        Freq,max:   5E+010
+    Measurement Data
+    xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  101
+\end{verbatim}
+\end{small}
+
+\subsection{The dot-operator}
+A more convenient way of accessing and manipulating \verb"meassp"
+data than using \verb"set" and \verb"get" is to use the ``dot''-
+operator. The following expressions are equivalent and illustrate
+the principle of operation:
+
+\begin{small}
+\begin{verbatim}
+    >> msp = set(msp,'Operator','Phyllis');
+    >> msp.Operator = 'Phyllis';
+
+    >> f = get(msp,'Freq');
+    >> f = msp.Freq;
+\end{verbatim}
+\end{small}
+
+The dot-assignments above automatically call the
+\verb"@meassp/subsasgn.m" function, which overloads the built-in
+\verb"subsasgn" function that is used to handle the dot-operator
+for other input types. See \verb">> help subsasgn" for further
+details. Similar to \verb"get", \verb"subsref" plays the same role
+when the dot-operator is used to access a parameter value.
+
+\subsection{Adding a property}
+It is sometimes required to add a property that was not defined in
+the TouchStone file. For example, we might want to add a
+\verb"VNA" property that we can use to identify which VNA was used
+during the measurements. The procedure to add a
+\verb"measmnt"-property is easy:
+
+\begin{small}
+\begin{verbatim}
+    >> msp = addprop(msp,'VNA','HP 8510C')
+    Measurement info
+        Date : 2002-10-25, 08:50
+        Origin : matlab_milou\test\d0509\d0509_20
+        Operator :
+        Info :
+        VNA : HP 8510C
+        ...
+\end{verbatim}
+\end{small}
+To add a \verb"measstate" property, the procedure is a bit
+different. First, the \verb"measstate" object must be extracted
+from the \verb"meassp" object. The new property can then be added
+to the \verb"measstate" object. This modified \verb"measstate"
+object should then be put back into the original \verb"meassp"
+object. It is maybe more easy to understand in code:
+
+\begin{small}
+\begin{verbatim}
+    >> mstate = get(msp,'measstate');
+    >> mstate = addprop(mstate,'Temp',75);
+    >> msp = set(msp,'measstate',mstate)
+    ...
+    Measurement state
+        MeasType:   SP
+        Vgs:    -0.1
+        Vds:    1.5
+        Igs:    -2.784E-007
+        Ids:    0.019745
+        Freq,min:   1E+009
+        Freq,max:   5E+010
+        Temp:   75
+    ...
+\end{verbatim}
+\end{small}
+
+\subsection{Reduction and extension of frequency range}
+Another operation that is commonly encountered is to remove
+undesired frequencies, or to reduce the number of frequency
+points. Two methods can be used.
+
+The first case applies when the frequencies remain the same, but
+some points should be removed. The \verb"()" indexing method can
+then be applied. The following example shows an example of how to
+carry out this:
+
+\begin{small}
+\begin{verbatim}
+    >> f = msp.freq;
+    >> freq_index = find(f>1e9 & f<10e9);
+    >> msp_reduced = msp(freq_index)
+        ...
+        Freq,min:   1.49E+009
+        Freq,max:   9.82E+009
+    Measurement Data
+    xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  18
+        ...
+\end{verbatim}
+\end{small}
+
+If the desired frequencies differ from the ones during
+measurement, an interpolation method can be used to find a new
+\verb"meassp" object corresponding to the new frequency vector.
+The \verb"meassp" function \verb"interp" is designed for this
+purpose:
+
+\begin{small}
+\begin{verbatim}
+    >> new_freq = linspace(1e9,1e10,51);
+    >> msp_new = interp(msp,new_freq)
+        ...
+        Freq,min:   1E+009
+        Freq,max:   1E+010
+    Measurement Data xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  51
+        ...
+\end{verbatim}
+\end{small}

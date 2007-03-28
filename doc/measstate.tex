@@ -1,0 +1,111 @@
+\chapter{Measstate}
+Stores information about the measurement state, such as bias,
+temperature, etc.
+\section{measstate}\hypertarget{measstate} %%%%%% MEASSTATE
+Class constructor.
+\subsection{Syntax}
+\begin{verbatim}
+    M = measstate
+    M = measstate(A)
+\end{verbatim}
+
+\subsection{Description}
+\verb"M = measstate" returns an empty measstate object.\\
+\verb"M = measstate(M)", where \verb"M" is a measstate object, returns a new measstate object with same properties as \verb"M".\\
+\subsection{Examples}
+\begin{verbatim}
+    >> measstate
+    - Empty measstate object -
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% DISPLAY
+\vspace{3mm} \hrule
+\section{display}\hypertarget{measstate_display}
+Display measstate object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    display(M)
+\end{verbatim}
+
+\subsection{Description}
+\verb"display(M)" displays the non-empty properties of a measstate object. \\
+
+%%%%%%%%%%%%%%%%%%%%%%%%% ADDPROP
+\vspace{3mm} \hrule
+\section{addprop}\hypertarget{measstate_addprop}
+Add measstate object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    M = addprop(M,'P1',V1,'P2',V2,...)
+\end{verbatim}
+
+\subsection{Description}
+\verb"M = addprop(M,P1,V1,P2,V2,...)" adds the the properties
+\verb"P1" and \verb"P2" with values \verb"V2" and \verb"V2",
+respectively, to the measstate object M. \\
+
+\subsection{Examples}
+\begin{verbatim}
+>> M=addprop(measstate,'Vgs',10)
+    Vgs:    10
+\end{verbatim}
+\subsection{See Also}
+\hyperlink{measstate_set}{measstate/set},
+\hyperlink{measstate_get}{measstate/get}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% SET
+\vspace{3mm} \hrule
+\section{set}\hypertarget{measstate_set}
+Set measstate object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    set(M)
+    M = set(M,'P1',V1,'P2',V2,...)
+\end{verbatim}
+
+\subsection{Description}
+\verb"set(M)" displays the non-empty properties and their values
+of the
+measstate object \verb"M". \\
+\verb"M = set(M,'P1',V1,'P2',V2,...)" assigns the the properties
+\verb"P1" and \verb"P2" the values \verb"V2" and \verb"V2",
+respectively. \\
+
+\subsection{Examples}
+\begin{verbatim}
+>> M=addprop(measstate,'Vgs',10)
+    Vgs:    10
+>> M=set(M,'Vgs',7)
+    Vgs:    7
+\end{verbatim}
+\subsection{See Also}
+\hyperlink{measstate_addprop}{measstate/addprop}
+\hyperlink{measstate_get}{measstate/get}
+
+%%%%%%%%%%%%%%%%%%%%%%%%% GET
+\vspace{3mm} \hrule
+\section{get}\hypertarget{measstate_get}
+Get measstate object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    v = get(M,'P1')
+    v = get(M)
+\end{verbatim}
+
+\subsection{Description}
+\verb"get(M,'P1')" returns the value of the \verb"M" property \verb"P1". \\
+\verb"get(M)" returns a cell list of the properties defined for \verb"M". \\
+
+\subsection{Examples}
+\begin{verbatim}
+>> M=addprop(measstate,'Vgs',0.5,'Freq',1e9:1e9:50e9);
+>> Vgs=get(M,'Vgs')
+Vgs =
+    0.5000
+
+>> get(M)
+ans =
+    'Vgs'    'Freq'
+\end{verbatim}
+\subsection{See Also}
+\hyperlink{measstate_set}{measstate/set}

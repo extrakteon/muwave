@@ -1,0 +1,46 @@
+% $Header$
+% $Author: fager $
+% $Date: 2004-10-21 20:59:19 +0200 (Thu, 21 Oct 2004) $
+% $Revision: 223 $
+% $Log$
+% Revision 1.2  2004/10/21 18:59:06  fager
+% Version logging added. Comments from KA implemented.
+%
+
+\documentclass[10pt,a4paper]{article}
+\usepackage{amssymb}
+\usepackage{times}
+\usepackage{graphicx}
+%\usepackage{hyperref}
+
+\newcommand{\figref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\Figref}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\appref}[1]{Appendix~\ref{app:#1}}
+\newcommand{\Appref}[1]{Appendix~\ref{app:#1}}
+\newcommand{\tabref}[1]{Table~\ref{tab:#1}}
+\newcommand{\Tabref}[1]{Table~\ref{tab:#1}}
+\newcommand{\equref}[1]{(\ref{equ:#1})}
+\newcommand{\Equref}[1]{Equation (\ref{equ:#1})}
+\newcommand{\refref}[1]{\cite{#1}}
+\newcommand{\secref}[1]{section~\ref{sec:#1}}
+\newcommand{\Secref}[1]{Section~\ref{sec:#1}}
+
+\newcommand{\matlab}{\textsc{Matlab\,}}
+
+\setcounter{secnumdepth}{3} \setcounter{tocdepth}{3}
+
+\title{MATLAB Milou Toolbox \\ User's Guide}
+\author{Christian Fager\\christian.fager@mc2.chalmers.se}
+\begin{document}
+\maketitle %\pagebreak
+\tableofcontents
+\include{Introduction}
+\include{Installation}
+\include{ClassHierarchy}
+\include{FileRead}
+\include{DataAccessManipulation}
+\include{SPAccessManipulation}
+\include{MNA}
+\include{Sweeps}
+\include{Plotting}
+\end{document}

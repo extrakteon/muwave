@@ -1,0 +1,57 @@
+function hreplot = replot(Z,freq,x,line_style)
+%REPLOT Plots complex parameters in a real part plot
+%   Support file for PARAMPLOT.
+%
+%   See also: PARAMPLOT
+
+%   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
+
+% $Header$
+% $Author: fager $
+% $Date: 2004-10-21 00:25:32 +0200 (Thu, 21 Oct 2004) $
+% $Revision: 220 $ 
+% $Log$
+% Revision 1.2  2004/10/20 22:25:32  fager
+% Help comments added
+%
+
+if nargin < 2
+    error('Requires 2 or 3 input arguments.')
+elseif nargin == 2 
+    if isstr(Z)
+        line_style = Z;
+        Z = line_style;
+    else
+        line_style = 'auto';
+    end
+end
+% Assume that both parameters are equally spaced in frequency?
+[mr,nr] = size(Z);
+
+if isstr(Z)
+    error('Input arguments must be numeric.');
+end
+
+% get hold state
+cax = newplot;
+next = lower(get(cax,'NextPlot'));
+hold_state = ishold;
+
+% transform complex data to logmag.
+yy = real(Z);
+xx = freq;
+
+% plot data on top of grid
+if strcmp(line_style,'auto')
+    q = plot(xx,yy);
+else
+    q = plot(xx,yy,line_style);
+end
+if nargout > 0
+    hreplot = q;
+end
+%if ~hold_state
+%    set(gca,'dataaspectratio',[1 1 1]), axis off; set(cax,'NextPlot',next);
+%end
+set(get(gca,'xlabel'),'visible','on')
+set(get(gca,'ylabel'),'visible','on')
