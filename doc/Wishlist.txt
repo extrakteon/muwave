@@ -1,0 +1,17 @@
+MATLAB MILOU WISHLIST
+
+% $Header$
+% $Author: fager $
+% $Date: 2004-10-26 17:31:37 +0200 (Tue, 26 Oct 2004) $
+% $Revision: 228 $ 
+% $Log$
+% Revision 1.1  2004/10/26 15:31:37  fager
+% Just the first ones that came to my mind...
+%
+% Revision 1.1  2003/11/17 07:46:35  kristoffer
+% *** empty log message ***
+
+@meassweep:
+Method to write MDIF-file from meassweep-object.
+Method to write directory with Touchstone-files from meassweep-object.
+

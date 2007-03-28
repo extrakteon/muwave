@@ -1,0 +1,175 @@
+% $Header$
+% $Author: fager $
+% $Date: 2005-02-22 08:31:00 +0100 (Tue, 22 Feb 2005) $
+% $Revision: 239 $
+% $Log$
+% Revision 1.3  2005/02/22 07:31:00  fager
+% Corrections from M.Kelly implemented
+%
+% Revision 1.2  2004/10/21 18:59:06  fager
+% Version logging added. Comments from KA implemented.
+%
+
+\section{Sweeps of measurements}\label{sec:sweeps}
+Milou has not only functionality to handle single measurements,
+using the \verb"meassp" class, but also a series of measurements.
+Typically, this is a series of measurements obtained at different
+bias points. The class used to handle these swept measurements is
+called \verb"meassweep".
+
+Milou can create \verb"meassweep" objects from either a directory
+with multiple TouchStone files or from an MDIF file\footnote{See
+Agilent ADS documentation for details about the MDIF file
+format.}.
+
+\subsection{Importing multiple Touchstone files}
+Multiple TouchStone files are imported into an \verb"meassweep"
+object using the function \verb"read_milousweep". The following
+example shows a typical call with this function:
+\begin{small}
+\begin{verbatim}
+    >> sweep = read_milousweep(meassweep,...
+        'matlab_milou\test\d0509_all','d0506_','')
+    Measurement info
+        Date : 20-Oct-2004 19:06:00
+        Origin : matlab_milou\test\d0509_fix\d0506_*
+        Operator :
+        Info :
+    Sweep info
+        Vgs,min: -0.500000
+        Vgs,max: 0.200000
+        Vds,min: 0.500000
+        Vds,max: 1.500000
+        Igs,min: -0.000001
+        Igs,max: 0.000002
+        Ids,min: 0.003438
+        Ids,max: 0.029725
+        Freq,min: 1000000000.000000
+        Freq,max: 50000000000.000000
+        Number of measurements: 24
+\end{verbatim}
+\end{small}
+Please consult \verb">> help read_milousweep" to find the details
+on how to call this function.
+
+\subsection{Importing MDIF-files}
+MDIF files allow a convenient way of transferring multi
+dimensional data to and from Agilent ADS. The structure of the
+MDIF files are described in the Agilent ADS manual and not
+repeated here.
+
+The function \verb"read_mdif" can be used to import MDIF data into
+a \verb"meassweep" object in Milou. It should be stressed that, at
+the time of writing, this function is still under development and
+may not operate as expected!
+
+\subsection{Importing Maury ATS swept bias S-parameters}
+The function \verb"read_s2b" allows Milou to import swept bias
+S-parameter files created by the Maury Microwave ATS software.
+Please consult the on-line help for more information about this
+function.
+
+\subsection{Accessing and indexing meassweep objects}
+A \verb"meassweep" object can thought of as a vector of
+\verb"meassp" objects. An individual \verb"meassweep" object, or a
+subset of the \verb"meassweep" can be accessed using the
+parenthesis \verb"()" operator,
+\begin{small}
+\begin{verbatim}
+    >> sweep(1)
+        Measurement info
+            Date : 2002-10-24, 19:23
+            Origin : matlab_milou\test\d0509_all\d0506_0
+            Operator :
+            Info :
+        Measurement state
+            MeasType:   SP
+            Vgs:    -0.5
+            Vds:    0.5
+            Igs:    -6.43067E-007
+            Ids:    0.00343814
+            Freq,min:   1E+009
+            Freq,max:   5E+010
+        Measurement Data
+        xparam-object
+            type:  S
+            reference: 50
+            ports: 2
+            elements:  101
+    >> sweep(1:10)
+    Measurement info
+        Date : 20-Oct-2004 19:09:39
+        Origin : matlab_milou\test\d0509_all\d0506_*
+        Operator :
+        Info :
+    Sweep info
+        Vgs,min: -0.500000
+        Vgs,max: 0.200000
+        Vds,min: 0.500000
+        Vds,max: 1.000000
+        Igs,min: -0.000001
+        Igs,max: 0.000001
+        Ids,min: 0.003438
+        Ids,max: 0.023394
+        Freq,min: 1000000000.000000
+        Freq,max: 50000000000.000000
+        Number of measurements: 10
+\end{verbatim}
+\end{small}
+
+\subsection{The dot-operator}
+An individual parameter of the sweep objects can be accessed using
+the dot-operator. The following example shows how to access the
+\verb"Vgs"-parameter and also how this can be used to use reduce
+the sweep-object to contain only bias points with \verb"Vgs" $=0$.
+\begin{small}
+\begin{verbatim}
+    >> sweep.Vgs
+    ans =
+    Columns 1 through 7
+    -0.5000   -0.4000   -0.3000   -0.2000   -0.1000   -0.0000    0.1000
+    Columns 8 through 14
+        0.2000   -0.5000   -0.4000   -0.3000   -0.2000   -0.1000   -0.0000
+    ...
+
+    >> bias_index = find(abs(sweep.Vgs)<0.01);
+    >> sweep(bias_index)
+    Measurement info
+        Date : 20-Oct-2004 19:09:39
+        Origin : matlab_milou\test\d0509_all\d0506_*
+        Operator :
+        Info :
+    Sweep info
+        Vgs: -0.000000
+        Vds,min: 0.500000
+        Vds,max: 1.500000
+        Igs,min: -0.000000
+        Igs,max: -0.000000
+        Ids,min: 0.021219
+        Ids,max: 0.025760
+        Freq,min: 1000000000.000000
+        Freq,max: 50000000000.000000
+        Number of measurements: 3
+\end{verbatim}
+\end{small}
+
+\subsection{Adding measurements}
+Single measurements can be added to the \verb"meassweep" object
+with the \verb"add" function,
+
+\begin{small}
+\begin{verbatim}
+    >> msp = read_touchstone(meassp,'test\d0509\d0509_20');
+    >> sweep_total = add(sweep,msp);
+    >> length(sweep_total)-length(sweep)
+    ans =
+        1
+\end{verbatim}
+\end{small}
+The same function, \verb"add", can also be used to merge two
+\verb"meassweep" objects.
+
+\subsection{Writing swept data}
+For the moment, no functions have been implemented to write a
+\verb"meassweep" object to multiple TouchStone files or into an
+MDIF-file.

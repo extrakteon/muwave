@@ -1,0 +1,211 @@
+\chapter{Mna}
+Simple tool for calculating response of a linear circuit using
+Modified Nodal Analysis.
+\section{mna}\hypertarget{mna}
+Class constructor.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = mna
+    Y = mna(n)
+\end{verbatim}
+
+\subsection{Description}
+\verb"Y = mna" returns a default mna object with 1 node.\\
+\verb"Y = mna(n)", where \verb"n" is a positive scalar, returns a mna object with \verb"n" nodes.\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{stamp}\hypertarget{stamp}
+Inserts the MNA footprint of a circuit element into the
+mna-object.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = stamp(Y,type,element,conn)
+\end{verbatim}
+\subsection{Description}
+\verb"Y = stamp(Y,type,element,conn)" returns a mna-object with
+the circuit element \verb"type" with name \verb"element" between
+nodes \verb"conn".
+
+\verb"type" can be a reciprocal two port element
+\verb"'R','G','L','C'" or a non reciprocal four port
+\verb"'VCCS','GY'". \verb"element" can be any string describing
+the element name. For two ports \verb"conn" is a two element
+vector containing the nodes of the circuit element, for four ports
+it is a four element vector.
+
+\subsection{Example}
+Produces a indefinite MNA description of a standard transistor
+$\pi$-pad.
+\begin{verbatim}
+    >> Y = stamp(mna(3),'C','Cpg',[1 3]);
+    Y = stamp(Y,'L','Lg',[1 2]);
+    Y = stamp(Y,'C','Cpg',[2 3]);
+    >> Y
+    ans =
+        '+s.*Cpg+1./(s*Lg)'    '-1./(s*Lg)'           '-s.*Cpg'
+        '-1./(s*Lg)'           '+1./(s*Lg)+s.*Cpg'    '-s.*Cpg'
+        '-s.*Cpg'              '-s.*Cpg'              '+s.*Cpg+s.*Cpg'
+    ans =
+        'Cpg'    'Lg'
+\end{verbatim}
+
+Example of a voltage controlled current source.
+\begin{verbatim}
+    >> Y=stamp(mna(4),'VCCS','gm',[1 2 3 4])
+    ans =
+           []     []       []     []
+        '+gm'     []    '-gm'     []
+           []     []       []     []
+        '-gm'     []    '+gm'     []
+    ans =
+        'gm'
+\end{verbatim}
+
+Example of a gyrator.
+\begin{verbatim}
+    >> Y=stamp(mna(4),'GY','g',[1 2 3 4]) ans =
+      []    '+g'      []    '-g'
+    '-g'      []    '+g'      []
+      []    '-g'      []    '+g'
+    '+g'      []    '-g'      []
+    ans =
+        'g'
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{3mm} \hrule
+\section{freq}\hypertarget{freq}
+Sets the frequencies for subsequent calculation of a numeric
+MNA-matrix.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = freq(Y,frequencies)
+\end{verbatim}
+\subsection{Description}
+\verb"Y = freq(Y,frequencies)" returns the mna object with
+calculation frequencies set to \verb"frequencies".
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{3mm} \hrule
+\section{params}\hypertarget{params}
+Returns a cell vector containing the circuit elements in the
+circuit.
+\subsection{Syntax}
+\begin{verbatim}
+    x = params(Y)
+\end{verbatim}
+\subsection{Description}
+\verb"x = params(Y)" returns a cell vector with the circuit
+elements.
+
+\subsection{Examples}
+\begin{verbatim}
+    >> Y = read_netlist(mna,'test/test.nl')
+    ans =
+        '+s.*Cpg+1./(s*Lg)'    '-1./(s*Lg)'                 []
+        '-1./(s*Lg)'           '+1./(s*Lg)+s.*Cpg'          []
+                         []                     []    '+1./Rs'
+    ans =
+        'Cpg'    'Lg'    'Rs'
+    >> params(Y)
+    ans =
+        'Cpg'    'Lg'    'Rs'
+    >>
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{3mm} \hrule
+\section{calc}\hypertarget{calc}
+Calculates a numeric MNA-matrix.
+\subsection{Syntax}
+\begin{verbatim}
+    X = calc(Y,parameters)
+\end{verbatim}
+\subsection{Description}
+\verb"X = calc(Y,parameters)" returns a \verb"xparam"-object
+containing the MNA-matrix calculated at the frequencies set by
+\verb"freq". \verb"parameters" is a numeric vector containing the
+values of the circuit elements. This vector must have the same
+ordering as the elements were inserted into the mna-object.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{gnd}\hypertarget{gnd}
+Connects specified nodes to ground and thereby reduces the
+dimension of the MNA-matrix.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = gnd(Y,conn)
+\end{verbatim}
+\subsection{Description}
+\verb"Y = gnd(Y,conn)", where \verb"conn" is a vector containing
+the nodes to be connected to ground.
+
+\subsection{Examples}
+Example of a gyrator with nodes 3 and 4 grounded.
+\begin{verbatim}
+    >> Y=stamp(mna(4),'GY','g',[1 2 3 4])
+    ans =
+          []    '+g'      []    '-g'
+        '-g'      []    '+g'      []
+          []    '-g'      []    '+g'
+        '+g'      []    '-g'      []
+    ans =
+        'g'
+    >> Y=gnd(Y,[3 4])
+    ans =
+          []    '+g'
+        '-g'      []
+    ans =
+        'g'
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{read\_netlist}\hypertarget{readnetlist}
+Reads a netlist and builds a corresponding mna-object.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = read_netlist(Y,file)
+\end{verbatim}
+\subsection{Description}
+\verb"Y = read_netlist(Y,file)", where \verb"file" is a string
+containing the path to the netlist file.
+
+The netlist should be a text-file of the following form:
+\begin{verbatim}
+    C Cpg 1 3
+    L Lg  1 2
+    C Cpg 2 5
+    R Rs  3 4
+    GND 3 5
+\end{verbatim}
+The circuit elements could be given in any order.
+
+\subsection{Examples}
+The file \verb"test.nl" contains the netlist above.
+\begin{verbatim}
+    >> Y = read_netlist(mna,'test/test.nl')
+    ans =
+        '+s.*Cpg+1./(s*Lg)'    '-1./(s*Lg)'                 []
+        '-1./(s*Lg)'           '+1./(s*Lg)+s.*Cpg'          []
+                     []                     []    '+1./Rs'
+    ans =
+        'Cpg'    'Lg'    'Rs'
+\end{verbatim}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{display}\hypertarget{display}
+Displays the MNA-matrix and a list of circuit variables of a
+mna-object.
+\subsection{Syntax}
+\begin{verbatim}
+    display(Y)
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%

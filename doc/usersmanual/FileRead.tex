@@ -1,0 +1,114 @@
+% $Header$
+% $Author: fager $
+% $Date: 2004-10-21 20:59:19 +0200 (Thu, 21 Oct 2004) $
+% $Revision: 223 $
+% $Log$
+% Revision 1.2  2004/10/21 18:59:06  fager
+% Version logging added. Comments from KA implemented.
+%
+\section{Reading and storing single measurement files}
+The easiest and best way to introduce the functionality of Milou
+is probably by an example. The example measurement used here is
+for an InP-HEMT device biased in the active region. The
+measurement is stored as a TouchStone file at: \newline
+\verb"matlab_milou/test/d0509/d0509_20".
+
+\subsection{The TouchStone file format}
+The most commonly used file format for storing S-parameter files
+is the TouchStone format\footnote{TouchStone is a registered
+trademark of Agilent Corporation. A complete specification of the
+file format can be found in either
+www.eda.org/pub/ibis/connector/touchstone\_spec11.pdf or the
+Agilent ADS manual.}. These files are typically identified by a
+.S2P file extension (although not the case for the example file
+above), where 2 denotes the number of ports in the measurement
+data. Below is shown an example of how the first couple of lines
+of a Touchstone file typically look like:
+\begin{small}
+\begin{verbatim}
+    !Date: 2002-10-25, 08:50
+
+    !Vgs = -1.000000E-1
+    !Vds = 1.500000E+0
+    !Ig = -2.784000E-7
+    !Id = 1.974500E-2
+
+    #HZ S RI R 50
+    1.000000E+9 9.921265E-1 -6.970215E-2 -3.964478E+0 ...
+    1.490000E+9 9.887085E-1 -1.027222E-1 -3.976196E+0 ...
+    1.980000E+9 9.827881E-1 -1.362915E-1 -3.920410E+0 ...
+    2.470000E+9 9.783020E-1 -1.674194E-1 -3.943237E+0 ...
+    2.960000E+9 9.721069E-1 -1.990662E-1 -3.927979E+0 ...
+        ...
+\end{verbatim}
+\end{small}
+Rows starting with exclamation marks (!) indicate comments, but
+are here used to store additional information about the
+measurements. In this case, which is typical, the comments reveal
+the biasing conditions as well as the date of measurement.
+
+The next important section is the line starting with \verb"#".
+This line reveals the format of the following data. First on that
+line, \verb"HZ" is written to indicate that the first column of
+the data, which is always the frequency, is given in Hertz.
+Thereafter indicates \verb"S" that the data is indeed S-parameter
+data. The following \verb"RI" tells us that the S-parameters are
+given in ``$\mathrm{Re}(S)~\mathrm{Im}(S)$'' format. Other
+alternatives are \verb"MA" and \verb"DB", corresponding to
+``$|S|~\angle S$'' and ``$20 log_{10}(|S|)~\angle S$'',
+respectively. Finally, \verb"R 50" indicates that the S-parameters
+are given for a $50 \Omega$ system impedance. The remainder of the
+file consists of lines in the following format:
+\begin{small}
+\begin{verbatim}
+    freq real(S11) imag(S11) real(S21) imag(S21) real(S12)...
+\end{verbatim}
+\end{small}
+where in this case the \verb"RI" format has been assumed.
+
+\subsection{read\_touchstone}
+The \verb"read_touchstone" function allows a straightforward way
+of importing TouchStone files into Milou:
+
+\begin{small}
+\begin{verbatim}
+    >> msp = read_touchstone(meassp,...
+        'matlab_milou/test/d0509/d0509_20')
+    Measurement info
+        Date : 2002-10-25, 08:50
+        Origin : matlab_milou\test\d0509\d0509_20
+        Operator :
+        Info :
+    Measurement state
+        MeasType:   SP
+        Vgs:    -0.1
+        Vds:    1.5
+        Igs:    -2.784E-007
+        Ids:    0.019745
+        Freq,min:   1E+009
+        Freq,max:   5E+010
+    Measurement Data
+    xparam-object
+        type:  S
+        reference: 50
+        ports: 2
+        elements:  101
+\end{verbatim}
+\end{small}
+
+The variable \verb"msp" is now an instance of an \verb"meassp"
+object, as illustrated in \figref{ClassHierarchy}. The parameters
+displayed indicate that \verb"read_touchstone" has parsed the
+header in the TouchStone file and put the information in the
+corresponding sub-objects. The following sections will describe
+how to access and manipulate these parameters and properties.
+
+\subsection{write\_touchstone}
+Naturally, it is also possible to store a \verb"meassp" object as
+a TouchStone file. The syntax is similar as for
+\verb"read_touchstone":
+\begin{small}
+\begin{verbatim}
+    >> write_touchstone(msp,'c:\users\nn\temp\datatest.s2p');
+\end{verbatim}
+\end{small}

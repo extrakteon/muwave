@@ -1,0 +1,347 @@
+\chapter{ArrayMatrix}
+
+\section{arraymatrix}\hypertarget{arraymatrix}
+Class constructor.
+\subsection{Syntax}
+\begin{verbatim}
+    M = arraymatrix
+    M = arraymatrix(A)
+    M = arraymatrix(A,m)
+    M = arraymatrix(nx,ny,m)
+\end{verbatim}
+
+\subsection{Description}
+\verb"M = arraymatrix" returns an empty structure with element
+matrix dimension 2*2.\\
+\verb"M = arraymatrix(A)" where A is a matrix of size nx*ny*m.
+Returns a structure containing A with matrix dimension nx*ny and
+length m.\\
+\verb"M = arraymatrix(A,m)" where A is a matrix of size nx*ny and
+m is a positive scalar. returns a structure with matrix A repeated
+m times.\\
+\verb"M = arraymatrix(nx,ny,m)" where nx, ny and m is positive
+scalars. returns a structure containing zeros with matrix
+dimension nx*ny and length m.
+\subsection{Examples}
+\begin{verbatim}
+    >> A=[1,2;3,4];
+    >> arraymatrix(A)
+    arraymatrix-object
+     dimension:  2 x 2
+     elements:   1
+
+    >> arraymatrix(A,3)
+    arraymatrix-object
+     dimension:  2 x 2
+     elements:   3
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{display}\hypertarget{display}
+Display arraymatrix.
+\subsection{Syntax}
+\begin{verbatim}
+    display(M)
+\end{verbatim}
+\subsection{Description}
+Overloads \verb"display". Displays info about the arraymatrix when
+semicolon isn't used for line termination.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{inv}\hypertarget{inv}
+Inverse of each element in arraymatrix.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = inv(X)
+\end{verbatim}
+\subsection{Description}
+\verb"Y = inv(X)" returns the inverse of the square arraymatrix
+\verb"X". If dimension of \verb"X" is equal to two an explicit
+algorithm is used, otherwise for-loops are used.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{mtimes}\hypertarget{mtimes}
+Matrix multiply.
+\subsection{Syntax}
+\begin{verbatim}
+    C = A*B
+    C = A*b
+    C = a*B
+\end{verbatim}
+\subsection{Description}
+Overloads the multiplication operator \verb"*". This routine
+handles multiplication with scalars, matrices and other
+ArrayMatrix-objects.
+\subsection{See Also}
+\hyperlink{rdivide}{rdivide} \hyperlink{plus}{plus}
+\hyperlink{minus}{minus} \hyperlink{uminus}{uminus}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{rdivide}\hypertarget{rdivide}
+Right matrix divide
+\subsection{Syntax}
+\begin{verbatim}
+    C = A/B
+    C = A/b
+    C = a/B
+\end{verbatim}
+\subsection{Description}
+Overloads the division operator \verb"/". This routine handles
+division with scalars, square matrices and other
+ArrayMatrix-objects.
+\subsection{See Also}
+\hyperlink{mtimes}{mtimes} \hyperlink{plus}{plus}
+\hyperlink{minus}{minus} \hyperlink{uminus}{uminus}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{plus}\hypertarget{plus}
+Addition
+\subsection{Syntax}
+\begin{verbatim}
+    C = A + B
+    C = A + b
+    C = a + B
+\end{verbatim}
+\subsection{Description}
+Overloads the addition operator \verb"-". This routine handles
+addition with scalars, matrices and other ArrayMatrix-objects.
+\subsection{See Also}
+\hyperlink{mtimes}{mtimes} \hyperlink{rdivide}{rdivide}
+\hyperlink{minus}{minus} \hyperlink{uminus}{uminus}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{minus}\hypertarget{minus}
+Subtraction.
+\subsection{Syntax}
+\begin{verbatim}
+    C = A-B
+    C = A-b
+    C = a-B
+\end{verbatim}
+\subsection{Description}
+Overloads the subtraction operator \verb"-". This routine handles
+subtraction with scalars, matrices and other ArrayMatrix-objects.
+\subsection{See Also}
+\hyperlink{mtimes}{mtimes} \hyperlink{rdivide}{rdivide}
+\hyperlink{plus}{plus} \hyperlink{uminus}{uminus}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{minus}\hypertarget{minus}
+Unary minus.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = -Y
+\end{verbatim}
+\subsection{Description}
+\subsection*{uminus}
+Overloads the unary minus operator.
+\subsection{See Also}
+\hyperlink{mtimes}{mtimes} \hyperlink{rdivide}{rdivide}
+\hyperlink{plus}{plus} \hyperlink{minus}{minus}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{transpose}\hypertarget{transpose}
+Matrix transpose.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = X.'
+\end{verbatim}
+\subsection{Description}
+Overloads the transpose operator \verb".*".
+\subsection{See Also}
+\hyperlink{ctranspose}{ctranspose}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{ctranspose}\hypertarget{ctranspose}
+Hermitian matrix transpose.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = X'
+\end{verbatim}
+\subsection{Description}
+Overloads the hermitian transpose operator \verb"*".
+\subsection{See Also}
+\hyperlink{transpose}{transpose}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{subsref}\hypertarget{subsref}
+Subscripted reference.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = X(I)
+    Y = X(nx,ny)
+\end{verbatim}
+\subsection{Description}
+\verb"Y=X(I)" is an arraymatrix formed from the elements of
+\verb"X" specified by the index vector \verb"I".\\
+\verb"Y=X(nx,ny)" is a vector containing the \verb"(nx,ny)"
+element of each matrix.
+\subsection{Se Also}
+%\hyperref{subsasgn}{subsasgn}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{subsasgn}\hypertarget{subsasgn}
+Subscripted assigment.
+\subsection{Syntax}
+\begin{verbatim}
+    X(I) = Y
+    X(nx,ny) = Y
+\end{verbatim}
+\subsection{Description}
+\verb"X(I)=Y" assigns the values of \verb"Y" to the positions of
+\verb"X" specified by the index vector \verb"I".\\
+\verb"X(nx,ny)=Y" assigns the values of vector \verb"Y" to the
+\verb"(nx,ny)" element of each matrix.
+\subsection{Se Also}
+%\hyperref{subsref}{subsref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{length}\hypertarget{length}
+Length of object.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = length(X)
+\end{verbatim}
+\subsection{Description}
+\verb"Y = length(X)" is the number of elements in X.
+\subsection{See Also}
+%\hyperref{size}{size}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{size}\hypertarget{size}
+Size of object.
+\subsection{Syntax}
+\begin{verbatim}
+    [NX,NY,M] = size(X)
+    Y = size(X,dim)
+\end{verbatim}
+\subsection{Description}
+\verb"[NX,NY,M] = size(X)" is the vector containing the size of
+\verb"X".\\
+\verb"Y = size(X,dim)" is the size of \verb"X" along the dimension
+\verb"dim".
+\subsection{See Also}
+%\hyperref{length}{length}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{get}\hypertarget{get}
+Get object properties.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = get(X,property)
+\end{verbatim}
+\subsection{Description}
+Provides access to the internals of the class.\\
+\verb"Y = get(X,'nx')" is the number of rows in each matrix.\\
+\verb"Y = get(X,'ny')" is the number of columns in each matrix.\\
+\verb"Y = get(X,'m')" is the number of elements in the array.\\
+\verb"Y = get(X,'mtrx')" is the three dimensional matrix holding
+the data.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{conj}\hypertarget{conj}
+Matrix conjugate.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = conj(X)
+\end{verbatim}
+\subsection{Description}
+Calculates the conjugate of each matrix in the array.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{real}\hypertarget{real}
+Real part.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = real(X)
+\end{verbatim}
+\subsection{Description}
+Calculates the real part of each matrix in the array.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{imag}\hypertarget{imag}
+Imaginary part.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = imag(X)
+\end{verbatim}
+\subsection{Description}
+Calculates the imaginary part of each matrix in the array.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{angle}\hypertarget{angle}
+Angle of complex number.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = angle(X)
+\end{verbatim}
+\subsection{Description}
+Calculates the angle (in radians) of each matrix-entry in the
+array.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{abs}\hypertarget{abs}
+Absolute value.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = abs(X)
+\end{verbatim}
+\subsection{Description}
+Calculates the absolute value of each matrix-entry in the array.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{det}\hypertarget{det}
+Determinant.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = det(X)
+\end{verbatim}
+\subsection{Description}
+Calculates the determinant of each matrix in the array.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{ident}\hypertarget{ident}
+Determinant.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = ident(X)
+\end{verbatim}
+\subsection{Description}
+\subsection*{ident}
+Returns an appropriate identity matrix. Quite useless provided for
+backwards compatibility.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{3mm} \hrule
+\section{skip}\hypertarget{skip}
+Drops rows and columns.
+\subsection{Syntax}
+\begin{verbatim}
+    Y = skip(X,[row col])
+\end{verbatim}
+\subsection{Description}
+\subsection*{ident}
+Skips (or drops) the selected row and column in each matrix.
+\verb"Y = skip(X,[row col])" drops the \verb"row"'th row and
+\verb"col"'th column in each matrix.
