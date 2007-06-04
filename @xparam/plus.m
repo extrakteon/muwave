@@ -15,7 +15,7 @@ function s3 = plus(s1,s2)
 s1 = xparam(s1);
 
 if isnumeric(s2) & length(s2)==1    % Scalar
-    s3 = xparam(s1.data + s2, s1.type, s1.reference);
+    s3 = xparam(s1.data + s2, s1.type, s1.reference, s1.freq);
 else
     s2 = xparam(s2);
     
@@ -28,5 +28,5 @@ else
     if s1.reference ~= s2.reference,
         warning('XPARAM.PLUS: Arguments do not have the same reference impedence. Conversion NOT performed'); 
     end
-    s3 = xparam(s1.data + s2.data, s1.type, s1.reference);
+    s3 = xparam(s1.data + s2.data, s1.type, s1.reference, s1.freq);
 end

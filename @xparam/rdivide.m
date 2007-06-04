@@ -12,7 +12,7 @@ function c = rdivide(a,b)
 
 a = xparam(a);
 if isnumeric(b) & size(b,2)==1    % Scalar
-    c = xparam(a.data.*b, a.type, a.reference);
+    c = xparam(a.data.*b, a.type, a.reference, a.freq);
 else
     b = xparam(b);
     
@@ -28,7 +28,7 @@ else
     
     data = a.data ./ b.data;
     
-    c = xparam(data, a.type, a.reference);
+    c = xparam(data, a.type, a.reference, a.freq);
     
 end
 %

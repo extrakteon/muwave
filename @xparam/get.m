@@ -20,7 +20,6 @@ function val = get(a,param)
 % Help comments added
 %
 
-a = xparam(a);
 if square(a)
     ports = get(a.data,'nx');
 else
@@ -86,7 +85,9 @@ switch lower(param)
                 if ~err
                     % Get correct parameter
                     a = convert(a, param(1));
-                    val = a.data(x, y);
+                    temp = get(a.data,'mtrx');
+                    val = squeeze(temp(x, y, :));
+                    
                 else
                     error('XPARAM.GET: Index out of range.');
                 end
