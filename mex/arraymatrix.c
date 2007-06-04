@@ -48,11 +48,11 @@ extern void amSolve(ArrayMatrix X, ArrayMatrix A, ArrayMatrix B)
 		pX = X.data;
 		if (B.nelem > 1) {
 			block = nelem * B.nrow * B.ncol;
-			zcopy_(&block, pB, &inc, pX, &inc);
+			zcopy(&block, pB, &inc, pX, &inc);
 		} else {
 			block = B.nrow * B.ncol;
 			for (n = 0; n < nelem; n++) {
-				zcopy_(&block, pB, &inc, pX, &inc);
+				zcopy(&block, pB, &inc, pX, &inc);
 				pX += 2*block;
 			}
 		}
@@ -63,11 +63,11 @@ extern void amSolve(ArrayMatrix X, ArrayMatrix A, ArrayMatrix B)
 		pX = X.data;
 		if (B.nelem > 1) {
 			block = nelem * B.nrow * B.ncol;
-			dcopy_(&block, pB, &inc, pX, &inc);
+			dcopy(&block, pB, &inc, pX, &inc);
 		} else {
 			block = B.nrow * B.ncol;
 			for (n = 0; n < nelem; n++) {
-				dcopy_(&block, pB, &inc, pX, &inc);
+				dcopy(&block, pB, &inc, pX, &inc);
 				pX += block;
 			}
 		}
@@ -213,9 +213,9 @@ void dplus(
 		/* Both are matrices and both are arrays */
 		block = stride_a * nelem;
 		/* first copy A to C */
-		dcopy_(&block, pA, &inca, pC, &incc);
+		dcopy(&block, pA, &inca, pC, &incc);
 		/* then add alpha*B to C */
-		daxpy_(&block, &alpha, pB, &incb, pC, &incc);
+		daxpy(&block, &alpha, pB, &incb, pC, &incc);
 	} else {
 		block = intmax(block_a, block_b);
 		/* set increment to 0 if scalar */
@@ -223,9 +223,9 @@ void dplus(
 		incb = block_b > 1;
 		for (n = 0; n < nelem; n++) {
 			/* first copy A to C */
-		    	dcopy_(&block, pA, &inca, pC, &incc);
+		    	dcopy(&block, pA, &inca, pC, &incc);
 			/* then add alpha*B to C */
-			daxpy_(&block, &alpha, pB, &incb, pC, &incc);
+			daxpy(&block, &alpha, pB, &incb, pC, &incc);
 			pA += stride_a;
 			pB += stride_b;
 			pC += block;
@@ -260,13 +260,13 @@ void zplus(
 	stride_b = block_b * b_is_array;
 	
 	pA = A; pB = B; pC = C;
-	if (stride_a == stride_b) {
+	if ((stride_a > 0) & (stride_a == stride_b)) {
 		/* Both are matrices and both are arrays */
 		block = stride_a * nelem;
 		/* first copy A to C */
-		zcopy_(&block, pA, &inca, pC, &incc);
+		zcopy(&block, pA, &inca, pC, &incc);
 		/* then add alpha*B to C */
-		zaxpy_(&block, &alpha, pB, &incb, pC, &incc);
+		zaxpy(&block, &alpha, pB, &incb, pC, &incc);
 	} else {
 		block = intmax(block_a, block_b);
 		/* set increment to 0 if scalar */
@@ -274,9 +274,9 @@ void zplus(
 		incb = block_b > 1;
 		for (n = 0; n < nelem; n++) {
 			/* first copy A to C */
-		    	zcopy_(&block, pA, &inca, pC, &incc);
+		    	zcopy(&block, pA, &inca, pC, &incc);
 			/* then add alpha*B to C */
-			zaxpy_(&block, &alpha, pB, &incb, pC, &incc);
+			zaxpy(&block, &alpha, pB, &incb, pC, &incc);
 			pA += 2*stride_a;
 			pB += 2*stride_b;
 			pC += 2*block;
@@ -321,7 +321,7 @@ void dgemul(
 		pA = A + n*stride_a;
 		pB = B + n*stride_b;
 		pC = C + n*stride_c;
-		dgemm_(chn, chn, &M, &N, &K, &alpha, pA, &LDA, pB, &LDB, &beta, pC, &LDC);
+		dgemm(chn, chn, &M, &N, &K, &alpha, pA, &LDA, pB, &LDB, &beta, pC, &LDC);
 	}
 
 }
@@ -367,7 +367,7 @@ void zgemul(
 		pA = A + n*stride_a;
 		pB = B + n*stride_b;
 		pC = C + n*stride_c;
-		zgemm_(chn, chn, &M, &N, &K, &alpha, pA, &LDA, pB, &LDB, &beta, pC, &LDC);
+		zgemm(chn, chn, &M, &N, &K, &alpha, pA, &LDA, pB, &LDB, &beta, pC, &LDC);
 	}
 
 }
@@ -398,14 +398,14 @@ void dsmul(
 	if (b_is_array) {
 		block = nrow * ncol; /* essential the same as stride_c */
 		for (n = 0; n < nelem; n++) {
-			daxpy_(&block, pB, pA, &incx, pC, &incy);
+			daxpy(&block, pB, pA, &incx, pC, &incy);
 			pA += stride_a;
 			pC += stride_c;
 			pB++;
 		}
     } else {
 		block = nrow * ncol * nelem;
-		daxpy_(&block, pB, pA, &incx, pC, &incy);
+		daxpy(&block, pB, pA, &incx, pC, &incy);
 	}
     return;
 }
@@ -435,14 +435,14 @@ void zsmul(
 	if (b_is_array) {
 		block = nrow * ncol; /* essential the same as stride_c */
 		for (n = 0; n < nelem; n++) {
-			zaxpy_(&block, pB, pA, &incx, pC, &incy);
+			zaxpy(&block, pB, pA, &incx, pC, &incy);
 			pA += stride_a;
 			pC += stride_c;
 			pB += 2;
 		}
     } else {
 		block = nrow * ncol * nelem;
-		zaxpy_(&block, pB, pA, &incx, pC, &incy);
+		zaxpy(&block, pB, pA, &incx, pC, &incy);
 	}
     return;
 }
@@ -612,21 +612,21 @@ void dninv(
 		info = 0;
         
 		/* Real LU factorization */
-		dgetrf_( &nrow, &nrow, pA, &nrow, ipiv, &info);		
+		dgetrf( &nrow, &nrow, pA, &nrow, ipiv, &info);		
 		
 		/* Query and allocate about optimum size of WORK */
 		if (n == 0) {
 			info = 0;
 			lwork = -1;
 			work_init = (double *)calloc(2, sizeof(double)); /* FIXME: shift to static allocation */
-			dgetri_( &nrow, pA, &nrow, ipiv, work_init, &lwork, &info);
+			dgetri( &nrow, pA, &nrow, ipiv, work_init, &lwork, &info);
 			/* Allocate optimum WORK storage */
 			lwork = (int)(work_init[0]);
 			work = (double *)calloc(lwork, sizeof(double));
 		}
 		
         	/* Real inverse */
-		dgetri_( &nrow, pA, &nrow, ipiv, work, &lwork, &info);
+		dgetri( &nrow, pA, &nrow, ipiv, work, &lwork, &info);
 		
 		/* work on matrix n */
 		pA += block; 
@@ -665,21 +665,21 @@ void zninv(
  		info = 0;
         
 		/* Complex LU factorization */
-		zgetrf_( &nrow, &nrow, pA, &nrow, ipiv, &info);		
+		zgetrf( &nrow, &nrow, pA, &nrow, ipiv, &info);		
 		
 		/* Query and allocate about optimum size of WORK */
 		if (n == 0) {
 			info = 0;
 			lwork = -1;
 			work_init = (double *)calloc(2, sizeof(double)); /* FIXME: shift to static allocation */
-			zgetri_( &nrow, pA, &nrow, ipiv, work_init, &lwork, &info);
+			zgetri( &nrow, pA, &nrow, ipiv, work_init, &lwork, &info);
 			/* Allocate optimum WORK storage */
 			lwork = (int)(work_init[0]);
 			work = (double *)calloc(2*lwork, sizeof(double));
 		}
 		
         /* Complex inverse */
-		zgetri_( &nrow, pA, &nrow, ipiv, work, &lwork, &info);
+		zgetri( &nrow, pA, &nrow, ipiv, work, &lwork, &info);
 		
 		/* Work on matrix n */
 		pA += block; 
@@ -723,12 +723,12 @@ void dnsolve(
 		for (n = 0; n < nelem; n++) {
 		
 			/* Real LU factorization */
-			dgetrf_( &n_a, &n_a, pA, &n_a, ipiv, &info);		
+			dgetrf( &n_a, &n_a, pA, &n_a, ipiv, &info);		
 		
 			mexPrintf("dgetrf: %d", info);
 		
 			/* triangular solve */
-			dgetrs_( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
+			dgetrs( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
 	
 			mexPrintf("dgetrs: %d", info);
 	
@@ -740,12 +740,12 @@ void dnsolve(
     } else {
 
 		/* Real LU factorization */
-		dgetrf_( &n_a, &n_a, pA, &n_a, ipiv, &info);		
+		dgetrf( &n_a, &n_a, pA, &n_a, ipiv, &info);		
 		
 		for (n = 0; n < nelem; n++) {
 		
 			/* triangular solve */
-			dgetrs_( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
+			dgetrs( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
 	
 			/* work on matrix n */
 			pB += block_b; 
@@ -787,12 +787,12 @@ void znsolve(
 		for (n = 0; n < nelem; n++) {
 		
 			/* Complex LU factorization */
-			dgetrf_( &n_a, &n_a, pA, &n_a, ipiv, &info);		
+			dgetrf( &n_a, &n_a, pA, &n_a, ipiv, &info);		
 		
 			mexPrintf("dgetrf: %d", info);
 		
 			/* triangular solve */
-			dgetrs_( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
+			dgetrs( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
 	
 			mexPrintf("dgetrs: %d", info);
 	
@@ -804,12 +804,12 @@ void znsolve(
     } else {
 
 		/* Complex LU factorization */
-		zgetrf_( &n_a, &n_a, pA, &n_a, ipiv, &info);		
+		zgetrf( &n_a, &n_a, pA, &n_a, ipiv, &info);		
 		
 		for (n = 0; n < nelem; n++) {
 		
 			/* triangular solve */
-			zgetrs_( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
+			zgetrs( chn, &n_a, &ncol_b, pA, &n_a, ipiv, pB, &n_a, &info);
 	
 			/* work on matrix n */
 			pB += block_b; 
