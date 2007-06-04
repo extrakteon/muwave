@@ -23,7 +23,7 @@ function [SM,X] = ExtractIntrinsic(intr,Smoothing)
 %
 
 f=get(intr,'Freq');
-omega=2*pi*f';
+omega=2*pi*f;
 Y11=get(intr,'Y11');
 Y12=get(intr,'Y12');
 Y21=get(intr,'Y21');

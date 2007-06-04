@@ -33,14 +33,14 @@ x_unstable = x(idx_unstable);
 figure(1);
 subplot(2,1,1);
 semilogx(x,20*log10(abs(h21(sp))),'.');
-saxis=axis;
-axis(saxis.*[1 1 0 1]);
+%saxis=axis;
+%axis(saxis.*[1 1 0 1]);
 ylabel('|h21| [dB]');
 xlabel('Frequency [Hz]');
 
 subplot(2,1,2)
 semilogx(x_unstable,10*log10(gmsg(sp_unstable)),'.',x_stable,10*log10(ga(sp_stable)),'.');
-saxis=axis;
-axis(saxis.*[1 1 0 1]);
+%saxis=axis;
+%axis(saxis.*[1 1 0 1]);
 ylabel('MSG/MAG [dB]');
 xlabel('Frequency [Hz]');

@@ -20,12 +20,27 @@ function smithplot(varargin)
 % Help comments added
 %
 
-nin=nargin;
-Xin=varargin;
+IS_MEASSWEEP = false;
+if nargin==3
+   if isstr(varargin{2})
+    if strmatch(varargin{2},'meassweep')
+        IS_MEASSWEEP = true;
+    end
+   end
+end
+
+if IS_MEASSWEEP
+    Xin=varargin{3};
+    nin=length(Xin);
+else
+    nin=nargin;
+    Xin=varargin;
+end
 S11vect=[];
 S12vect=[];
 S21vect=[];
 S22vect=[];
+
 
 for k=1:nin
     vl(k)=length(Xin{k});    

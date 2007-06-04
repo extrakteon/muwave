@@ -21,15 +21,23 @@ function ParamPlot(varargin)
 % Help comments added
 %
 
-
 nin=nargin;
-haxes=varargin{nin};
-param=varargin{nin-2};
-type=varargin{nin-1};
+if isa(varargin{nin},'double')
+    haxes = varargin{nin};
+    param = varargin{nin-2};
+    type = varargin{nin-1};
+    nargs = 3; 
+else
+    haxes = gca;
+    param = varargin{nin-1};
+    type = varargin{nin};
+    nargs = 2;
+end
+ 
 Xin=varargin;
 Xvect=[];
 fvect=[];
-for k=1:nin-3
+for k=1:(nin - nargs)
     if ~isa(Xin{k},'meassp')
         error('Wrong input argument');
     end
