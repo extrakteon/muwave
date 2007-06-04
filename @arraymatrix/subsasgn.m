@@ -1,3 +1,5 @@
+function a = subsasgn(a,S,b)
+% Overloads method subsasgn, eg A(S) = B
 %
 % ArrayMatrix
 % class for handling arrays of matrices
@@ -5,11 +7,12 @@
 % author: Kristoffer Andersson
 %
 %
-
-
-% Overloads method subsasgn, eg A(S) = B
-function a = subsasgn(a,S,b)
-
+% $Header$
+% $Author: $
+% $Date: $
+% $Revision: $ 
+% $Log$
+%
 switch S.type
 case '()'
      KK = length(S.subs);
@@ -30,13 +33,17 @@ case '()'
          % A(nx,ny,m) = b type of assignment, where b is a vector
          x = S.subs{1};
          y = S.subs{2};
-         if (x > a.nx | y > a.ny)
-             error('ARRAYMATRIX.SUBSASGN: Subscript larger than matrix dimension.');    
-         elseif length(b) ~= a.m
+         %if (x > a.nx | y > a.ny)
+         %    error('ARRAYMATRIX.SUBSASGN: Subscript larger than matrix dimension.');    
+         if length(b) ~= a.m
              error('ARRAYMATRIX.SUBSASGN: Length of vectors must be equal.');
          else    
             mtrx = a.mtrx;
-            mtrx(x,y,:) = b;
+            if strcmp(class(b),'arraymatrix')
+                mtrx(x,y,:) = b.mtrx;
+            else
+                mtrx(x,y,:) = b;
+            end
             a.mtrx = mtrx;
         end
      end

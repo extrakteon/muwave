@@ -27,8 +27,8 @@ else
     row = S.subs{1};
     col = S.subs{2};
     if K == 2
-        c = squeeze(a.mtrx(row,col,:));
+        c = arraymatrix(a.mtrx(row,col,:));
     else
-        c = squeeze(a.mtrx(row,col,S.subs{3}));
+        c = arraymatrix(a.mtrx(row,col,S.subs{3}));
     end
 end    
