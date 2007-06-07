@@ -1,0 +1,1299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\agilent_4395a.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Vector Network Analyzer</InstrumentType>
+   <InstrumentManufacturer>Agilent</InstrumentManufacturer>
+   <InstrumentModel>PNA-series</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>SYSTEM:ERROR?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% Increase Timeout since a sweep can take several minutes
+%set(obj, 'Timeout', 10*60); % 10 minutes
+
+g = get(obj, 'Interface');
+fclose(g);
+
+% Increase BufferSize to hold a lot of data
+set(g, 'InputBufferSize', 2*15*1601+10); % Complex 1601 points ASCII-data
+set(g, 'OutputBufferSize', 2*15*1601+10); % Complex 1601 points ASCII-data
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+g = get(obj, 'Interface');
+
+% clear status
+fprintf(g, '*CLS');
+
+% set byte order for binary transfers
+fprintf(g, 'FORM:BORD SWAP');
+
+% set the sweep to hold
+set(obj, 'Hold', 1);
+
+% define measurements
+invoke(obj, 'DefineMeasurements');
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+g = get(obj, 'Interface');
+
+fprintf(g, '*CLS');
+
+% set the sweep to hold
+set(obj, 'Hold', 1);</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Average</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1; % the PNA supports multiple channels
+
+cmdstr = sprintf('SENSE%d:AVERAGE:STATE?', channel);
+fprintf(g, cmdstr);
+averon = fscanf(g, '%d');
+
+if averon == 1
+    % query average if on
+    cmdstr = sprintf('SENSE%d:AVERAGE:COUNT?', channel);
+    fprintf(g, cmdstr);
+    aver = fscanf(g, '%g');
+else
+    % else return 0
+    aver = 0;
+end
+
+propertyValue = aver;
+    
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1; % the PNA supports multiple channels
+
+if propertyValue &lt;= 1
+    % if averaging is set to 1 then turn averaging off
+    cmdstr = sprintf('SENSE%d:AVERAGE:STATE OFF', channel);
+    fprintf(g, cmdstr);
+    
+    cmdstr = sprintf('SENSE%d:AVERAGE:COUNT %d', channel, 1);
+    fprintf(g, cmdstr); % but also set averaging to 1
+    
+else
+    % else set number of averages
+    cmdstr = sprintf('SENSE%d:AVERAGE:COUNT %d', channel, propertyValue);
+    fprintf(g, cmdstr); 
+    
+    % and turn averaging on
+    cmdstr = sprintf('SENSE%d:AVERAGE:STATE ON', channel);
+    fprintf(g, cmdstr);
+end
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Correction</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1; % PNA supports multiple channels
+
+cmdstr = sprintf('SENSE%d:CORRECTION:STATE?', channel);
+fprintf(g, cmdstr);
+calstat = fscanf(g, '%d');
+
+if calstat &gt; 0
+    cmdstr = sprintf('SENSE%d:CORRECTION:CSET:NAME?', channel);
+    fprintf(g, cmdstr);
+    
+    cmdstr = fscanf(g);
+    calstat = sscanf(cmdstr,'cset%d.csa');
+    
+    if isempty(calstat)
+        calstat = cmdstr;
+    end
+    
+end
+
+propertyValue = calstat;
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1; % PNA supports multiple channels
+
+if propertyValue == 0
+    cmdstr = sprintf('SENSE%d:CORRECTION:STATE OFF');
+    fprintf(g, cmdstr);
+else
+    % use the argument as the calset number
+    % recall calset
+	cmdstr = sprintf('MMEM:LOAD:CSAR ''cset%d.csa''', propertyValue);
+    fprintf(g, cmdstr);
+    % activate calset
+    cmdstr = sprintf('SENSE%d:CORRECTION:STATE ON; *WAI', channel);
+    fprintf(g, cmdstr);
+end    </SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0.0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>CorrectionType</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Query correction type
+cmdstr = sprintf('SENS%d:CORR:CSET:TYPE:CAT?', channel);
+fprintf(g, cmdstr);
+caltype = fscanf(g);
+% Possible answers
+types = {'Full 2 Port','Full 1 Port(1)','Full 1 Port(2)'};
+
+if strfind(caltype, types{1});
+    propertyValue = '2-port';
+elseif strfind(caltype, types{2});     
+    propertyValue = '1-port S11';
+elseif strfind(caltype, types{3});     
+    propertyValue = '1-port S22';
+else
+    propertyValue = 'Unknown';
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Detector</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+propertyValue = 'normal'
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Domain</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+propertyValue = 'frequency';
+        </GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+  </SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Hold</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Query if we have HOLD or CONT
+cmdstr = sprintf('SENSE%d:SWEEP:MODE?', channel);
+fprintf(g, cmdstr);
+str = fscanf(g, '%s');
+
+types = {'HOLD','CONT','GRO'};
+index = strmatch(str, types);
+
+switch index
+    case 1
+        propertyValue = 1;
+    case 2
+        propertyValue = 0;
+    case 3
+        propertyValue = 0;
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+%
+switch propertyValue
+    case 0
+        fprintf(g, 'OUTPUT:STATE ON');
+        cmdstr = sprintf('SENSE%d:SWEEP:MODE CONT', channel);
+        fprintf(g, cmdstr);
+    case 1
+        fprintf(g, 'OUTPUT:STATE OFF');
+        cmdstr = sprintf('SENSE%d:SWEEP:MODE HOLD', channel);
+        fprintf(g, cmdstr);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0.0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>NumFrequency</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Read frequency points
+cmdstr = sprintf('SENSE%d:SWEEP:POINTS?', channel); 
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Set sweep points
+cmdstr = sprintf('SENSE%d:SWEEP:POINTS %d', channel, propertyValue); 
+fprintf(g, cmdstr);
+
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Port1Attenuator</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+cmdstr = sprintf('SOURCE%d:POWER1:ATT?', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+if propertyValue &lt; 0
+    % set to auto if less than 0
+    cmdstr = sprintf('SOURCE%d:POWER1:ATT:AUTO ON', channel);
+    fprintf(g, cmdstr);
+else
+    cmdstr = sprintf('SOURCE%d:POWER1:ATT %g', channel, propertyValue);
+    fprintf(g, cmdstr);
+end
+
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Port1Extension</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Get port extension
+cmdstr = sprintf('SENS%d:CORR:EXT:PORT1:TIME', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% set Portextension at Port 1
+cmdstr = sprintf('SENS%d:CORR:EXT:PORT1:TIME %g', channel, propertyValue);
+fprintf(g, cmdstr);
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Port2Attenuator</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+
+channel = 1;
+
+cmdstr = sprintf('SOURCE%d:POWER2:ATT?', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+if propertyValue &lt; 0
+    % set to auto if less than 0
+    cmdstr = sprintf('SOURCE%d:POWER2:ATT:AUTO ON', channel);
+    fprintf(g, cmdstr);
+else
+    cmdstr = sprintf('SOURCE%d:POWER2:ATT %g', channel, propertyValue);
+    fprintf(g, cmdstr);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Port2Extension</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+% Get port extension
+% Get port extension
+cmdstr = sprintf('SENS%d:CORR:EXT:PORT2:TIME', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');
+
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% set Portextension at Port 2
+cmdstr = sprintf('SENS%d:CORR:EXT:PORT2:TIME %g', channel, propertyValue);
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Source1Power</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+cmdstr = sprintf('SOURCE%d:POWER1?', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+cmdstr = sprintf('SOURCE%d:POWER1 %g', channel, propertyValue);
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Source2Power</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+cmdstr = sprintf('SOURCE%d:POWER2?', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+cmdstr = sprintf('SOURCE%d:POWER2 %g', channel, propertyValue);
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>StartFrequency</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Read start frequency
+cmdstr = sprintf('SENSE%d:FREQUENCY:START?', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Set start frequency
+cmdstr = sprintf('SENSE%d:FREQUENCY:START %g', channel, propertyValue);
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>StopFrequency</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Read stop frequency
+cmdstr = sprintf('SENSE%d:FREQUENCY:STOP?', channel);
+fprintf(g, cmdstr);
+propertyValue = fscanf(g, '%g');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Set stop frequency
+cmdstr = sprintf('SENSE%d:FREQUENCY:STOP %g', channel, propertyValue);
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>SweepType</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% Read type of frequency sweep
+cmdstr = sprintf('SENS%d:SWE:TYPE?', channel);
+fprintf(g, cmdstr);
+str = fscanf(g);
+
+type = {'LIN','LOG','POW','CW','SEG'};
+
+if strfind(str,type{1})
+    propertyValue = 'Linear';
+elseif strfind(str,type{2})
+        propertyValue = 'Logarithmic';
+elseif strfind(str,type{3})
+        propertyValue = 'Power';
+elseif strfind(str,type{4})
+        propertyValue = 'Single';
+elseif strfind(str,type{5})
+        propertyValue = 'List';     
+end
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% set type of frequency sweep
+switch propertyValue
+    case 'Linear'
+        swpstr = 'LIN';
+    case 'Logarithmic'
+        swpstr = 'LOG';
+    case 'Power'
+        swpstr = 'POW';
+    case 'Single'
+        swpstr = 'CW';
+    case 'List'
+        swpstr = 'SEG';   
+    otherwise
+        error('Unknown sweep type.');
+end
+
+cmdstr = sprintf('SENS%d:SWE:TYPE %s', channel, swpstr);
+fprintf(g, cmdstr);
+
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="Linear" Value="Linear"/>
+                     <Enum Name="Logarithmic" Value="Logarithmic"/>
+                     <Enum Name="List" Value="List"/>
+                     <Enum Name="Single" Value="Single"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>Linear</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Trigger</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+fprintf(g, 'TRIGGER:SEQUENCE:SOURCE?');
+str = fscanf(g);
+
+type = {'EXT','IMM','MAN'};
+
+if strfind(str, type{1})
+        propertyValue = 'external'
+elseif strfind(str, type{2})
+        propertyValue = 'internal'
+elseif strfind(str, type{3})
+        propertyValue = 'manual'
+end</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+switch propertyValue
+    case 'internal'
+        trgstr = 'IMM';
+    case 'external'
+        trgstr = 'EXT';
+    case 'manual'
+        trgstr = 'MAN';
+end
+
+cmdstr = sprintf('TRIGGER:SEQUENCE:SOURCE %s', trgstr);
+fprintf(g, cmdstr);
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>TriggerDelay</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+fprintf(g, 'TRIGER:DELAY?');
+propertyValue = fscanf(g, '%g');
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+fprintf(g, 'TRIGGER:DELAY %g', propertyValue);
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>DefineMeasurements</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function DefineMeasurements(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+%
+% define measurements for S11, S21, S12 and S22
+%
+channel = 1;
+
+% get defined measurements
+cmdstr = sprintf('CALC%d:PAR:CAT?', channel);
+fprintf(g, cmdstr);
+parcatstr = fscanf(g, '%s');
+
+if isempty(strmatch('MY_S11', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S11'',S11', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_S21', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S21'',S21', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_S12', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S12'',S12', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_S22', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S22'',S22', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_GAMMA_FWD', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_GAMMA_FWD'',R2B,1', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_GAMMA_REV', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_GAMMA_REV'',R1A,2', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_A1A2', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_A2A1'',R2R1,1', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_A2A1', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_A1A2'',R1R2,2', channel);
+    fprintf(g, cmdstr);
+end
+
+
+
+
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>Freq</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function frequencies = Freq(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+cmdstr = sprintf('SENS%d:SEGM:COUN?', channel);
+fprintf(g, cmdstr);
+count = fscanf(g, '%d');
+
+if count &lt;= 1
+   % single segment
+   fstart = get(obj, 'StartFrequency');
+   fstop = get(obj, 'StopFrequency');
+   fpoints = get(obj, 'NumFrequency');
+   frequencies = linspace(fstart, fstop, fpoints);
+else
+   % multiple segments
+   frequencies = [];
+   % loop through each segment
+   for segment = 1:count
+       cmdstr = sprintf('SENS%d:SEGM%d:FREQ:STAR?', channel, segment);
+       fprintf(g, cmdstr);
+       fstart = fscanf(g, '%g');
+       cmdstr = sprintf('SENS%d:SEGM%d:FREQ:STOP?', channel, segment);
+       fprintf(g, cmdstr);
+       fstop = fscanf(g, '%g');
+       cmdstr = sprintf('SENS%d:SEGM%d:SWE:POIN?', channel, segment);
+       fprintf(g, cmdstr);
+       fpoints = fscanf(g, '%g');
+       frequencies = [frequencies linspace(fstart, fstop, fpoints)];   
+   end
+end
+
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>FreqList</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function FreqList(obj, freq)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% Load a frequency list into the VNA
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+num = length(freq);
+uniform = (length(unique(round(1e13*diff(freq)))) == 1); % resolution of 1 Hz
+
+% check if the frequency list is uniform
+if uniform
+    % then use linear sweep
+    set(obj, 'SweepType', 'Linear');
+    set(obj, 'StartFrequency', min(freq));
+    set(obj, 'StopFrequency', max(freq));
+    set(obj, 'NumFrequency', num);
+else
+    freq = sort(freq); % the frequency must be in increasing order
+    num = length(freq);
+    TOL = 1e-6;
+    % parse the frequency list
+    % check for continuous intervals
+    idx = [];
+    if num &gt; 1
+        step = freq(2) - freq(1);
+        for k = 2:num
+            prev_step = step;
+            step = freq(k) - freq(k-1);
+            if abs(step - prev_step) &gt; TOL
+                % step changed, only use points up to (k-1) for this segment
+                idx = [idx k-1];
+                if ((k+1) &lt;= num)
+                    step = freq(k+1) - freq(k);
+                end
+            end
+        end
+    else
+        idx = 1;
+    end
+    % construct segments
+    n = 1;
+    for k = 1:length(idx)
+        start_idx = n;
+        stop_idx = idx(k);
+        points = 1 + (stop_idx - start_idx);
+        n = stop_idx + 1;
+        segments(k,:) = [freq(start_idx) freq(stop_idx) points];
+    end
+    start_idx = n;
+    stop_idx = num;
+    points = 1 + (stop_idx - start_idx);
+    segments(k+1,:) = [freq(start_idx) freq(stop_idx) points];
+
+    % set to stepped mode and open segement editor
+    cmdstr = sprintf('SENS%d:SWE:GEN STEP', channel);
+    fprintf(g, cmdstr);
+    cmdstr = sprintf('SENS%d:SWE:TYPE SEGM;*OPC?', channel);
+    fprintf(g, cmdstr);
+    opc = fscanf(g, '%d');
+    % clear list
+    cmdstr = sprintf('SENS%d:SEGM:DEL:ALL', channel);
+    fprintf(g, cmdstr);
+    
+    % now upload the segments
+    for k = 1:size(segments, 1)
+        cmdstr = sprintf('SENS%d:SEGM%d:ADD;*OPC?', channel, k);
+        fprintf(g, cmdstr);
+        opc = fscanf(g, '%d');
+        cmdstr = sprintf('SENS%d:SEGM%d:FREQ:STAR %9.6fHZ', channel, k, segments(k,1));
+        fprintf(g, cmdstr);
+        cmdstr = sprintf('SENS%d:SEGM%d:FREQ:STOP %9.6fHZ', channel, k, segments(k,2));
+        fprintf(g, cmdstr);
+        cmdstr = sprintf('SENS%d:SEGM%d:SWE:POIN %d', channel, k, segments(k,3));
+        fprintf(g, cmdstr);
+        cmdstr = sprintf('SENS%d:SEGM%d ON;*OPC?', channel, k);
+        fprintf(g, cmdstr);
+        opc = fscanf(g, '%d');
+    end
+    
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>Measure</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function xp = Measure(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% First check calibration type
+caltype = get(obj, 'CorrectionType');
+% Then perform a suitable measurement
+switch caltype
+    case '1-port S11'
+        invoke(obj, 'SingleSweep');
+        s(1,1,:) = invoke(obj, 'Read', 'S11');
+        freq = invoke(obj, 'Freq');
+        xp = xparam(s, 'S', 50, freq);
+    case '1-port S22'
+        invoke(obj, 'SingleSweep');
+        s(1,1,:) = invoke(obj, 'Read', 'S22');
+        freq = invoke(obj, 'Freq');
+        xp = xparam(s, 'S', 50, freq);
+    case '2-port'
+        invoke(obj, 'SingleSweep');
+        s(1,1,:) = invoke(obj, 'Read', 'S11');
+        s(2,1,:) = invoke(obj, 'Read', 'S21');
+        s(1,2,:) = invoke(obj, 'Read', 'S12');
+        s(2,2,:) = invoke(obj, 'Read', 'S22');
+        freq = invoke(obj, 'Freq');
+        xp = xparam(s, 'S', 50, freq);
+    otherwise
+        invoke(obj, 'SingleSweep');
+        s(1,1,:) = invoke(obj, 'Read', 'S11');
+        invoke(obj, 'SingleSweep');
+        s(2,1,:) = invoke(obj, 'Read', 'S21');
+        invoke(obj, 'SingleSweep');
+        s(1,2,:) = invoke(obj, 'Read', 'S12');
+        invoke(obj, 'SingleSweep');
+        s(2,2,:) = invoke(obj, 'Read', 'S22');
+        freq = invoke(obj, 'Freq');
+        xp = xparam(s, 'S', 50, freq);
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>Read</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function out = Read(obj, parameter)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% select measurement
+cmdstr = sprintf('CALC%d:PAR:SEL ''MY_%s'';*OPC?', channel, parameter);
+fprintf(g, cmdstr);
+opc = fscanf(g, '%d');
+
+% select binary format
+fprintf(g, 'FORM REAL,32');
+
+% request data
+cmdstr = sprintf('CALC%d:DATA? SDATA', channel);
+fprintf(g, cmdstr);
+
+% transfer binary data
+data = read_pna(g);
+
+out = data(1:2:end)+j*data(2:2:end);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SingleSweep</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function out = SingleSweep(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1;
+
+% turn off sweep
+fprintf(g, 'INIT:CONT OFF;*OPC?');
+opc = fscanf(g, '%d');
+
+% setup for serial-poll
+fprintf(g, '*CLS;*WAI');
+
+% enable averaging monitor
+if get(obj, 'Average')
+    % reset averaging
+    cmdstr = sprintf('SENS%d:AVER:CLE', channel);
+    fprintf(g, cmdstr);
+    
+    % get trace number
+    % *FIXME* Agilent bug
+    %cmdstr = sprintf('CALC%d:PAR:MNUM?', channel);
+    %fprintf(g, cmdstr);
+    %trace = fscanf(g, '%d');
+    trace = 1;
+    % calculate average register and weight for the current trace
+    aver_ch = 1 + floor(trace/14);
+    aver_weight = mod(trace, 14);
+    % enable average monitor on current trace
+    cmdstr = sprintf('STAT:OPER:AVER%d:ENAB %d', aver_ch, 2^aver_weight); 
+    % enable global average monitor
+    fprintf(g, 'STAT:OPER:ENAB 256');
+    % enable monitor
+    fprintf(g, '*SRE 128');
+    fprintf(g, '*ESE 0'); 
+    % set to continual sweep and trigger
+    set(obj, 'Hold', 0);
+    set(obj, 'Trigger', 'internal');
+    %cmdstr = sprintf('INIT%d:IMM', channel);
+    %fprintf(g, cmdstr);
+else
+    % enable OPC monitor
+    fprintf(g, '*SRE 32');
+    fprintf(g, '*ESE 1'); 
+    % abort current sweep and issue a trigger-event and listen for OPC
+    cmdstr = sprintf('ABOR;INIT%d:IMM;*OPC', channel);
+    fprintf(g, cmdstr);
+end
+
+% serial poll
+out = spoll(g);
+
+% set to hold
+set(obj, 'Hold', 1);
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>

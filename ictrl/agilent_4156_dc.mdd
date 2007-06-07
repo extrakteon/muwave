@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\agilent_4156_analyzer.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Semiconductor Parameter Analyzer</InstrumentType>
+   <InstrumentManufacturer>HP/Agilent</InstrumentManufacturer>
+   <InstrumentModel>4156</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>System:Error?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+set(obj, 'Timeout', 10); % 10 seconds
+
+g = get(obj, 'Interface');
+
+fclose(g);
+
+% Increase BufferSizes to hold a lot of data
+%set(g, 'InputBufferSize', 1001*128*8+10); 
+%set(g, 'OutputBufferSize', 1001*128*8+10);
+
+% Setup UserData
+g.UserData.Output = [0 0 0 0 0 0];
+g.UserData.Mode = upper({'Voltage','Voltage','Voltage','Voltage','Voltage','Voltage'});
+g.UserData.Voltage = [0 0 0 0 0 0];
+g.UserData.Current = 1e-3*[1 1 1 1 1 1]; % default to 1 mA
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+g = get(obj, 'Interface');
+
+% Reset instrument
+fprintf(g, '*RST');
+
+fprintf(g, 'US');
+% then pause for 5s (critical)
+pause(5);
+% set CR/LF EOI
+fprintf(g, 'FMT 1');
+% set averaging to 1
+fprintf(g, 'AV 1');
+% set integration time to long
+fprintf(g, 'SLI 3');
+% turn of output filter
+fprintf(g, 'FL 0'); 
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% Return from user mode
+g = get(obj, 'Interface');
+fprintf(g, 'DC1');
+
+% Reset UserData
+g.UserData.Output = [0 0 0 0 0 0];
+g.UserData.Mode = upper({'Voltage','Voltage','Voltage','Voltage','Voltage','Voltage'});
+g.UserData.Voltage = [0 0 0 0 0 0];
+g.UserData.Current = 1e-3*[1 1 1 1 1 1]; % default to 1 mA
+
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo/>
+      </Group>
+      <Group>
+         <Name>smu</Name>
+         <Description/>
+         <Command/>
+         <Size>5</Size>
+         <Mappings>
+            <ChannelMap Command="6" Index="5"/>
+            <ChannelMap Command="4" Index="4"/>
+            <ChannelMap Command="3" Index="3"/>
+            <ChannelMap Command="2" Index="2"/>
+            <ChannelMap Command="1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Current</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% read current from UserData
+propertyValue = g.UserData.Current(CHANNEL);
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% write current to UserData
+g.UserData.Current(CHANNEL) = propertyValue;
+
+if g.UserData.Output(CHANNEL) &gt; 0
+    % turn on output switch
+    fprintf(g, 'CN %d', CHANNEL);
+
+    % then check biasing mode
+    Mode = upper(g.UserData.Mode{CHANNEL});
+    voltage_mode = upper('V');
+    current_mode = upper('C');
+    switch Mode(1)
+        case voltage_mode
+            vreq = g.UserData.Voltage(CHANNEL);
+            ilimit = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DV %d,0,%7.5f,%7.6f',CHANNEL,vreq,ilimit);
+            fprintf(g, cmd);
+        case current_mode
+            vlimit = g.UserData.Voltage(CHANNEL);
+            ireq = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DI %d,0,%7.5f,%7.6f',CHANNEL,ireq,vlimit);
+            fprintf(g, cmd);
+    end
+end
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Mode</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% get the mode of CHANNEL
+
+propertyValue = g.UserData.Mode{CHANNEL};</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% set the mode of CHANNEL
+
+g.UserData.Mode{CHANNEL} = propertyValue;
+
+if g.UserData.Output(CHANNEL) &gt; 0
+    % turn on output switch
+    fprintf(g, 'CN %d', CHANNEL);
+
+    % then check biasing mode
+    Mode = upper(g.UserData.Mode{CHANNEL});
+    voltage_mode = upper('V');
+    current_mode = upper('C');
+    switch Mode(1)
+        case voltage_mode
+            vreq = g.UserData.Voltage(CHANNEL);
+            ilimit = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DV %d,0,%7.5f,%7.6f',CHANNEL,vreq,ilimit);
+            fprintf(g, cmd);
+        case current_mode
+            vlimit = g.UserData.Voltage(CHANNEL);
+            ireq = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DI %d,0,%7.5f,%7.6f',CHANNEL,ireq,vlimit);
+            fprintf(g, cmd);
+    end
+end
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>VOLTAGE</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Output</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% get UserData
+propertyValue = g.UserData.Output(CHANNEL);</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% decode argument
+if isa(propertyValue,'char')
+    switch upper(propertyValue)
+        case 'ON'
+            outp = 1;
+        case 'OFF'
+            outp = 0;
+    end
+else
+    outp = propertyValue;
+end
+
+% update UserData
+g.UserData.Output(CHANNEL) = outp;
+
+if outp &gt; 0
+    % turn on output switch
+    fprintf(g, 'CN %d', CHANNEL);
+
+    % then check biasing mode
+    Mode = upper(g.UserData.Mode{CHANNEL});
+    voltage_mode = upper('V');
+    current_mode = upper('C');
+    switch Mode(1)
+        case voltage_mode
+            vreq = g.UserData.Voltage(CHANNEL);
+            ilimit = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DV %d,0,%7.5f,%7.6f',CHANNEL,vreq,ilimit);
+            fprintf(g, cmd);
+        case current_mode
+            vlimit = g.UserData.Voltage(CHANNEL);
+            ireq = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DI %d,0,%7.5f,%7.6f',CHANNEL,ireq,vlimit);
+            fprintf(g, cmd);
+    end
+else
+    % turn off output switch
+    fprintf(g, 'CL %d', CHANNEL);
+end
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Voltage</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% read voltage from UserData
+propertyValue = g.UserData.Voltage(CHANNEL);
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+% write voltage to UserData
+g.UserData.Voltage(CHANNEL) = propertyValue;
+
+if g.UserData.Output(CHANNEL) &gt; 0
+    % turn on output switch
+    fprintf(g, 'CN %d', CHANNEL);
+
+    % then check biasing mode
+    Mode = upper(g.UserData.Mode{CHANNEL});
+    voltage_mode = upper('V');
+    current_mode = upper('C');
+    switch Mode(1)
+        case voltage_mode
+            vreq = g.UserData.Voltage(CHANNEL);
+            ilimit = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DV %d,0,%7.5f,%7.6f',CHANNEL,vreq,ilimit);
+            fprintf(g, cmd);
+        case current_mode
+            vlimit = g.UserData.Voltage(CHANNEL);
+            ireq = g.UserData.Current(CHANNEL);
+            cmd = sprintf('DI %d,0,%7.5f,%7.6f',CHANNEL,ireq,vlimit);
+            fprintf(g, cmd);
+    end
+end
+    </SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>MeasCurrent</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function out = MeasCurrent(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+if g.UserData.Output(CHANNEL)&gt;0
+    fprintf(g,'TI? %d', CHANNEL);
+    str = fscanf(g, '%s');
+    out = sscanf(str(6:end), '%g');
+else
+    out = 0;
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>MeasVoltage</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function out = MeasVoltage(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+CHANNEL = str2num(get(obj, 'HwName'));
+
+if g.UserData.Output(CHANNEL)&gt;0
+    fprintf(g,'TV? %d', CHANNEL);
+    str = fscanf(g, '%s');
+    out = sscanf(str(6:end), '%g');
+else
+    out = 0;
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>
