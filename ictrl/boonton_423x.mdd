@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Applications\MATLAB_R2006a\work\icontrol\boontoon_423x.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Power Meter</InstrumentType>
+   <InstrumentManufacturer>Boonton</InstrumentManufacturer>
+   <InstrumentModel>423xA</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>System:Error?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>InstrumentCommand</Type>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>InstrumentCommand</Type>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo/>
+      </Group>
+      <Group>
+         <Name>channel</Name>
+         <Description/>
+         <Command/>
+         <Size>2</Size>
+         <Mappings>
+            <ChannelMap Command="Channel2" Index="2"/>
+            <ChannelMap Command="Channel1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Frequency</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwIndex');
+
+% Select Channel
+fprintf(g, 'CH%d',ID);
+
+% Set Talk Mode
+fprintf(g, 'TM6');
+
+% Get Frequency (Frequency in GHz)
+fprintf(g, 'FR');
+data = fscanf(g,'%d,%g');
+propertyValue = data(2)*1e9;
+
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwIndex');
+
+% Select Channel
+fprintf(g, 'CH%d',ID);
+
+% Set Frequency (Frequency in GHz)
+fprintf(g, 'FR%5.2f',propertyValue*1e-9);
+
+
+
+
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>MeasPower</Name>
+               <Location>channel</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [pwr] = MeasPower(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+MAX_READINGS = 10;
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwIndex');
+
+% Select Channel
+fprintf(g, 'CH%d',ID);
+
+% Clear Channel
+fprintf(g, 'CL');
+
+% Set Talk Mode 0 (reading without units)
+fprintf(g, 'TM0');
+
+% take reading
+done = false;
+readings = 0;
+while ~done
+    % Select dBm
+    fprintf(g,'DB');
+    pause(0.05);
+    data = fscanf(g,'%d,%g');
+    readings = readings + 1;
+    if ~isempty(data)
+        if data(1) == 0
+            done = true;
+            pwr = 10.^((data(2)-30)/10); % Convert from dBm to W
+        else
+            pause(0.5); % pause if reading failed
+        end
+    end
+    if readings &gt; MAX_READINGS
+        done = true;
+        pwr = -1.0;
+    end
+end
+
+
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>

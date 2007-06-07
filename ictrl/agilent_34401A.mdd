@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\agilent_66xxx_single.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Digital Multimeter</InstrumentType>
+   <InstrumentManufacturer>Agilent</InstrumentManufacturer>
+   <InstrumentModel>34401A</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>System:Error?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Set the instrument in a known state.
+fprintf(g, '*RST');
+
+% Turn off Output.
+fprintf(g, 'OUTP 0');
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Turn off Output.
+fprintf(g, 'OUTP 0');
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo>
+            <Method>
+               <Name>MeasCurrent</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function iout = MeasCurrent(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Measure Current.
+fprintf(g, 'MEAS:CURRENT:DC?');
+iout = fscanf(g, '%g');</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>MeasVoltage</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function vout = MeasVoltage(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Measure Voltage.
+fprintf(g, 'MEAS:VOLTAGE:DC?');
+vout = fscanf(g, '%g');</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>

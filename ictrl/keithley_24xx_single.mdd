@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\agilent_66xxx_single.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>DC Power Supply</InstrumentType>
+   <InstrumentManufacturer>KEITHLEY</InstrumentManufacturer>
+   <InstrumentModel>2400, 2410, 2420, 2425, 2430, 2440</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>System:Error?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Set the instrument in a known state.
+fprintf(g, '*RST');
+
+% Turn off Output.
+fprintf(g, ':OUTP 0');
+
+% Setup measurement of voltage and current
+fprintf(g, ':SENS:FUNC:OFF:ALL');
+fprintf(g, ':SENS:FUNC:ON "VOLT"');
+fprintf(g, ':SENS:FUNC:ON "CURR"');
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Turn off Output.
+fprintf(g, ':OUTP 0');
+
+% Set the instrument in a known state.
+fprintf(g, '*RST');
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>ActiveChannel</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+propertyValue = 1;</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Channels</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% This driver is for single-channel DC-supplies
+
+propertyValue = 1;</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>1</DefaultValue>
+               <ReadOnly>always</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Current</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% first query mode:
+mode = get(obj, 'Mode');
+
+switch mode
+    case 'Voltage'
+        % Get compliance
+        fprintf(g, ':SENS:CURRENT:PROTECTION?');
+        propertyValue = fscanf(g, '%g');
+    case 'Current'
+        % Get current setting
+        fprintf(g, ':SOURCE:CURRENT:LEVEL?');
+        propertyValue = fscanf(g, '%g');
+end</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% first query mode:
+mode = get(obj, 'Mode');
+
+switch mode
+    case 'Voltage'
+        % Set compliance
+        fprintf(g, ':SENS:CURRENT:PROTECTION %g', propertyValue);
+    case 'Current'
+        % Set current setting
+        fprintf(g, ':SOURCE:CURRENT:LEVEL %g', propertyValue);
+end
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Mode</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get object interface.
+g = get(obj, 'Interface');
+
+% Query voltage/current mode
+fprintf(g, ':SOURCE:FUNC?');
+mode = fscanf(g, '%s');
+
+switch mode
+    case 'VOLT'
+        propertyValue = 'Voltage';
+    case 'CURR'
+        propertyValue = 'Current';
+end</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get object interface.
+g = get(obj, 'Interface');
+
+% Set voltage/current mode
+fprintf(g, ':SOURCE:FUNC %s', propertyValue);
+
+% then adjust autoranging etc.
+switch propertyValue
+    case 'VOLT'
+        fprintf(g, ':SOUR:VOLT:MODE FIX');
+        fprintf(g, ':SOUR:VOLT:RANG:AUTO ON');
+    case 'CURR'
+        fprintf(g, ':SOUR:CURR:MODE FIX');
+        fprintf(g, ':SOUR:CURR:RANG:AUTO ON');        
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>String</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Enum Name="Voltage" Value="VOLT"/>
+                     <Enum Name="Current" Value="CURR"/>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>Voltage</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Output</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Check if the Output is on or off
+fprintf(g, ':OUTP?');
+propertyValue = fscanf(g, '%d');
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Set the Output to on or off
+
+if isa(propertyValue,'char')
+    switch upper(propertyValue)
+        case 'ON'
+            outp = 1;
+        case 'OFF'
+            outp = 0;
+    end
+else
+    outp = propertyValue;
+end
+
+% Set the Output-state
+fprintf(g, ':OUTP %d', outp);
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Value>0.0</Value>
+                     <Value>1.0</Value>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Voltage</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% first query mode:
+mode = get(obj, 'Mode');
+
+switch mode
+    case 'Current'
+        % Get compliance
+        fprintf(g, ':SENS:VOLTAGE:PROTECTION?');
+        propertyValue = fscanf(g, '%g');
+    case 'Voltage'
+        % Get voltage setting
+        fprintf(g, ':SOURCE:VOLTAGE:LEVEL?');
+        propertyValue = fscanf(g, '%g');
+end</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% first query mode:
+mode = get(obj, 'Mode');
+
+switch mode
+    case 'Current'
+        % Set compliance
+        fprintf(g, ':SENS:VOLTAGE:PROTECTION %g', propertyValue);
+    case 'Voltage'
+        % Set voltage setting
+        fprintf(g, ':SOURCE:VOLTAGE:LEVEL %g', propertyValue);
+end
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>MeasCurrent</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function iout = MeasCurrent(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Measure Current.
+fprintf(g, ':READ?');
+str = fscanf(g, '%s');
+val = sscanf(str,'%g,%g');
+iout = val(2);
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>MeasVoltage</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function vout = MeasVoltage(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Measure Voltage.
+% Measure Current.
+fprintf(g, ':READ?');
+str = fscanf(g, '%s');
+val = sscanf(str,'%g,%g');
+vout = val(1);
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\temptronic.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Thermo Chuck</InstrumentType>
+   <InstrumentManufacturer>Temptronic</InstrumentManufacturer>
+   <InstrumentModel>All</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>System:Error?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Reset interface to a known state.
+fprintf(g, '*RST');
+
+% Set SoakTime to 60 s.
+fprintf(g, 'SOAK %g', 60); 
+
+% Set Temperature to 25 C.
+%fprintf(g, 'SETP %g', 25);
+
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Set the temperature to 25 C
+fprintf(g, 'SETP %g', 25);
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>SoakTime</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>InstrumentCommand</Type>
+               <Code>
+                  <Commands>
+                     <ConfigureCommand>SOAK</ConfigureCommand>
+                     <QueryCommand>SOAK?</QueryCommand>
+                  </Commands>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>60</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description>SoakTime is the time that the thermo chuck waits when it has reached the target temperature.</Description>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>ReadTemp</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function temp = ReadTemp(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Read the temperature
+fprintf(g, 'TEMP?');
+temp = fscanf(g, '%g');
+
+</MCode>
+               </Code>
+               <Description>temp = INVOKE(obj, 'ReadTemp') Returns the current Chuck Temperature.</Description>
+            </Method>
+            <Method>
+               <Name>SetTemp</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function temp = SetTemp(obj, set_temp)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Set the temperature
+fprintf(g, 'SETP %g', set_temp);
+
+% Check if we have reached the target temperature
+TEMP_NOT_REACHED = true;
+while TEMP_NOT_REACHED
+    fprintf(g, 'TECR?');
+    tecr = fscanf(g,'%d');
+    TEMP_NOT_REACHED = logical(tecr ~= 1);
+    pause(1); % wait for 1s before next attempt
+end
+
+% Read the temperature
+fprintf(g, 'TEMP?');
+temp = fscanf(g, '%g');
+</MCode>
+               </Code>
+               <Description>temp_out = INVOKE(obj, 'SetTemp', temp_in) Sets the CHuck Temeprature to temp_in and waits for the temperature to settle, then returns the current Chuck Temperature.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>
