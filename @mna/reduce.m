@@ -73,7 +73,7 @@ for k = 1:NPORTS
     % 04/03/09 changed order of Vp from (:,k,:) to (:,:,k)
     Vp(k,:,:) = -1*diff(Vb(1+PORTS(:,k),:,:));   
 end
-Z = xparam(Vp,'Z');
+Z = xparam(Vp,'Z',50,x.f);
 
 % output rearranged for better integration with sensitivity code
 varargout{1} = x;
