@@ -17,15 +17,15 @@
 % OBJ is the device object.
 % End of function definition - DO NOT EDIT
 
-% Increase Timeout since a sweep can take several minutes
-%set(obj, 'Timeout', 10*60); % 10 minutes
+% Increase Timeout 
+set(obj, 'Timeout', 60); % 1 minute
 
 g = get(obj, 'Interface');
 fclose(g);
 
 % Increase BufferSize to hold a lot of data
-set(g, 'InputBufferSize', 2*15*801+10); % Complex 801 points ASCII-data
-set(g, 'OutputBufferSize', 2*15*801+10); % Complex 801 points ASCII-data
+set(g, 'InputBufferSize', 2*15*1601+10); % Complex 1601 points ASCII-data
+set(g, 'OutputBufferSize', 2*15*1601+10); % Complex 1601 points ASCII-data
 </Code>
    </CreateInitCode>
    <ConnectInitCode>
@@ -38,8 +38,8 @@ set(g, 'OutputBufferSize', 2*15*801+10); % Complex 801 points ASCII-data
 g = get(obj, 'Interface');
 
 %fprintf(g, 'DCL');
-fprintf(g, 'CLES');
-fprintf(g, 'HOLD');
+fprintf(g, '*CLS');
+fprintf(g, 'HLD');
 </Code>
    </ConnectInitCode>
    <CleanupCode>
@@ -52,8 +52,8 @@ fprintf(g, 'HOLD');
 g = get(obj, 'Interface');
 
 %fprintf(g, 'DCL');
-fprintf(g, 'CLES');
-fprintf(g, 'HOLD');</Code>
+fprintf(g, '*CLS');
+fprintf(g, 'HLD');</Code>
    </CleanupCode>
    <GroupInfo>
       <Group>
@@ -1052,10 +1052,33 @@ out = data(1:2:end)+j*data(2:2:end);</MCode>
 
 g = get(obj, 'Interface');
 
-% Trigger two sweeps
-fprintf(g, 'HLD;TRS;WFS;TRS;WFS');
+% Trigger first sweep
+fprintf(g,'*CLS;');
+fprintf(g,'*SRE 16;HLD;TRS;WFS;*OPC?');
 
-out = 1;</MCode>
+out = [];
+counter = 0;
+while isempty(out) &amp; counter &lt; 1e4
+    out = spoll(g);
+    pause(0.05);
+    counter = counter + 1;
+end
+out = fscanf(g,'%s');
+
+% Trigger second sweep
+fprintf(g,'*CLS;');
+fprintf(g,'*SRE 16;HLD;TRS;WFS;*OPC?');
+
+out = [];
+counter = 0;
+while isempty(out) &amp; counter &lt; 1e4
+    out = spoll(g);
+    pause(0.05);
+    counter = counter + 1;
+end
+out = fscanf(g,'%s');
+    
+</MCode>
                </Code>
                <Description/>
             </Method>
