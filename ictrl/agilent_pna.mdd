@@ -190,7 +190,7 @@ g = get(obj, 'Interface');
 channel = 1; % PNA supports multiple channels
 
 if propertyValue == 0
-    cmdstr = sprintf('SENSE%d:CORRECTION:STATE OFF');
+    cmdstr = sprintf('SENSE%d:CORRECTION:STATE OFF', channel);
     fprintf(g, cmdstr);
 else
     % use the argument as the calset number
@@ -365,11 +365,11 @@ channel = 1;
 %
 switch propertyValue
     case 0
-        fprintf(g, 'OUTPUT:STATE ON');
+        %fprintf(g, 'OUTPUT:STATE ON');
         cmdstr = sprintf('SENSE%d:SWEEP:MODE CONT', channel);
         fprintf(g, cmdstr);
     case 1
-        fprintf(g, 'OUTPUT:STATE OFF');
+        %fprintf(g, 'OUTPUT:STATE OFF');
         cmdstr = sprintf('SENSE%d:SWEEP:MODE HOLD', channel);
         fprintf(g, cmdstr);
 end</SetMCode>
@@ -1000,7 +1000,22 @@ if isempty(strmatch('MY_A2A1', parcatstr))
     cmdstr = sprintf('CALC%d:PAR:DEF ''MY_A1A2'',R1R2,2', channel);
     fprintf(g, cmdstr);
 end
-
+if isempty(strmatch('MY_S11R', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S11R'',AR1,1', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_S21R', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S21R'',BR1,1', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_S12R', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S12R'',AR2,2', channel);
+    fprintf(g, cmdstr);
+end
+if isempty(strmatch('MY_S22R', parcatstr))
+    cmdstr = sprintf('CALC%d:PAR:DEF ''MY_S22R'',BR2,2', channel);
+    fprintf(g, cmdstr);
+end
 
 
 
@@ -1278,15 +1293,19 @@ if get(obj, 'Average')
 else
     % enable OPC monitor
     fprintf(g, '*SRE 32');
-    fprintf(g, '*ESE 1'); 
+    fprintf(g, '*ESE 1');
     % abort current sweep and issue a trigger-event and listen for OPC
     cmdstr = sprintf('ABOR;INIT%d:IMM;*OPC', channel);
     fprintf(g, cmdstr);
 end
 
-% serial poll
-out = spoll(g);
 
+% serial poll
+out = [];
+while isempty(out)
+    out = spoll(g);
+end
+    
 % set to hold
 set(obj, 'Hold', 1);
 </MCode>
