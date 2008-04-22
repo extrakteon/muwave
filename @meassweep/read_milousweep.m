@@ -46,8 +46,14 @@ if nargin < 4
         Files = FilePath;
         FilePath = '';
     else
-        Files = varargin{1};    
+        Files = [];
+        if iscell(varargin{1})
+            Files = varargin{1};
+        else
+            Files{1} = varargin{1};
+        end
         if FilePath(end) ~= filesep, FilePath=[FilePath,filesep]; end
+        
     end
     % get list of files
     for i = 1:length(Files)
