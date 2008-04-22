@@ -1,5 +1,5 @@
 function y = freq(x,fv)
-%FREQ Returns the frequency range of a MNA object.
+%FREQ Returns or sets the frequency range of a MNA object.
 
 % $Header$
 % $Author: kristoffer $
