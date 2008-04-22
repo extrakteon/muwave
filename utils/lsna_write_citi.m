@@ -7,16 +7,22 @@ NOUTER = length(pin);
 NINNER = length(freq);
 NITEM = 4;
 
-data_chunk = [];
+v1 = [];
+i1 = [];
+v2 = [];
+i2 = [];
+
 for k = 1:NOUTER
     for n = 1:NINNER
-        item = [data.v1(k,n);data.i1(k,n);data.v2(k,n);data.i2(k,n)];
-        data_chunk = [data_chunk; item];
+        v1 = [v1; data.v1(k,n)];
+        i1 = [i1; data.i1(k,n)];
+        v2 = [v2; data.v2(k,n)];
+        i2 = [i2; data.i2(k,n)];
     end
 end
 
-tmp = [real(data_chunk) imag(data_chunk)];
-data_chunk = reshape(tmp',[numel(tmp) 1]);
+%tmp = [real(data_chunk) imag(data_chunk)];
+%data_chunk = reshape(tmp',[numel(tmp) 1]);
 
 fid=fopen(foutname,'w');
 fprintf(fid,'CITIFILE A.01.01\n');
@@ -43,7 +49,26 @@ fprintf(fid,'VAR_LIST_END\n');
 fprintf(fid,'VAR_LIST_BEGIN\n');
 fprintf(fid,'%g\n',freq);
 fprintf(fid,'VAR_LIST_END\n');
+
+% v1
 fprintf(fid,'BEGIN\n');
-fprintf(fid,'%g,%g\n',real(data_chunk),imag(data_chunk));
+fprintf(fid,'%g,%g\n',real(v1),imag(v1));
 fprintf(fid,'END\n');
+
+% i1
+fprintf(fid,'BEGIN\n');
+fprintf(fid,'%g,%g\n',real(i1),imag(i1));
+fprintf(fid,'END\n');
+
+% v2
+fprintf(fid,'BEGIN\n');
+fprintf(fid,'%g,%g\n',real(v2),imag(v2));
+fprintf(fid,'END\n');
+
+% i2
+fprintf(fid,'BEGIN\n');
+fprintf(fid,'%g,%g\n',real(i2),imag(i2));
+fprintf(fid,'END\n');
+
 fclose(fid);
+
