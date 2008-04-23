@@ -12,11 +12,13 @@ function cOUT=read_milousweep(cIN,FilePath,varargin)
 %   M = read_milousweep(meassweep,'filepath','filelist')
 %   reads the Touchstone-files given in filelist into a meassweep object.
 
-% $Header: /milou/matlab_milou/@meassweep/read_milousweep.m,v 1.10 2005/04/27 21:43:00 fager Exp $
-% $Author: fager $
-% $Date: 2005/04/27 21:43:00 $
-% $Revision: 1.10 $ 
-% $Log: read_milousweep.m,v $
+% $Header$
+% $Author$
+% $Date$
+% $Revision$ 
+% $Log$
+%
+
 % Revision 1.10  2005/04/27 21:43:00  fager
 % * Changed from measSP to meassp.
 %
