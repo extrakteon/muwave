@@ -9,11 +9,11 @@ function write_touchstone(cIN,write_filename)
 
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
-% $Header$
+% $Header: /milou/matlab_milou/@measSP/write_touchstone.m,v 1.5 2005/10/24 18:50:46 koffer Exp $
 % $Author: koffer $
-% $Date: 2006-09-20 16:22:45 +0200 (Wed, 20 Sep 2006) $
-% $Revision: 311 $ 
-% $Log$
+% $Date: 2005/10/24 18:50:46 $
+% $Revision: 1.5 $ 
+% $Log: write_touchstone.m,v $
 % Revision 1.5  2005/10/24 18:50:46  koffer
 % Fixed malfunction caused by moving Freq to xparam.
 %
@@ -74,10 +74,11 @@ reference=get(cIN.data,'reference');
 type=get(cIN.data,'type');	
 
 TempStr=['# GHZ S RI R ',int2str(reference)];
-fprintf(f_ID,'%s\n\n',TempStr);
+fprintf(f_ID,'%s\n',TempStr);
 
 scanstr=['%e',repmat([' %e %e'],[1,ports^2]),'\n'];
 fprintf(f_ID,scanstr,data_mtrx.');
 
 % Close the file.
 fclose(f_ID);
+% Testing
