@@ -1,4 +1,7 @@
 function rc = chuck_up(h_station)
+% $Rev$
+% $Date$
+
 % Raise chuck
 switch class(h_station)
     case 'gpib'
