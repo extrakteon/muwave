@@ -14,11 +14,15 @@ function cOUT=set(cIN,varargin)
 
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
-% $Header$
+% $Rev$
+% $Author$
+% $Date$
+
+% $Header: /milou/matlab_milou/@meassweep/set.m,v 1.5 2005/04/27 21:42:22 fager Exp $
 % $Author: fager $
-% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 261 $ 
-% $Log$
+% $Date: 2005/04/27 21:42:22 $
+% $Revision: 1.5 $ 
+% $Log: set.m,v $
 % Revision 1.5  2005/04/27 21:42:22  fager
 % * Changed from measSP to meassp.
 %
