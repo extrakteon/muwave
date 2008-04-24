@@ -1,6 +1,8 @@
 function rc = chuck_up(h_station)
 % $Rev$
 % $Date$
+% $Author$
+%
 
 % Raise chuck
 switch class(h_station)
