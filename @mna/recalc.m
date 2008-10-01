@@ -101,5 +101,5 @@ if ~isempty(tmap)
     end
 end
 
-x.Yc = xparam(Yc,'Y',50);
+x.Yc = xparam(Yc,'Y',50,freq(x));
 x.valid_calc = true;
