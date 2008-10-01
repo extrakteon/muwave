@@ -92,4 +92,4 @@ for row = 1:N
     end
 end
 
-x.Yc = xparam(Yc,'Y',50);
+x.Yc = xparam(Yc,'Y',50,freq(x));
