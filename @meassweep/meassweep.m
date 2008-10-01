@@ -7,11 +7,11 @@ function cOUT=meassweep(cIN)
 
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
-% $Header$
+% $Header: /milou/matlab_milou/@meassweep/meassweep.m,v 1.3 2004/10/20 16:58:53 fager Exp $
 % $Author: fager $
-% $Date: 2004-10-20 19:01:34 +0200 (Wed, 20 Oct 2004) $
-% $Revision: 218 $ 
-% $Log$
+% $Date: 2004/10/20 16:58:53 $
+% $Revision: 1.3 $ 
+% $Log: meassweep.m,v $
 % Revision 1.3  2004/10/20 16:58:53  fager
 % Help comments added
 %
