@@ -31,6 +31,9 @@ g = get(obj, 'Interface');
 % Set the instrument in a known state.
 fprintf(g, '*RST');
 
+% Turn off beeper.
+fprintf(g, ':SYSTem:BEEPer:STATe 0');
+
 % Turn off Output.
 fprintf(g, ':OUTP 0');
 
