@@ -76,9 +76,13 @@ end
 Z = xparam(Vp,'Z',50,x.f);
 
 % output rearranged for better integration with sensitivity code
-varargout{1} = x;
-varargout{2} = Z;
-if nargout == 3
+switch nargout
+    case 1,
+    varargout{1} = Z;
+    case 2,
+    varargout{1} = x;
+    varargout{2} = Z;
+    case 3,
     h_dZ.Y = Y;
     h_dZ.V = V;
     h_dZ.Z = Z;
@@ -88,5 +92,7 @@ if nargout == 3
     h_dZ.PORTS = PORTS;
     h_dZ.x = x;
     h_dZ.val = val;
+    varargout{1} = x;
+    varargout{2} = Z;
     varargout{3} = h_dZ;
 end
