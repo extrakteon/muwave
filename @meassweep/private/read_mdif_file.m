@@ -2,9 +2,9 @@ function [block_names,block_data] = read_mdif_file(fname)
 %READ_MDIF_FILE    Private function to parse MDIF files.
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-12 23:50:38 +0200 (Thu, 12 May 2005) $
-% $Revision: 286 $
+% $Author$
+% $Date$
+% $Revision$
 % $Log$
 % Revision 1.7  2005/05/12 21:50:38  fager
 % Now works also without any Attributes given.
@@ -178,6 +178,12 @@ while ~stop
                         dep_names{k-1} = item_descr(to{1}(1,1):to{1}(1,2));
                     end
 
+                    % replace nunmeric dep_types with strings
+                    dep_types = regexprep(dep_types, '0', 'int', 'ignorecase');
+                    dep_types = regexprep(dep_types, '1', 'real', 'ignorecase');
+                    dep_types = regexprep(dep_types, '2', 'string', 'ignorecase');
+                    dep_types = regexprep(dep_types, '3', 'complex', 'ignorecase');
+                            
                     % Start reading data.
                     rawdata = fscanf(fid,'%f');
                     ncols = length(dep_types) + sum(ismember(lower(dep_types),'complex'));
