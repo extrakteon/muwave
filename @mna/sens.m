@@ -56,7 +56,9 @@ end
 
 % produce output
 dZ = arraymatrix(dZ);
-varargout{1} = x;
+%varargout{1} = x;
+varargout{1} = Z; % CF: Changed top return the evaluated xparam object.
+
 if nargout == 2
     varargout{2} = dZ;
 elseif nargout == 3
