@@ -1,4 +1,4 @@
-/* $Revision:$ $Date:$ */
+/* $Revision$ $Date$ */
 /*=========================================================
  * fort.c
  * auxilliary routines for conversion between MATLAB and

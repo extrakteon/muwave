@@ -8,9 +8,9 @@ function a = subsasgn(a,S,b)
 %
 %
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 switch S.type

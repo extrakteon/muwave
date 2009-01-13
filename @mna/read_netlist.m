@@ -5,9 +5,9 @@ function x = read_netlist(x,filename)
 
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 261 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.5  2005/04/27 21:44:52  fager
 % * Changed from measSP to meassp.

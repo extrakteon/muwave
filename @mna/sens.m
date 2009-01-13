@@ -12,9 +12,9 @@ function [varargout]=sens(x,opt)
 %         dZ - derivatives
 %
 % $Header$
-% $Author: koffer $
-% $Date: 2005-09-12 16:25:30 +0200 (Mon, 12 Sep 2005) $
-% $Revision: 296 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.8  2005/09/12 14:24:14  koffer
 % *** empty log message ***

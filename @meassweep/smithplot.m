@@ -7,9 +7,9 @@ function smithplot(Xin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 

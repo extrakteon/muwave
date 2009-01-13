@@ -5,9 +5,9 @@ function val=get(cIN,prop_name)
 %   V = get(M) returns a cell vector of the defined M property names.
 
 % $Header$
-% $Author: fager $
-% $Date: 2003-07-17 11:20:06 +0200 (Thu, 17 Jul 2003) $
-% $Revision: 72 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.4  2003/07/17 09:20:06  fager
 % Possibility to get a list of the defined property names added.

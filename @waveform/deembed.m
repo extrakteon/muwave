@@ -2,9 +2,9 @@ function wf_out = deembed(wf_in,sp)
 %DEEMBED
 %   
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 

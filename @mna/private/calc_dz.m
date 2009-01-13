@@ -1,9 +1,9 @@
 function dz = calc_dz(Va,V,x,paramlist)
 %CALC_DZ Calculates Z-sensitivities given branch voltages
 % $Header$
-% $Author: koffer $
-% $Date: 2005-09-12 16:26:57 +0200 (Mon, 12 Sep 2005) $
-% $Revision: 297 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.6  2005/09/12 14:26:57  koffer
 % *** empty log message ***

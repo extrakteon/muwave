@@ -1,8 +1,8 @@
 function valid=isvalid_type(str)
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 if ischar(str) & (sum(strcmp(str,{'AB','VI'})))

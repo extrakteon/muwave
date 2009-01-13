@@ -9,9 +9,9 @@ function cOUT=merge(cIN1,varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-02 16:16:43 +0200 (Mon, 02 May 2005) $
-% $Revision: 265 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2005/05/02 14:16:43  fager
 % Initial version

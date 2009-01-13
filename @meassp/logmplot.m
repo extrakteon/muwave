@@ -9,9 +9,9 @@ function logmplot(varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: koffer $
-% $Date: 2005-06-30 09:30:20 +0200 (Thu, 30 Jun 2005) $
-% $Revision: 292 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2005/06/30 07:30:20  koffer
 % All four S-parameters in LOGM-format. Similar to SMITHPLOT.

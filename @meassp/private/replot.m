@@ -7,9 +7,9 @@ function hreplot = replot(Z,freq,x,line_style)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 261 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.3  2005/04/27 21:41:32  fager
 % * Changed from measSP to meassp.

@@ -2,9 +2,9 @@ function out = max(varargin)
 %MAX  returns the max element of each element
 %
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 

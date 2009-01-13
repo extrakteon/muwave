@@ -3,9 +3,9 @@ function m = end(a,k,n);
 %
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-12 23:55:07 +0200 (Thu, 12 May 2005) $
-% $Revision: 288 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2005/05/12 21:55:07  fager
 % Initial version, copied from meassp/end

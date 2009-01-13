@@ -2,9 +2,9 @@ function cOUT=set(INclass,varargin)
 % Method to set the properties of a modelsp class object.
 
 % $Header$
-% $Author: kristoffer $
-% $Date: 2003-06-17 14:17:51 +0200 (Tue, 17 Jun 2003) $
-% $Revision: 2 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2003/06/17 12:17:53  kristoffer
 % Initial revision

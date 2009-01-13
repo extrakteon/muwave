@@ -2,9 +2,9 @@ function display(a)
 %WAVEFORM 
 %   
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 

@@ -1,9 +1,9 @@
 function display(a)
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:34:34 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 257 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.4  2005/04/27 21:34:34  fager
 % Only displays the first element if there is any!

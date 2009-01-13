@@ -9,9 +9,9 @@ function b = subsref(a,SX)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-12 23:52:26 +0200 (Thu, 12 May 2005) $
-% $Revision: 287 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.5  2005/05/12 21:52:26  fager
 % Nested indexing implemented also for meassweep, e.g. mswp(1).S11(20)

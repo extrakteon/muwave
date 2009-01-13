@@ -2,9 +2,9 @@ function [H]=sens2(xmna,val,params1,params2,Z,dZ,g)
 % SENS2 basic second-order sensitivity
 
 % $Header$
-% $Author: koffer $
-% $Date: 2004-04-28 17:56:51 +0200 (Wed, 28 Apr 2004) $
-% $Revision: 190 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.3  2004/04/28 15:55:54  koffer
 % Support for second order sensitivities

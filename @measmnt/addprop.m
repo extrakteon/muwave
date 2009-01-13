@@ -6,9 +6,9 @@ function cOUT=addprop(cIN,varargin)
 %   addprop(M,'P1',V1,'P2',V2,..) adds multiple properties in a single statement.
 
 % $Header$
-% $Author: fager $
-% $Date: 2003-07-16 16:45:49 +0200 (Wed, 16 Jul 2003) $
-% $Revision: 52 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.2  2003/07/16 14:45:48  fager
 % Ignore the property case

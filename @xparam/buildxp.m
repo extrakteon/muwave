@@ -14,9 +14,9 @@ function cOUT = buildxp(XP,B,type,reference,freq)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:31:05 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 255 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.3  2005/04/27 21:31:05  fager
 % * Version logging added.

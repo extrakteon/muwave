@@ -3,9 +3,9 @@ function varargout = f2td(varargin)
 %
 %   
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 wf = varargin{1};

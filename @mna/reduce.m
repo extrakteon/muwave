@@ -10,9 +10,9 @@ function [varargout]=reduce(x,val)
 %       h_dZ - struct containing information used by sense
 %
 % $Header$
-% $Author: ferndahl $
-% $Date: 2006-08-28 17:02:55 +0200 (Mon, 28 Aug 2006) $
-% $Revision: 310 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.5  2005/09/12 14:22:20  koffer
 % *** empty log message ***

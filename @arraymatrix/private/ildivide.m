@@ -2,9 +2,9 @@ function c=ildivide(a,b);
 %ILDIVIDE Part of mldivide
 
 % $Header$
-% $Author: ferndahl $
-% $Date: 2005-03-22 12:31:07 +0100 (Tue, 22 Mar 2005) $
-% $Revision: 246 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.3  2005/03/22 11:31:07  ferndahl
 % no message

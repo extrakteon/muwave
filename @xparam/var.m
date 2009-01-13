@@ -11,9 +11,9 @@ function VS = var(XP)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-12 09:40:17 +0200 (Thu, 12 May 2005) $
-% $Revision: 279 $
+% $Author$
+% $Date$
+% $Revision$
 % $Log$
 % Revision 1.1  2005/05/12 07:40:17  fager
 % Initial version.

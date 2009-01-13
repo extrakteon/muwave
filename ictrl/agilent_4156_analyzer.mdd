@@ -286,15 +286,12 @@ fprintf(g, ':PAGE:DISP:GRAP:Y2:NAME ''%s''', propertyValue);
 % For group functions, OBJ is the group object. For
 % base device functions, OBJ is the device object.
 
-% Measure and read data
+% Measure... 
 invoke(obj, 'Single');
 
-data = struct;
-variables = invoke(obj, 'Variables');
-for k = 1:length(variables)
-    tmp = invoke(obj, 'Read', variables {k});
-    data = setfield(data, variables{k}, tmp);
-end</MCode>
+% and read data
+data = invoke(obj, 'Read');
+</MCode>
                </Code>
                <Description/>
             </Method>
@@ -304,15 +301,26 @@ end</MCode>
                <CapabilityGroup>Base</CapabilityGroup>
                <Type>MCode</Type>
                <Code>
-                  <MCode>function data = Read(obj, variable)
+                  <MCode>function data = Read(obj, varargin)
 % For group functions, OBJ is the group object. For
 % base device functions, OBJ is the device object.
 
 g = get(obj, 'Interface');
 
-fprintf(g, ':DATA? %s', variable);
-data = read_double(g);
-</MCode>
+if nargin == 1
+    % read all variables
+    data = struct;
+    variables = invoke(obj, 'Variables');
+    for k = 1:length(variables)
+        fprintf(g, ':DATA? %s', variables {k});
+        tmp = read_double(g);
+        data = setfield(data, variables{k}, tmp);
+    end
+else
+    % read a specific variable
+    fprintf(g, ':DATA? %s', varargin{1});
+    data = read_double(g);
+end</MCode>
                </Code>
                <Description/>
             </Method>

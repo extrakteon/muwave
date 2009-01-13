@@ -2,9 +2,9 @@ function out = freq(fundamental, order_lower, order_upper)
 %WAVEFORM 
 %   
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 % Converts a Harmonic-Frequency-grid to a Linear-Frequency-grid

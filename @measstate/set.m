@@ -6,9 +6,9 @@ function cOUT=set(cIN,varargin)
 %   object M the value V.  
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-23 16:11:42 +0200 (Mon, 23 May 2005) $
-% $Revision: 290 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.5  2005/05/23 14:11:13  fager
 % Assignment with empty-matrix value removes the property.

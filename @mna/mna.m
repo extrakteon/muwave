@@ -7,9 +7,9 @@ function l = mna(n)
 %
 
 % $Header$
-% $Author: koffer $
-% $Date: 2004-04-28 17:55:31 +0200 (Wed, 28 Apr 2004) $
-% $Revision: 189 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.9  2004/04/28 15:55:31  koffer
 % no message

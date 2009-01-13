@@ -9,10 +9,12 @@ function write_touchstone(cIN,write_filename)
 
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
+% $Header$
 % $Header: /milou/matlab_milou/@measSP/write_touchstone.m,v 1.5 2005/10/24 18:50:46 koffer Exp $
-% $Author: koffer $
-% $Date: 2005/10/24 18:50:46 $
-% $Revision: 1.5 $ 
+% $Author$
+% $Date$
+% $Revision$ 
+% $Log$
 % $Log: write_touchstone.m,v $
 % Revision 1.5  2005/10/24 18:50:46  koffer
 % Fixed malfunction caused by moving Freq to xparam.
@@ -81,4 +83,4 @@ fprintf(f_ID,scanstr,data_mtrx.');
 
 % Close the file.
 fclose(f_ID);
-% Testing
+

@@ -5,9 +5,9 @@ function val=freq(cIN)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:37:58 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 258 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.4  2005/04/27 21:37:45  fager
 % * Frequencies -> xparam

@@ -2,9 +2,9 @@ function [d2_Z11,d2_Z21,d2_Z12,d2_Z22]=calc_d2z(x,val,params1,params2)
 % CALC_D2Z calculate second order two-port Z-parameter sensitivity
 
 % $Header$
-% $Author: koffer $
-% $Date: 2004-04-28 17:56:51 +0200 (Wed, 28 Apr 2004) $
-% $Revision: 190 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2004/04/28 15:56:22  koffer
 % Support for second order sensitivities

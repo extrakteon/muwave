@@ -12,9 +12,9 @@ function xpout = addspmeascov(xpin,uncertmodel_name);
 %
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:50:34 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 264 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2005/04/27 21:50:17  fager
 % * Initial version

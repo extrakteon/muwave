@@ -3,9 +3,9 @@ function cOUT=read_milousweep(cIN,input_filename)
 %   M = read_s2b(meassweep,'filename')
 
 % $Header$
-% $Author: koffer $
-% $Date: 2004-05-28 09:03:19 +0200 (Fri, 28 May 2004) $
-% $Revision: 201 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2004/05/28 07:00:55  koffer
 % *** empty log message ***

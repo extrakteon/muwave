@@ -4,9 +4,9 @@ function mna_out = paramshift(mna_in,order)
 % Usage: mna_out = paramshift(mna_in,[1 3 2]);
 %
 % $Header$
-% $Author: SYSTEM $
-% $Date: 2004-09-27 14:38:50 +0200 (Mon, 27 Sep 2004) $
-% $Revision: 206 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.5  2004/09/27 12:38:50  SYSTEM
 % Fixed a bug introduced in previous version

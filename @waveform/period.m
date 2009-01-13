@@ -3,9 +3,9 @@ function T = period(wf)
 %
 %   
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 

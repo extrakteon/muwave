@@ -3,9 +3,9 @@ function [H11,H12,H21,H22]=d2sdz2(a)
 % two-ports
 
 % $Header$
-% $Author: koffer $
-% $Date: 2004-05-28 09:03:19 +0200 (Fri, 28 May 2004) $
-% $Revision: 201 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.1  2004/05/28 07:03:19  koffer
 % *** empty log message ***

@@ -1,4 +1,4 @@
-/* $Revision:$ $Date:$ */
+/* $Revision$ $Date$ */
 /*=========================================================
  * fort.h
  * header file for auxilliary routines for conversion

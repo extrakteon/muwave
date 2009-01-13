@@ -2,9 +2,9 @@ function l = convert(data, to_type)
 % CONVERT converts between different port-parameters
 %
 % $Header$
-% $Author: fager $
-% $Date: 2005-06-27 23:18:32 +0200 (Mon, 27 Jun 2005) $
-% $Revision: 291 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.11  2005/06/27 21:18:12  fager
 % Now supporting wave cascade parameters: W

@@ -2,9 +2,9 @@ function wf_out = embed(wf_in,sp)
 %EMBED
 %   
 % $Header$
-% $Author: $
-% $Date: $
-% $Revision: $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 %
 

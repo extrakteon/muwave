@@ -6,9 +6,9 @@ function cOUT=modelSP(varargin)
 % cOUT=modelSP creates a default object.
 
 % $Header$
-% $Author: koffer $
-% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
-% $Revision: 306 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.2  2005/04/27 21:44:52  fager
 % * Changed from measSP to meassp.

@@ -1,3 +1,4 @@
+%
 function mexify(varargin)
 
 if nargin == 0

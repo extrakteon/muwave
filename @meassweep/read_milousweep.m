@@ -17,7 +17,7 @@ function cOUT=read_milousweep(cIN,FilePath,varargin)
 % $Date$
 % $Revision$ 
 % $Log$
-%
+
 
 % Revision 1.10  2005/04/27 21:43:00  fager
 % * Changed from measSP to meassp.
@@ -60,6 +60,7 @@ if nargin < 4
             Files{1} = varargin{1};
         end
         if FilePath(end) ~= filesep, FilePath=[FilePath,filesep]; end
+        
     end
     % get list of files
     for i = 1:length(Files)
@@ -67,12 +68,15 @@ if nargin < 4
         if File(end) == '.'
             File = File(1:end-1);
         end
-        file_name_list{i} = File;
+
         file_num_list(i) = i;
+        file_name_list{i} = File;
+        
         % make sure that the cache works
         dir_tmp = dir(fullfile(FilePath,File));
         file_date_list{i} = dir_tmp.date;
         file_bytes_list{i} = dir_tmp.bytes;
+        
         origin = strcat(FilePath,File);
     end
     if isempty(file_name_list)

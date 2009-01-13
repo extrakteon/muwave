@@ -3,9 +3,9 @@ function cOUT=add(cIN,varargin)
 %   M=ADD(M,item) 
 %
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-12 14:27:37 +0200 (Thu, 12 May 2005) $
-% $Revision: 280 $ 
+% $Author$
+% $Date$
+% $Revision$ 
 % $Log$
 % Revision 1.3  2005/05/12 12:27:37  fager
 % Allows multiple objects to be added in one statement.
