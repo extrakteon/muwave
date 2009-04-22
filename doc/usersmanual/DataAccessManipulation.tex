@@ -27,9 +27,7 @@ below:
 
 \begin{small}
 \begin{verbatim}
-    >> msp = read_touchstone(meassp,...
-        'matlab_milou/test/d0509/d0509_20');
-    >> get(msp,'Date')
+    >> msp = read_touchstone(meassp,'muwave/test/d0509/d0509_20');get(msp,'Date')
     ans =
     2002-10-25, 08:50
 
@@ -44,27 +42,24 @@ below:
         0.1490
         ...
 
-    >> msp = set(msp,'Operator','Tintin','Igs',1,...
-        'Date',datestr(now))
+    >> msp = set(msp,'Operator','Tintin','Igs',1,'Date',datestr(now))
     Measurement info
-        Date : 19-Oct-2004 15:28:00
-        Origin : matlab_milou\test\d0509\d0509_20
+        Date : 14-Apr-2009 10:00:04
+        Origin : muwave/test/d0509/d0509_20
         Operator : Tintin
         Info :
     Measurement state
-        MeasType:   SP
-        Vgs:    -0.1
-        Vds:    1.5
-        Igs:    1
-        Ids:    0.019745
-        Freq,min:   1E+009
-        Freq,max:   5E+010
-    Measurement Data
+    	MeasType:	SP
+    	Vgs:	-0.1
+    	Vds:	1.5
+    	Igs:	1
+    	Ids:	0.019745
     xparam-object
-        type:  S
-        reference: 50
-        ports: 2
-        elements:  101
+    	 type:	S
+    	 reference:	50
+    	 ports:	2
+    	 elements:	101
+    	 freq:	1E+009 -> 5E+010
 \end{verbatim}
 \end{small}
 
@@ -129,8 +124,6 @@ object. It is maybe more easy to understand in code:
         Vds:    1.5
         Igs:    -2.784E-007
         Ids:    0.019745
-        Freq,min:   1E+009
-        Freq,max:   5E+010
         Temp:   75
     ...
 \end{verbatim}
@@ -151,16 +144,13 @@ carry out this:
     >> f = msp.freq;
     >> freq_index = find(f>1e9 & f<10e9);
     >> msp_reduced = msp(freq_index)
-        ...
-        Freq,min:   1.49E+009
-        Freq,max:   9.82E+009
-    Measurement Data
+    ...
     xparam-object
-        type:  S
-        reference: 50
-        ports: 2
-        elements:  18
-        ...
+    	 type:	S
+    	 reference:	50
+    	 ports:	2
+    	 elements:	18
+    	 freq:	1.49E+009 -> 9.82E+009
 \end{verbatim}
 \end{small}
 
@@ -174,14 +164,12 @@ purpose:
 \begin{verbatim}
     >> new_freq = linspace(1e9,1e10,51);
     >> msp_new = interp(msp,new_freq)
-        ...
-        Freq,min:   1E+009
-        Freq,max:   1E+010
-    Measurement Data xparam-object
-        type:  S
-        reference: 50
-        ports: 2
-        elements:  51
-        ...
+    ...
+    xparam-object
+    	 type:	S
+    	 reference:	50
+    	 ports:	2
+    	 elements:	51
+    	 freq:	1E+009 -> 1E+010
 \end{verbatim}
 \end{small}

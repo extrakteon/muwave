@@ -11,13 +11,13 @@
 %
 
 \section{Sweeps of measurements}\label{sec:sweeps}
-Milou has not only functionality to handle single measurements,
+Muwave has not only functionality to handle single measurements,
 using the \verb"meassp" class, but also a series of measurements.
 Typically, this is a series of measurements obtained at different
 bias points. The class used to handle these swept measurements is
 called \verb"meassweep".
 
-Milou can create \verb"meassweep" objects from either a directory
+Muwave can create \verb"meassweep" objects from either a directory
 with multiple TouchStone files or from an MDIF file\footnote{See
 Agilent ADS documentation for details about the MDIF file
 format.}.
@@ -29,24 +29,21 @@ example shows a typical call with this function:
 \begin{small}
 \begin{verbatim}
     >> sweep = read_milousweep(meassweep,...
-        'matlab_milou\test\d0509_all','d0506_','')
     Measurement info
-        Date : 20-Oct-2004 19:06:00
-        Origin : matlab_milou\test\d0509_fix\d0506_*
+        Date : 14-Apr-2009 10:54:07
+        Origin : muwave\test\d0509_all\d0506_*
         Operator :
         Info :
     Sweep info
-        Vgs,min: -0.500000
-        Vgs,max: 0.200000
-        Vds,min: 0.500000
-        Vds,max: 1.500000
-        Igs,min: -0.000001
-        Igs,max: 0.000002
-        Ids,min: 0.003438
-        Ids,max: 0.029725
-        Freq,min: 1000000000.000000
-        Freq,max: 50000000000.000000
-        Number of measurements: 24
+    	Vgs,min: -0.5
+    	Vgs,max: 0.2
+    	Vds,min: 0.5
+    	Vds,max: 1.5
+    	Igs,min: -7.94141e-007
+    	Igs,max: 2.05474e-006
+    	Ids,min: 0.00343814
+    	Ids,max: 0.0297255
+    	Number of measurements: 24
 \end{verbatim}
 \end{small}
 Please consult \verb">> help read_milousweep" to find the details
@@ -77,43 +74,39 @@ parenthesis \verb"()" operator,
 \begin{small}
 \begin{verbatim}
     >> sweep(1)
-        Measurement info
-            Date : 2002-10-24, 19:23
-            Origin : matlab_milou\test\d0509_all\d0506_0
-            Operator :
-            Info :
-        Measurement state
-            MeasType:   SP
-            Vgs:    -0.5
-            Vds:    0.5
-            Igs:    -6.43067E-007
-            Ids:    0.00343814
-            Freq,min:   1E+009
-            Freq,max:   5E+010
-        Measurement Data
-        xparam-object
-            type:  S
-            reference: 50
-            ports: 2
-            elements:  101
+    Measurement info
+        Date : 2002-10-24, 19:23
+        Origin : muwave\test\d0509_all\d0506_0
+        Operator :
+        Info :
+    Measurement state
+    	MeasType:	SP
+    	Vgs:	-0.5
+    	Vds:	0.5
+    	Igs:	-6.43067e-007
+    	Ids:	0.00343814
+    xparam-object
+    	 type:	S
+    	 reference:	50
+    	 ports:	2
+    	 elements:	101
+    	 freq:	1E+009 -> 5E+010
     >> sweep(1:10)
     Measurement info
-        Date : 20-Oct-2004 19:09:39
-        Origin : matlab_milou\test\d0509_all\d0506_*
+        Date : 14-Apr-2009 10:54:07
+        Origin : muwave\test\d0509_all\d0506_*
         Operator :
         Info :
     Sweep info
-        Vgs,min: -0.500000
-        Vgs,max: 0.200000
-        Vds,min: 0.500000
-        Vds,max: 1.000000
-        Igs,min: -0.000001
-        Igs,max: 0.000001
-        Ids,min: 0.003438
-        Ids,max: 0.023394
-        Freq,min: 1000000000.000000
-        Freq,max: 50000000000.000000
-        Number of measurements: 10
+    	Vgs,min: -0.5
+    	Vgs,max: 0.2
+    	Vds,min: 0.5
+    	Vds,max: 1
+    	Igs,min: -6.97489e-007
+    	Igs,max: 7.27892e-007
+    	Ids,min: 0.00343814
+    	Ids,max: 0.0233942
+    	Number of measurements: 10
 \end{verbatim}
 \end{small}
 
@@ -135,21 +128,19 @@ the sweep-object to contain only bias points with \verb"Vgs" $=0$.
     >> bias_index = find(abs(sweep.Vgs)<0.01);
     >> sweep(bias_index)
     Measurement info
-        Date : 20-Oct-2004 19:09:39
-        Origin : matlab_milou\test\d0509_all\d0506_*
+        Date : 14-Apr-2009 10:54:07
+        Origin : muwave\test\d0509_all\d0506_*
         Operator :
         Info :
     Sweep info
-        Vgs: -0.000000
-        Vds,min: 0.500000
-        Vds,max: 1.500000
-        Igs,min: -0.000000
-        Igs,max: -0.000000
-        Ids,min: 0.021219
-        Ids,max: 0.025760
-        Freq,min: 1000000000.000000
-        Freq,max: 50000000000.000000
-        Number of measurements: 3
+    	Vgs: -2.77556e-017
+    	Vds,min: 0.5
+    	Vds,max: 1.5
+    	Igs,min: -1.09436e-007
+    	Igs,max: -4.34143e-008
+    	Ids,min: 0.0212195
+    	Ids,max: 0.0257597
+    	Number of measurements: 3
 \end{verbatim}
 \end{small}
 
@@ -159,7 +150,7 @@ with the \verb"add" function,
 
 \begin{small}
 \begin{verbatim}
-    >> msp = read_touchstone(meassp,'test\d0509\d0509_20');
+    >> msp = read_touchstone(meassp,'muwave\test\d0509\d0509_20');
     >> sweep_total = add(sweep,msp);
     >> length(sweep_total)-length(sweep)
     ans =

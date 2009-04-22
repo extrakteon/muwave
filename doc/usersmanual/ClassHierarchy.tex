@@ -7,10 +7,10 @@
 % Version logging added. Comments from KA implemented.
 %
 
-\section{Milou data hierarchy} %\hypertarget{hierarchy}
+\section{Muwave data hierarchy} %\hypertarget{hierarchy}
 Before describing how to use it, some effort will be spent on
 briefly explaining the data structure used to store measurement
-data in Milou.
+data in Muwave.
 
 \subsection{Overview}
 A typical S-parameter measurement is in the form of 2-by-2 complex
@@ -18,13 +18,13 @@ matrices versus $n$ frequency points. Most calculations such as
 gain, impedance, and stability are then carried out on a
 ``per-frequency'' basis.
 
-The way in which Milou stores this data is a complex three
+The way in which Muwave stores this data is a complex three
 dimensional ($2 \times 2\times n$) matrix. \matlab, however, has
 no built in functionality to perform operations in this
 manner---it simply does not understand along which dimensions it
 should perform the operations.
 
-Milou, however, uses the object-oriented capabilities offered by
+Muwave, however, uses the object-oriented capabilities offered by
 \matlab to define a low-level \emph{S/Y/Z/T-parameter data class},
 for which all common \matlab operations, such as *, +, -, /, ./
 etc. have been redefined to operate ``per-frequency''. On a higher
@@ -34,13 +34,13 @@ settings, the measurement file source, etc. All these properties
 are automatically populated by parsing the measurement files when
 read into \matlab.
 
-\Figref{ClassHierarchy} shows an overview of the different Milou
+\Figref{ClassHierarchy} shows an overview of the different Muwave
 classes implemented, and their respective purpose. A short
 description of each of them is given below.
 
 \begin{figure}[htbf]
   \includegraphics[width=\textwidth]{Figures/ClassOverview3.eps}
-  \caption{Overview of the Milou class hierarchy.}\label{fig:ClassHierarchy}
+  \caption{Overview of the Muwave class hierarchy.}\label{fig:ClassHierarchy}
 \end{figure}
 
 \subsection{meassp}
@@ -58,12 +58,12 @@ measurement operator, the file origin, the transistor type etc.
 \subsection{measstate}
 \emph{measstate} contains numerical data describing the
 measurement conditions. Typically, this is gate bias voltage,
-drain current, frequencies, gate width, pulse length, temperature,
+drain current, gate width, pulse length, temperature,
 etc.
 
 \subsection{xparam}
-\emph{xparam} contains the actual S-parameter data. Or, in fact,
-it can be data of either S, Y, Z, or T-type. The class keeps track
+\emph{xparam} contains the actual S-parameter data and the corresponding frequencies. 
+Or, in fact, it can be data of either S, Y, Z, or T-type. The class keeps track
 of which type of data it contains and has built in functionality
 to convert between them. Moreover, it stores the reference
 impedance so that S-parameters may be converted to other
