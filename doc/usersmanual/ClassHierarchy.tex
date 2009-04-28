@@ -7,10 +7,10 @@
 % Version logging added. Comments from KA implemented.
 %
 
-\section{Muwave data hierarchy} %\hypertarget{hierarchy}
+\section{MuWave data hierarchy} %\hypertarget{hierarchy}
 Before describing how to use it, some effort will be spent on
 briefly explaining the data structure used to store measurement
-data in Muwave.
+data in MuWave.
 
 \subsection{Overview}
 A typical S-parameter measurement is in the form of 2-by-2 complex
@@ -18,13 +18,13 @@ matrices versus $n$ frequency points. Most calculations such as
 gain, impedance, and stability are then carried out on a
 ``per-frequency'' basis.
 
-The way in which Muwave stores this data is a complex three
+The way in which MuWave stores this data is a complex three
 dimensional ($2 \times 2\times n$) matrix. \matlab, however, has
 no built in functionality to perform operations in this
 manner---it simply does not understand along which dimensions it
 should perform the operations.
 
-Muwave, however, uses the object-oriented capabilities offered by
+MuWave, however, uses the object-oriented capabilities offered by
 \matlab to define a low-level \emph{S/Y/Z/T-parameter data class},
 for which all common \matlab operations, such as *, +, -, /, ./
 etc. have been redefined to operate ``per-frequency''. On a higher
@@ -34,13 +34,13 @@ settings, the measurement file source, etc. All these properties
 are automatically populated by parsing the measurement files when
 read into \matlab.
 
-\Figref{ClassHierarchy} shows an overview of the different Muwave
+\Figref{ClassHierarchy} shows an overview of the different MuWave
 classes implemented, and their respective purpose. A short
 description of each of them is given below.
 
 \begin{figure}[htbf]
   \includegraphics[width=\textwidth]{Figures/ClassOverview3.eps}
-  \caption{Overview of the Muwave class hierarchy.}\label{fig:ClassHierarchy}
+  \caption{Overview of the MuWave class hierarchy.}\label{fig:ClassHierarchy}
 \end{figure}
 
 \subsection{meassp}
