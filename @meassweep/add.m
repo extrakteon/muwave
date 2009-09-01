@@ -26,19 +26,19 @@ while ~stop
         switch upper(class(item))
             case 'MEASSWEEP'
                 cOUT = item;
-            case 'MEASSP'
+            case {'MEASSP','MEASWF'}
                 cOUT.data{1} = item;
             otherwise
-                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP or MEASSP');
+                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP, MEASSP or MEASWF');
         end
     else
         switch upper(class(item))
             case 'MEASSWEEP'
                 cOUT.data = [cOUT.data,item.data];
-            case 'MEASSP'
+            case {'MEASSP','MEASWF'}
                 cOUT.data{end+1} = item;
             otherwise
-                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP or MEASSP');
+                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP, MEASSP or MEASWF');
         end
     end
     i = i+1;

@@ -36,8 +36,15 @@ case '()', % The n'th measmnt object
     end
 case '.'
     try
+        % Koffe, 2009-08-28
+        b = [];        
         for k=1:length(a.data)
-            b = cat(2,b,subsref(a.data{k},S));
+            tmp = subsref(a.data{k},S);
+            dim = find(size(tmp)>1==0); % select the first "empty" dimension for concatination
+            if isempty(dim)
+                dim = ndims(tmp)+1;
+            end
+            b = cat(dim,b,tmp);
         end
     catch
         b = get(a,S.subs);        
