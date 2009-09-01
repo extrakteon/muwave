@@ -6,7 +6,7 @@ function val = get(a,param)
 % $Header$
 % $Author$
 % $Date$
-% $Revision$ 
+% $Revision$
 % $Log$
 %
 
@@ -15,77 +15,42 @@ if nargin == 1, % Just return the available properties
     disp(sprintf('\treference :\t%d',get(a,'reference')));
     disp(sprintf('\ttype :\t%s',get(a,'type')));
     disp(sprintf('\tfundamental :\t[%d]',length(get(a,'fundamental'))));
-    disp(sprintf('\telements :\t%d',get(a,'elements')));          
-else
-    
+    disp(sprintf('\telements :\t%d',get(a,'elements')));
 end
-    
+
 if isa(param,'char')
-switch lower(param)
-    case 'reference',
-        val = a.reference;
-    case 'type',
-        val = a.type;
-    case 'freq',
-        val = a.freq;  
-    case 'omega',
-        val = 2*pi*freq;
-    case 'ports',
-        val = size(a.data,2);
-    case 'elements',
-        val = length(a.data);
-    case 'arraymatrix',
-        val = a.data;
-    case {'mtrx','data'}
-        val = get(a.data,'mtrx');
-    case 'fundamental'
-        val = a.fundamental;
-    case 'a'
-        val = a.data(1,:).';
-    case 'b'
-        val = a.data(2,:).';
-    case 'v'
-        val = (a.data(1,:) + a.data(2,:)).';
-    case 'i'
-        val = ((a.data(1,:) - a.data(2,:))/a.reference).';
-    otherwise
-        if ischar(param(1))
-            if (length(param) == 1)
-                % no indexing, perform conversion
-                val = convert(a, param(1));
+    switch param
+        case 'reference',
+            val = a.reference;
+        case 'type',
+            val = a.type;
+        case 'freq',
+            val = a.freq;
+        case 'omega',
+            val = 2*pi*freq;
+        case 'ports',
+            val = size(a.data,1)/2;
+        case 'elements',
+            val = length(a.data);
+        case 'arraymatrix',
+            val = a.data;
+        case {'data'}
+            val = a.data;
+        case 'fundamental'
+            val = a.fundamental;
+        case 't'
+            [tmp, val] = td(a);
+        otherwise
+            tmp = regexp(param,'([d]\D{1}|\D{1})(\d*)(\w{2,}|)','tokens');
+            param_type = char(tmp{1}(1));
+            param_index = char(tmp{1}(2));
+            if isempty(param_index)
+                param_index = -1;
             else
-                if (length(param) == 2) & (ports == 1)
-                    % x1 type of indexing
-                    if str2double(param(2)) == 1
-                        param_index = 11;
-                    else
-                        error('WAVEFORM.GET: Index out of range.');
-                    end
-                elseif (length(param) == 3) & (ports < 10)
-                    % x11 type of indexing
-                    param_index = str2double(param(2:3));
-                elseif (length(param) == 5) & (ports > 9)
-                    % x0101 type of indexing
-                    param_index = str2double(param(2:5));
-                else
-                    error('WAVEFORM.GET: Invalid index parameter.');
-                end
-                [x,y,err] = getindex(param_index, ports);
-                if ~err
-                    % Get correct parameter
-                    a = convert(a, param(1));
-                    val = a.data(x, y);
-                else
-                    error('WAVEFORM.GET: Index out of range.');
-                end
+                param_index = str2double(param_index);
             end
-        end
-end
-elseif isa(param,'double') & (length(param) == 2)
-    if (max(param) <= ports) & (min(param) > 0)
-        val = get(a.data,param);
-    else
-        error('WAVEFORM.GET: Index out of range.');
+            param_aux = char(tmp{1}(3));
+            val = convert(a, param_type, param_index, param_aux);
     end
 else
     error('WAVEFORM.GET: Unknown error.');
