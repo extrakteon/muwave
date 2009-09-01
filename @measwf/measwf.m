@@ -22,7 +22,7 @@ inparam=varargin;
 switch nargin
 case 0, % Default constructor
     meas=set(measmnt,'Date',datestr(now)); % Create a parent object
-    state=addprop(measstate,'MeasType','WF'); % Create a measstate object
+    state=addprop(measstate,'MeasType','WAVEFORM'); % Create a measstate object
     
     % Create a default wave form object.
     MSP.data=arraymatrix;    % Invokes the default constructor of the xparam class.
@@ -32,7 +32,7 @@ case 1,
         cOUT=inparam{1};
     elseif isa(inparam{1},'waveform')
         meas=set(measmnt,'Date',datestr(now)); % Create a parent object
-        state=addprop(measstate,'MeasType','WF'); % Create a measstate object
+        state=addprop(measstate,'MeasType','WAVEFORM'); % Create a measstate object
         MSP.data=inparam{1};    % Inserts the waveform object
         cOUT=class(MSP,'measwf',meas,state); % Creates MSP as a measwf object with measmnt and measstate as parent.
     else

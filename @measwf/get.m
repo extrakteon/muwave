@@ -1,26 +1,15 @@
 function val=get(cIN,prop_name)
-%GET Get meassp object properties.
-%   V=get(M,'P1') returns the value of the meassp-object M property P1.
-%   If the property is not found in the meassp-object, it is tried to be extracted from the
-%   xparam or measstate objects that build up the meassp object.
+%GET Get measwf object properties.
+%   V=get(M,'P1') returns the value of the measwf-object M property P1.
+%   If the property is not found in the measwf-object, it is tried to be extracted from the
+%   waveform or measstate objects that build up the measwf object.
 %
 %   See also: SET
 
-%   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
+%   (c) Kristoffer Andersson & Christian Fager, Chalmers University of
+%   Technology, Sweden
 
-% $Header$
-% $Author$
-% $Date$
-% $Revision$ 
-% $Log$
-% Revision 1.5  2005/04/27 21:37:58  fager
-% * Frequencies -> xparam
-%
-% Revision 1.4  2004/10/20 22:19:23  fager
-% Help comments added
-%
-
-INclass=meassp(cIN);
+INclass=measwf(cIN); % is this necessary?
 if ~isstr(prop_name), error('Property must be a string.'); end;
 switch lower(prop_name)
     case 'data',
