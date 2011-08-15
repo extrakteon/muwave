@@ -1,0 +1,108 @@
+Last updated Aug 2011.
+
+This file contains information related to installation of muwave.
+
+The use of the '$' symbol denotes the MATLAB prompt.
+
+System Requirements
+-------------------
+- MATLAB (any modern version should work, tested on 2007 and later)
+- C/C++ compiler
+  - LCC works on Windows 32-bit platforms (ships with MATLAB)
+  - Microsoft Visual C/C++ on Windows 64-bit platforms (other compilers might work, not tested)
+  - gcc on Linux 32- and 64-bit platforms
+  - For mor details on supported compilers see MATLAB documentation on MEX.
+- (OPTIONAL) Instrument Control Toolbox
+- (OPTIONAL) Optimization Toolbox
+
+Directory Structure
+-------------------
+muwave (main directory)
+	- doc (freeda PDF documentation)
+	- gui (contains GUI code)
+	- ictrl (contains instrument drivers and supporting code)
+	- utils (contains generic functions)
+	- @arraymatrix (class for handling large arrays of matrices)
+	- mex (contains supporting C-code for the @arraymatrix class)
+	- @xparam (class for operating on S-,Z-,Y-,ABCD-,T-parameters)
+	- @mna (minimal frequency domain linear circuit simulator with sensitivity analysis)
+	- @waveform (class for operating on harmonic waveforms e.g. large signal network analyzer data)
+	- @meassp (class for operating on measured S-parameter data)
+	- @meassweep (class for operating on multiple measured S-parameter data)
+	- @measdc (class for operating on DC measurements)
+	- @measmnt (generic class for measurements)
+	- @measnoise (class for operating on noise parameter measurements)
+	- @modelsp (class for operating on modeled S-parameters)
+	- @measstate (class for handling bias, temperature information)
+	- @measwf (class for operating on measured waveforms)
+	
+
+Installation of muwave
+-------------------------------
+Installation of muwave is a two part process.
+
+1. COMPILING AND INSTALLING MEX-FILES
+Make sure that you can compile the mex example provided by MathWorks (yprime.c). See the MATLAB documentation (Run "doc mex" at the MATLAB prompt).
+
+1a) In the MATLAB command window, change directory to "<path_to_muwave_directory>/mex". 
+
+The next two steps are only necessary on Windows platforms. For other platforms (Linux, OS X) go directly to step 1d)
+
+1b) Open the supplied "mexify.m" file in the MATLAB-editor.
+
+1c) Verify that the path to the BLAS and LAPACK-libraries are correct. This path will depend on your Windows version and compiler.
+    Example 1: 32-bit Windows and LCC-compiler:
+        path_lapack = sprintf('%s/extern/lib/win32/%s/libmwlapack.lib %s/extern/lib/win32/%s/libmwblas.lib',matlabroot,'lcc',matlabroot,'lcc');
+    Example 2: 64-bit Windows and Microsoft Visual C compiler:
+        path_lapack = sprintf('%s/extern/lib/win64/%s/libmwlapack.lib %s/extern/lib/win64/%s/libmwblas.lib','C:\PROGRA~1\MATLAB\R2009A\','microsoft','C:\PROGRA~1\MATLAB\R2009A\','microsoft');
+    Note: some of the mex-tools don't like spaces in the paths. In such cases it is necessary to use shorthand for the directorys (e.g. "PROGRA~1" instead of "Program Files").  
+
+1d) Run "mexify.m"
+
+1e) Verify that the compiled mex-files are located in  "<path_to_muwave_directory>/@arraymatrix/private". 
+
+1f) If the compilation fails miserably, muwave ships with some pre-compiled mex-files in "<path_to_muwave_directory>/mex/bin". 
+
+2. ADD MUWAVE TO THE PATH
+
+The following directories must be visible on the MATLAB path:
+
+    <path_to_muwave_directory>/
+    <path_to_muwave_directory>/utils
+    <path_to_muwave_directory>/ictrl
+    <path_to_muwave_directory>/gui
+
+This can be done via the File/Set Path... menu in MATLAB. 
+
+3. TEST THE INSTALLATION
+
+Verify the installation by writing the following commands at the MATLAB prompt:
+
+>> A=arraymatrix(randn(4,4,11))
+arraymatrix-object
+	 dimension:	 4 x 4
+	 elements:	 11
+
+First matrix element:
+    0.0675    0.3929   -0.7745    1.9278
+   -0.1871    0.1946    0.7868   -0.1762
+    0.2917    0.2798    1.4089   -0.2438
+    0.9877    0.0512   -0.5341   -0.8976
+
+>> (A+A-A)\A
+arraymatrix-object
+	 dimension:	 4 x 4
+	 elements:	 11
+
+First matrix element:
+    1.0000    0.0000    0.0000    0.0000
+    0.0000    1.0000    0.0000   -0.0000
+         0    0.0000    1.0000   -0.0000
+         0    0.0000    0.0000    1.0000
+
+>> 
+
+Contact information
+-------------------
+This INSTALL file and the compilation process is maintained by Kristoffer Andersson. Please direct any issues and queries to kristoffer.andersson@chalmers.se.
+
