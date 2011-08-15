@@ -1,0 +1,17 @@
+muwave is a MATLAB framework/toolbox for handling large sets of S-parameter measurements. muwave is developed by the Microwave Electronics Laboratory, Chalmers University of Technology, Göteborg, Sweden.
+The toolbox contains a mex-accelerated class for performing mathematical operations on arrays of matrices. 
+
+The latest development release of muwave can be downloaded at http://github.com/extrakteon/muwave
+
+Documentation
+-------------
+It can be found in muwave/doc
+
+Developers
+----------
+Below is a list of people that have contributed to the development of muwave.
+
+Kristoffer Andersson <kristoffer.andersson@chalmers.se>
+Christian Fager <christian.fager@chalmers.se>
+Mattias Ferndahl <mattias.ferndahl@chalmers.se>
+Mattias Thorsell <mattias.thorsell@chalmers.se>
