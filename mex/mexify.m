@@ -33,3 +33,4 @@ for k = 1:length(parts)
 end
 
 copyfile('*.mex*','../@arraymatrix/private/');
+delete('*.mex*');
