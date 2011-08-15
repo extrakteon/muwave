@@ -12,9 +12,9 @@ function mswp = write_mdif(msweep,fname,varargin)
 
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-05-12 16:58:20 +0200 (Thu, 12 May 2005) $
+% $Revision: 283 $ 
 % $Log$
 % Revision 1.3  2005/05/12 14:57:44  fager
 % Makes use of attributes

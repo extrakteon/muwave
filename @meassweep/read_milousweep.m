@@ -4,21 +4,14 @@ function cOUT=read_milousweep(cIN,FilePath,varargin)
 %   scans the directory 'filepath' for Touchstone-files with prefix 'fileprefix' and
 %   suffix 'filesuffix' and creates a corresponding meassweep object.
 %
-%   Example:
-%   M = read_milousweep(meassweep,'test\d0509_all','A','');
-%   will read all S-parameter files named A0, A1, ... etc. in the "test\d0509_all"
-%   directory into the meassweep object M. 
-%
 %   M = read_milousweep(meassweep,'filepath','filelist')
 %   reads the Touchstone-files given in filelist into a meassweep object.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
-
-
 % Revision 1.10  2005/04/27 21:43:00  fager
 % * Changed from measSP to meassp.
 %
@@ -53,14 +46,8 @@ if nargin < 4
         Files = FilePath;
         FilePath = '';
     else
-        Files = [];
-        if iscell(varargin{1})
-            Files = varargin{1};
-        else
-            Files{1} = varargin{1};
-        end
+        Files = varargin{1};    
         if FilePath(end) ~= filesep, FilePath=[FilePath,filesep]; end
-        
     end
     % get list of files
     for i = 1:length(Files)
@@ -68,15 +55,8 @@ if nargin < 4
         if File(end) == '.'
             File = File(1:end-1);
         end
-
-        file_num_list(i) = i;
         file_name_list{i} = File;
-        
-        % make sure that the cache works
-        dir_tmp = dir(fullfile(FilePath,File));
-        file_date_list{i} = dir_tmp.date;
-        file_bytes_list{i} = dir_tmp.bytes;
-        
+        file_num_list(i) = i;
         origin = strcat(FilePath,File);
     end
     if isempty(file_name_list)

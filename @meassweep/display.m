@@ -4,9 +4,9 @@ function display(cIN)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-05-12 23:47:45 +0200 (Thu, 12 May 2005) $
+% $Revision: 284 $ 
 % $Log$
 % Revision 1.7  2005/05/12 21:47:45  fager
 % Proper display of multidimensional state variables

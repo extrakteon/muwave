@@ -2,9 +2,9 @@ function c = minus(a,b)
 % ARRAYMATRIX/MINUS Overload operator-
 %
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2005-10-11 10:32:23 +0200 (Tue, 11 Oct 2005) $
+% $Revision: 298 $ 
 % $Log$
 % Revision 1.5  2005/10/11 08:32:23  koffer
 % Introducing MEX-files for a faster implementation of arraymatrix.

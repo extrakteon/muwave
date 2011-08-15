@@ -2,9 +2,9 @@ function val=get(cIN,prop_name)
 % Method to access the properties of a meassp object.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.2  2005/04/27 21:38:07  fager
 % * Changed from measSP to meassp.

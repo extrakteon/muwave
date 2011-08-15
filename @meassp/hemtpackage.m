@@ -19,9 +19,9 @@ function cOUT = HEMTPackage(cIN,varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
+% $Revision: 306 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:37:12  fager
 % * Changed from measSP to meassp.
@@ -47,15 +47,17 @@ P.Cpgd=0;
 params={'Rg','Lg','Cpg','Rs','Ls','Rd','Ld','Cpd','Cpgd'};
 
 if nargin == 2 	% The only input argument is supposed to be a structure with the model parameters
-	fnames=fieldnames(varargin{1});
+	fnames=fieldnames(varargin{2});
 	if all(ismember(fnames,params))
 		for k=1:length(fnames)
-			P=setfield(P,fnames{k},getfield(varargin{1},fnames{k}));
+			P=setfield(P,fnames{k},getfield(varargin{2},fnames{k}));
 		end	
 	else
 		error('The input structure does not have valid parameter names');
 	end
 	% Assume that the only input argument is a structure.
+	
+	
 elseif nargin>2 & mod(nargin,2)==1   %set(cIN,'Prop1',val,'Prop2',val2,...)
 	while length(property_argin) >= 2
 		prop = property_argin{1};
@@ -75,12 +77,12 @@ elseif nargin>2 & mod(nargin,2)==1   %set(cIN,'Prop1',val,'Prop2',val2,...)
 				warning(['Unknown/erroneous property: "',prop,'".']);
 			end
 		end
-    end
+	end
+	cOUT=INclass;
 else
 	error('Inproper number of input arguments');
 end
-cOUT = INclass;
-omega=2*pi*freq(INclass);
+omega=2*pi*freq(INclass).';
 
 %sp=empty(spmatrix,7,length(omega));
 %YP=xparam(sp+1e-15,'Y',50);
@@ -116,8 +118,32 @@ YP=buildxp(xparam,YM,'Y',50);
 
 % The internal nodes are removed after converting to Z-parameters
 
-ZP7=YP.Z;
+ZP7=convert(YP,'Z');
 ZP6=skip(ZP7,[7 7]);
 ZP5=skip(ZP6,[6 6]);
 
-cOUT = set(cOUT,'data',ZP5);
+
+% 
+% for k=1:length(omega)
+% 	Ztemp=inv(Y(:,:,k));
+% 	Ztemp(6:7,:)=[];
+% 	Ztemp(:,6:7)=[];
+% 	YPack(:,:,k)=inv(Ztemp);
+% end
+% 
+% % Convert the 5 node-admittance matrix into 4 port-admittance-matrix
+% 
+% YA=YPack(1:4,1:4,:);
+% YB=YPack(1:4,5,:);
+% YC=YPack(5,1:4,:);
+% YD=YPack(5,5,:);
+% 
+% for k=1:length(omega)
+% 	Ya=YA(:,:,k);
+% 	Yb=YB(:,:,k);
+% 	Yc=YC(:,:,k);
+% 	Yd=YD(:,:,k);
+% 	YPackage(:,:,k)=(Ya-(Yb*([0 0 1 1]*Ya+Yc))/(Yd+[0 0 1 1]*Yb))*inv(eye(4)+[0;0;1;1]*([0,0,1,1]*Ya+Yc)/(Yd+[0 0 1 1]*Yb));
+% end
+
+% Test

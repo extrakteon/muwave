@@ -14,9 +14,9 @@ function cOUT=set(cIN,varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$
+% $Author: fager $
+% $Date: 2005-05-03 15:22:41 +0200 (Tue, 03 May 2005) $
+% $Revision: 270 $
 % $Log$
 % Revision 1.2  2005/05/03 13:22:41  fager
 % Warning messages removed.

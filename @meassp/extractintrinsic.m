@@ -11,9 +11,9 @@ function [SM,X] = ExtractIntrinsic(intr,Smoothing)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
+% $Revision: 306 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:37:26  fager
 % no message
@@ -23,7 +23,7 @@ function [SM,X] = ExtractIntrinsic(intr,Smoothing)
 %
 
 f=get(intr,'Freq');
-omega=2*pi*f;
+omega=2*pi*f';
 Y11=get(intr,'Y11');
 Y12=get(intr,'Y12');
 Y21=get(intr,'Y21');

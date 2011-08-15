@@ -5,9 +5,9 @@ function cOut=measstate(varargin)
 %   It provides a basis for the meassp, measnoise child-classes
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:40:38  fager
 % * Changed from measSP to meassp.

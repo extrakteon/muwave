@@ -2,9 +2,9 @@ function am = arraymatrix(a,b,c)
 %ARRAYMATRIX    Constructor.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2005-10-12 18:17:34 +0200 (Wed, 12 Oct 2005) $
+% $Revision: 300 $ 
 % $Log$
 % Revision 1.6  2005/10/12 16:17:34  koffer
 % Changed to scalar binary operators (& -> &&, | -> ||).

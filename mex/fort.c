@@ -1,4 +1,4 @@
-/* $Revision$ $Date$ */
+/* $Revision: 96 $ $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $ */
 /*=========================================================
  * fort.c
  * auxilliary routines for conversion between MATLAB and
@@ -18,9 +18,9 @@ double* mat2fort(
 const mxArray *X
 )
 {
-    int n, nelem, cmplxflag;
+    mwSignedIndex n, nelem, cmplxflag;
     double *Z, *xr, *xi, *zp;
-    
+
     nelem = mxGetNumberOfElements(X);
     xr = mxGetPr(X);
     xi = mxGetPi(X);
@@ -50,15 +50,15 @@ const mxArray *X
 
 mxArray* fort2mat(
 double *Z,
-int nrow,
-int ncol,
-int nelem
+mwSignedIndex nrow,
+mwSignedIndex ncol,
+mwSignedIndex nelem
 )
 {
-    int n, dim, size[3];
+    mwSignedIndex n, dim, size[3];
     double *xr, *xi, *zp;
     mxArray *X;
-    
+
     /* Don't create 3-D matrix if not absolutely necessary */
     size[0] = nrow;
     size[1] = ncol;
@@ -69,9 +69,9 @@ int nelem
         dim = 2;
         size[2] = 0;
     }
-    
+
     /* Create complex MATLAB matrix */
-    X = mxCreateNumericArray(dim, size, mxDOUBLE_CLASS, mxCOMPLEX); 
+    X = mxCreateNumericArray(dim, size, mxDOUBLE_CLASS, mxCOMPLEX);
     xr = mxGetPr(X);
     xi = mxGetPi(X);
     zp = Z; /* use zp as a temporary pointer, no risk of loosing Z! */
@@ -81,5 +81,5 @@ int nelem
         *xi++ = *zp++;
     }
     return(X);
-    
+
 }

@@ -3,9 +3,9 @@ function cOUT=add(cIN,varargin)
 %   M=ADD(M,item) 
 %
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-05-12 14:27:37 +0200 (Thu, 12 May 2005) $
+% $Revision: 280 $ 
 % $Log$
 % Revision 1.3  2005/05/12 12:27:37  fager
 % Allows multiple objects to be added in one statement.
@@ -26,19 +26,19 @@ while ~stop
         switch upper(class(item))
             case 'MEASSWEEP'
                 cOUT = item;
-            case {'MEASSP','MEASWF'}
+            case 'MEASSP'
                 cOUT.data{1} = item;
             otherwise
-                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP, MEASSP or MEASWF');
+                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP or MEASSP');
         end
     else
         switch upper(class(item))
             case 'MEASSWEEP'
                 cOUT.data = [cOUT.data,item.data];
-            case {'MEASSP','MEASWF'}
+            case 'MEASSP'
                 cOUT.data{end+1} = item;
             otherwise
-                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP, MEASSP or MEASWF');
+                error('MEASSWEEP/ADD Input data must be of type MEASSWEEP or MEASSP');
         end
     end
     i = i+1;

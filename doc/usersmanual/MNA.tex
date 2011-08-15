@@ -1,7 +1,7 @@
 % $Header$
-% $Author$
-% $Date$
-% $Revision$
+% $Author: fager $
+% $Date: 2005-02-22 08:31:00 +0100 (Tue, 22 Feb 2005) $
+% $Revision: 239 $
 % $Log$
 % Revision 1.3  2005/02/22 07:31:00  fager
 % Corrections from M.Kelly implemented
@@ -30,7 +30,7 @@ example.
 
 Electrical circuits are entered into Milou by means of a
 \emph{netlist} file, similar to the ones used in Spice. The
-expressions shown in \tabref{Netlist} are recognized by the MuWave
+expressions shown in \tabref{Netlist} are recognized by the Milou
 netlist parser:
 
 \begin{table}[htbf]
@@ -79,25 +79,39 @@ The netlist can now be imported into Milou by using the
 \verb"read_netlist" function,
 \begin{small}
 \begin{verbatim}
-    >> model = read_netlist(mna,'test/circuit.net')
+    >> model = read_netlist(mna,'doc/Usersmanual/circuit.net')
     Admittance matrix:
         '+1/(R1)+s*C1'    '-s*C1'                 []
         '-s*C1'           [1x26 char]    '-1/(s*L1)'
         '+gm'             '-1/(s*L1)'    '+1/(s*L1)'
-
     Parameters:
-        'R1'    'C1'    'A'    'B'    'L1'    'gm'
-
+        'R1'
+        'C1'
+        'A'
+        'B'
+        'L1'
+        'gm'
     Parameter types:
-        'R'    'C'    'X'    'X'    'L'    'VCCS'
-
+        'R'
+        'C'
+        'X'
+        'X'
+        'L'
+        'VCCS'
     Frequencies
+    Partials
+        1
+        1
+        1
+        1
+        1
+        1
 \end{verbatim}
 \end{small}
 
 The output variable \verb"model" is now an \verb"mna" object. mna
 stands for \emph{modified nodal admittance}, which is the type of
-matrix normally used to represent circuits in simulators. MuWave
+matrix normally used to represent circuits in simulators. Milou
 currently uses the ordinary nodal admittance matrix for
 representing circuits\footnote{The modified nodal admittance
 matrix uses a different representation of components that may
@@ -164,11 +178,10 @@ The first case is evaluated by using the \verb"calc" function,
 \begin{verbatim}
     >> calc(model,model_params)
     xparam-object
-    	 type:	Y
-    	 reference:	50
-    	 ports:	3
-    	 elements:	101
-    	 freq:	1E+009 -> 5E+010
+        type:  Y
+        reference: 50
+        ports: 3
+        elements:  101
 \end{verbatim}
 \end{small}
 The resulting object is, for our three-node example a 3-by-3
@@ -180,11 +193,10 @@ calculate the port-reduced Z-parameters,
 \begin{verbatim}
     >> xp_model = reduce(model,model_params)
     xparam-object
-    	 type:	Z
-    	 reference:	50
-    	 ports:	2
-    	 elements:	101
-    	 freq:	1E+009 -> 5E+010
+        type:  Z
+        reference: 50
+        ports: 2
+        elements:  101
 \end{verbatim}
 \end{small}
 Note that the resulting object is a 2-by-2 Z-type \verb"xparam"

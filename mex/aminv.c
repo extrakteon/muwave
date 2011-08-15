@@ -1,4 +1,4 @@
-/* $Revision$ $Date$ */
+/* $Revision: 96 $ $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $ */
 /*=========================================================
  * aminv.c
  *
@@ -7,25 +7,26 @@
  * Copyright 2005 Kristoffer Andersson
  *=======================================================*/
 #include "mex.h"
+#include "matrix.h"
 #include "fort.h"
 #include "arraymatrix.h"
 
 void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 {
-        
-    int n, nrow, ncol, nelem;
-    int cplx = -1;
+
+    mwSignedIndex n, nrow, ncol, nelem;
+    mwSignedIndex cplx = -1;
     double *A, *pm;
-    const int *size;
-    int dim;
-    int rowcol;
+    const mwSignedIndex *size;
+    mwSignedIndex dim;
+    mwSignedIndex rowcol;
     mxArray *mxTemp;
     ArrayMatrix am;
-	
+
     if ((nlhs > 1) || (nrhs != 1)) {
         mexErrMsgTxt("Expect 1 input argument and return 1 output argument");
     }
-    
+
     /* Check the dimensions of M. */
     dim = mxGetNumberOfDimensions(prhs[0]);
     size = mxGetDimensions(prhs[0]);
@@ -35,7 +36,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     if (nrow != ncol) {
         mexErrMsgTxt("Matrix must be square.");
     }
-	
+
     cplx = mxIsComplex(prhs[0]);
     if (cplx) {
 		/* Convert matrix to Fortran complex and copies data to A */
@@ -51,17 +52,17 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 	}
 
 	amSetArrayMatrix(&am, A, nrow, ncol, nelem, cplx);
-	
-	/* Invert matrix */				
+
+	/* Invert matrix */
 	amInv(am);
-	
+
 	if (cplx) {
 		/* Convert to MATLAB complex */
 		plhs[0] = fort2mat(A, nrow, ncol, nelem);
 		mxFree(A); /* fort2mat copies content */
-	} else {	
+	} else {
 		/* Transfer output to MATLAB */
 		plhs[0] = mxTemp;
     }
-    
+
 }

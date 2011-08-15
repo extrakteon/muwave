@@ -4,9 +4,9 @@ function display(cIN)
 %   the measmnt object M.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-05-02 16:16:59 +0200 (Mon, 02 May 2005) $
+% $Revision: 266 $ 
 % $Log$
 % Revision 1.6  2005/05/02 14:16:16  fager
 % Allows cell-vector state variables

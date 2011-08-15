@@ -2,9 +2,9 @@ function c = abs(a)
 % ABS   Returns the absolute values of the arraymatrix elements.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2006-08-15 14:47:55 +0200 (Tue, 15 Aug 2006) $
+% $Revision: 304 $ 
 % $Log$
 % Revision 1.2  2005/04/27 21:29:19  fager
 % Version logging added.

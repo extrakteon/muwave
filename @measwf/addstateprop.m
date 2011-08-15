@@ -6,9 +6,9 @@ function cOUT=addstateprop(cIN,varargin)
 %   addprop(M,'P1',V1,'P2',V2,..) adds multiple properties in a single statement.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.1  2005/05/02 14:16:30  fager
 % Initial version

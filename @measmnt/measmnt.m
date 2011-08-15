@@ -5,9 +5,9 @@ function cOUT=measmnt(cIN)
 %   and Origin. 
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2003-07-17 11:30:14 +0200 (Thu, 17 Jul 2003) $
+% $Revision: 74 $ 
 % $Log$
 % Revision 1.6  2003/07/17 09:30:14  fager
 % no message

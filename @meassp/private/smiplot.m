@@ -7,9 +7,9 @@ function hsmiplot = smiplot(Z,r,x,line_style)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.4  2005/04/27 21:41:32  fager
 % * Changed from measSP to meassp.
@@ -171,9 +171,9 @@ yy = imag(Z);
 
 % plot data on top of grid
 if strcmp(line_style,'auto')
-    q = plot(xx,yy);
+    q = plot(xx,yy,'linewidth',2);
 else
-    q = plot(xx,yy,line_style);
+    q = plot(xx,yy,line_style,'linewidth',2);
 end
 if nargout > 0
     hsmiplot = q;

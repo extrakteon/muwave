@@ -2,9 +2,9 @@ function c = mrdivide(a,b)
 %MRDIVIDE Overload operator /
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2003-08-25 16:41:58 +0200 (Mon, 25 Aug 2003) $
+% $Revision: 132 $ 
 % $Log$
 % Revision 1.3  2003/08/25 14:41:58  fager
 % Matrix division implemented.

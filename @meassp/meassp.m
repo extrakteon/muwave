@@ -12,9 +12,9 @@ function cOUT=meassp(varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
+% $Revision: 306 $ 
 % $Log$
 % Revision 1.7  2005/05/11 10:10:31  fager
 % Allows creation of a meassp object from xparam data alone.

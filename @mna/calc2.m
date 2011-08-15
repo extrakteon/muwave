@@ -4,9 +4,9 @@ function x = calc(x,val)
 %       conversion-matrices
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: kristoffer $
+% $Date: 2003-11-17 20:55:38 +0100 (Mon, 17 Nov 2003) $
+% $Revision: 172 $ 
 % $Log$
 % Revision 1.4  2003/11/17 19:55:36  kristoffer
 % *** empty log message ***
@@ -92,4 +92,4 @@ for row = 1:N
     end
 end
 
-x.Yc = xparam(Yc,'Y',50,freq(x));
+x.Yc = xparam(Yc,'Y',50);

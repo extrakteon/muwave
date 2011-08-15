@@ -5,9 +5,9 @@ function b = subsref(a,S)
 % Calls xparam/subsref
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: kristoffer $
+% $Date: 2003-06-17 14:17:51 +0200 (Tue, 17 Jun 2003) $
+% $Revision: 2 $ 
 % $Log$
 % Revision 1.1  2003/06/17 12:17:53  kristoffer
 % Initial revision

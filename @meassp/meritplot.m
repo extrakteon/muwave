@@ -2,9 +2,9 @@ function meritplot(varargin)
 %MERITPLOT plots the various gain curves versus frequency
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:37:12  fager
 % * Changed from measSP to meassp.
@@ -33,14 +33,14 @@ x_unstable = x(idx_unstable);
 figure(1);
 subplot(2,1,1);
 semilogx(x,20*log10(abs(h21(sp))),'.');
-%saxis=axis;
-%axis(saxis.*[1 1 0 1]);
+saxis=axis;
+axis(saxis.*[1 1 0 1]);
 ylabel('|h21| [dB]');
 xlabel('Frequency [Hz]');
 
 subplot(2,1,2)
 semilogx(x_unstable,10*log10(gmsg(sp_unstable)),'.',x_stable,10*log10(ga(sp_stable)),'.');
-%saxis=axis;
-%axis(saxis.*[1 1 0 1]);
+saxis=axis;
+axis(saxis.*[1 1 0 1]);
 ylabel('MSG/MAG [dB]');
 xlabel('Frequency [Hz]');

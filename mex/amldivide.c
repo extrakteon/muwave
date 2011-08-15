@@ -1,4 +1,4 @@
-/* $Revision$ $Date$ */
+/* $Revision: 96 $ $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $ */
 /*=========================================================
  * amldivide.c
  *
@@ -7,27 +7,28 @@
  * Copyright 2005 Kristoffer Andersson
  *=======================================================*/
 #include "mex.h"
+#include "matrix.h"
 #include "fort.h"
 #include "arraymatrix.h"
 
-void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
+void mexFunction( mwSignedIndex nlhs, mxArray *plhs[], mwSignedIndex nrhs, const mxArray *prhs[] )
 {
-        
-    int n, nelem;
-	int nrow_a, ncol_a, nelem_a;
-	int nrow_b, ncol_b, nelem_b;
-    int cplx = -1;
+
+    mwSignedIndex n, nelem;
+	mwSignedIndex nrow_a, ncol_a, nelem_a;
+	mwSignedIndex nrow_b, ncol_b, nelem_b;
+    mwSignedIndex cplx = -1;
     double *A, *B, *X, *pA;
-    const int *size_a, *size_b;
-	int size_x[3] = {0};
-    int dim_a, dim_b, dim_x = 3;
+    const mwSignedIndex *size_a, *size_b;
+	mwSignedIndex size_x[3] = {0};
+    mwSignedIndex dim_a, dim_b, dim_x = 3;
     mxArray *mxTemp;
     ArrayMatrix amA, amB, amX;
-	
+
     if ((nlhs > 1) || (nrhs != 2)) {
         mexErrMsgTxt("Expect 2 input arguments and return 1 output argument");
     }
-    
+
     /* Check the dimensions of A. */
     dim_a = mxGetNumberOfDimensions(prhs[0]);
     size_a = mxGetDimensions(prhs[0]);
@@ -37,7 +38,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     if (nrow_a != ncol_a) {
         mexErrMsgTxt("Matrix A must be square.");
     }
-	
+
 	/* Check the dimensions of B. */
 	dim_b = mxGetNumberOfDimensions(prhs[1]);
     size_b = mxGetDimensions(prhs[1]);
@@ -47,13 +48,13 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     if (ncol_a != nrow_b) {
 		mexErrMsgTxt("Matrix dimensions must agree.");
 	}
-	
+
 	if (!((nelem_a == 1) || (nelem_b == 1) || (nelem_a == nelem_b))) {
 		mexErrMsgTxt("Array dimensions must agree.");
 	}
-	
+
 	nelem = intmax(nelem_a, nelem_b);
-	
+
     cplx = mxIsComplex(prhs[0]) || mxIsComplex(prhs[1]);
     if (cplx) {
 		/* Convert matrix to Fortran complex and copies data to A & B*/
@@ -61,7 +62,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 		B = mat2fort(prhs[1]);
 		/* Allocate storage for output */
 		X = mxCalloc(2*nrow_a*ncol_b*nelem, sizeof(double));
-		
+
 	} else {
 		/* since LAPACK alters A we have to make a copy */
 		pA = mxGetPr(prhs[0]);
@@ -77,15 +78,15 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 	amSetArrayMatrix(&amA, A, nrow_a, ncol_a, nelem_a, cplx);
 	amSetArrayMatrix(&amB, B, nrow_b, ncol_b, nelem_b, cplx);
 	amSetArrayMatrix(&amX, X, nrow_b, ncol_b, nelem, cplx);
-	
-	/* Solve AX=B */				
+
+	/* Solve AX=B */
 	amSolve(amX, amA, amB);
-		
+
 	if (cplx) {
 		/* Convert to MATLAB complex */
 		plhs[0] = fort2mat(X, nrow_b, ncol_b, nelem);
-		mxFree(X); /* fort2mat copies content */
-	} else {	
+		mxDestroyArray(X); /* fort2mat copies content */
+	} else {
 		/* Transfer output to MATLAB */
 		plhs[0] = mxCreateNumericArray(dim_x, size_x, mxDOUBLE_CLASS, mxREAL);
 		size_x[0] = size_b[0];
@@ -95,5 +96,5 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 		mxSetPr(plhs[0], X);
     }
 	//mxFree(A);
-    
+
 }

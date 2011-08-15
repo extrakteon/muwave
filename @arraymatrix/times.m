@@ -2,9 +2,9 @@ function c = times(a,b)
 %TIMES Overload operator .*
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2004-11-24 14:56:45 +0100 (Wed, 24 Nov 2004) $
+% $Revision: 236 $ 
 % $Log$
 % Revision 1.5  2004/11/24 13:56:45  fager
 % Added possibility of multipying 1x1xN - vector with n x m x N arraymatrix.

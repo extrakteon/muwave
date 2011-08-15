@@ -8,9 +8,9 @@ function val=get(cIN,prop)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2004-10-20 19:01:34 +0200 (Wed, 20 Oct 2004) $
+% $Revision: 218 $ 
 % $Log$
 % Revision 1.3  2004/10/20 16:59:39  fager
 % Help comments added

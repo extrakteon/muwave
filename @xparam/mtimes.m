@@ -2,9 +2,9 @@ function c = mtimes(a,b)
 %MTIMES Overloads the * operator.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2005-05-11 14:37:42 +0200 (Wed, 11 May 2005) $
+% $Revision: 278 $ 
 % $Log$
 % Revision 1.6  2005/05/11 12:37:42  koffer
 % Supports both pos- and premultiplication with doubles.

@@ -12,9 +12,9 @@ function [varargout]=sens(x,opt)
 %         dZ - derivatives
 %
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2005-09-12 16:25:30 +0200 (Mon, 12 Sep 2005) $
+% $Revision: 296 $ 
 % $Log$
 % Revision 1.8  2005/09/12 14:24:14  koffer
 % *** empty log message ***
@@ -56,9 +56,7 @@ end
 
 % produce output
 dZ = arraymatrix(dZ);
-%varargout{1} = x;
-varargout{1} = Z; % CF: Changed top return the evaluated xparam object.
-
+varargout{1} = x;
 if nargout == 2
     varargout{2} = dZ;
 elseif nargout == 3

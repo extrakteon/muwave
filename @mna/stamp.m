@@ -3,9 +3,9 @@ function x = stamp(x,type,element,conn)
 %
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.16  2005/04/27 21:44:52  fager
 % * Changed from measSP to meassp.

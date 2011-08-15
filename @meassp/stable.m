@@ -2,9 +2,9 @@ function stable = stable(a)
 %STABLE Returns 1 if the two-port is stable.
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:41:32  fager
 % * Changed from measSP to meassp.

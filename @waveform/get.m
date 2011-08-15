@@ -4,9 +4,9 @@ function val = get(a,param)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$
+% $Author: e7koffe@CHALMERS.SE $
+% $Date: 2009-09-01 11:14:53 +0200 (ti, 01 sep 2009) $
+% $Revision: 112 $
 % $Log$
 %
 

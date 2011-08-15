@@ -8,9 +8,9 @@ function b = subsref(a,SX)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2005-05-03 14:34:14 +0200 (Tue, 03 May 2005) $
+% $Revision: 269 $ 
 %
 % Revision 1.5  2004/10/20 22:24:09  fager
 % Help comments added

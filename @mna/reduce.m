@@ -10,9 +10,9 @@ function [varargout]=reduce(x,val)
 %       h_dZ - struct containing information used by sense
 %
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: ferndahl $
+% $Date: 2006-08-28 17:02:55 +0200 (Mon, 28 Aug 2006) $
+% $Revision: 310 $ 
 % $Log$
 % Revision 1.5  2005/09/12 14:22:20  koffer
 % *** empty log message ***
@@ -73,16 +73,12 @@ for k = 1:NPORTS
     % 04/03/09 changed order of Vp from (:,k,:) to (:,:,k)
     Vp(k,:,:) = -1*diff(Vb(1+PORTS(:,k),:,:));   
 end
-Z = xparam(Vp,'Z',50,x.f);
+Z = xparam(Vp,'Z');
 
 % output rearranged for better integration with sensitivity code
-switch nargout
-    case 1,
-    varargout{1} = Z;
-    case 2,
-    varargout{1} = x;
-    varargout{2} = Z;
-    case 3,
+varargout{1} = x;
+varargout{2} = Z;
+if nargout == 3
     h_dZ.Y = Y;
     h_dZ.V = V;
     h_dZ.Z = Z;
@@ -92,7 +88,5 @@ switch nargout
     h_dZ.PORTS = PORTS;
     h_dZ.x = x;
     h_dZ.val = val;
-    varargout{1} = x;
-    varargout{2} = Z;
     varargout{3} = h_dZ;
 end

@@ -8,9 +8,9 @@ function a = subsasgn(a,S,b)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$
+% $Author: fager $
+% $Date: 2005-04-27 23:46:37 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 263 $
 % $Log$
 % Revision 1.2  2005/04/27 21:46:28  fager
 % * Version logging added.

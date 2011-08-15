@@ -2,9 +2,9 @@ function c = mldivide(a,b)
 %MLDIVIDE Overload operator \
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2005-10-12 18:17:53 +0200 (Wed, 12 Oct 2005) $
+% $Revision: 301 $ 
 % $Log$
 % Revision 1.2  2005/10/12 16:17:53  koffer
 % Now uses aminv and ammul.

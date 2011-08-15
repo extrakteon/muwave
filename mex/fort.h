@@ -1,4 +1,4 @@
-/* $Revision$ $Date$ */
+/* $Revision: 96 $ $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $ */
 /*=========================================================
  * fort.h
  * header file for auxilliary routines for conversion
@@ -24,9 +24,9 @@ double* mat2fort(
 
 mxArray* fort2mat(
     double *Z,
-    int nrow,
-    int ncol,
-    int nelem
+    mwSignedIndex nrow,
+    mwSignedIndex ncol,
+    mwSignedIndex nelem
     );
 
 

@@ -9,9 +9,9 @@ function smithplot(varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
+% $Revision: 306 $ 
 % $Log$
 % Revision 1.6  2005/04/27 21:41:32  fager
 % * Changed from measSP to meassp.
@@ -20,27 +20,12 @@ function smithplot(varargin)
 % Help comments added
 %
 
-IS_MEASSWEEP = false;
-if nargin==3
-   if isstr(varargin{2})
-    if strmatch(varargin{2},'meassweep')
-        IS_MEASSWEEP = true;
-    end
-   end
-end
-
-if IS_MEASSWEEP
-    Xin=varargin{3};
-    nin=length(Xin);
-else
-    nin=nargin;
-    Xin=varargin;
-end
+nin=nargin;
+Xin=varargin;
 S11vect=[];
 S12vect=[];
 S21vect=[];
 S22vect=[];
-
 
 for k=1:nin
     vl(k)=length(Xin{k});    

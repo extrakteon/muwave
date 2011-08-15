@@ -1,4 +1,4 @@
-function cOUT = deembed(cIN,Packobj)
+function cOUT = Deembed(cIN,Packobj)
 % DEEMBED Deembed extrinsic to intrinsic data using a package matrix description.
 %   SP = DEEMBED(MSP,PACKMTRX) deembeds the S-parameter data in MSP using a four- or 
 %   five port representation of the embedding package. 
@@ -10,12 +10,16 @@ function cOUT = deembed(cIN,Packobj)
 
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
-% $Header: /milou/matlab_milou/@measSP/Deembed.m,v 1.3 2005/04/27 21:33:01 fager Exp $
-% $Author: fager $
-% $Date: 2005/04/27 21:33:01 $
-% $Revision: 1.3 $ 
-% $Log: Deembed.m,v $
-
+% $Header$
+% $Author: koffer $
+% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
+% $Revision: 306 $ 
+% $Log$
+% Revision 1.3  2005/04/27 21:33:01  fager
+% * Changed from measSP to meassp.
+%
+% Revision 1.2  2004/10/20 22:05:18  fager
+% Help comments added
 %
 
 
@@ -24,9 +28,9 @@ Packobj=meassp(Packobj);
 if get(INobj,'ports') ~= 2
     error('The Input object must have 2 ports');
 end
-% if any(freq(INobj) ~= freq(Packobj))
-%     Packobj = Packobj(freq(INobj));
-% end
+if any(freq(INobj) ~= freq(Packobj))
+    Packobj = Packobj(freq(INobj));
+end
 if get(Packobj,'ports') == 5
     
     % Have to use 3-dim matrix operations to make it work on rectangular matrices.
@@ -76,8 +80,8 @@ if get(Packobj,'ports') == 5
         YI(:,:,k)=(YIC(:,:,k)*(A+B*C)-YII(:,:,k)*C-YIE(:,:,k))*inv([1;1]*A+(eye(2)+[1;1]*B)*C);
     end    
     Yspm=reshape(permute(YI,[3,1,2]),length(INobj),[]);
-    INobj.data=buildxp(xparam,Yspm,'Y',50,freq(INobj));
-    INobj=set(INobj,'Info',[get(INobj,'Info'),' Deembedded data.']);
+    INobj.Data=buildxp(xparam,Yspm,'Y',50);
+    INobj=setInfo(INobj,[getInfo(INobj),' Deembedded data.']);
     cOUT=INobj;
 elseif get(Packobj,'ports') == 4 
     
@@ -111,7 +115,7 @@ elseif get(Packobj,'ports') == 4
         YI(:,:,k)=YIE(:,:,k)*inv(YEE(:,:,k)-YE(:,:,k))*YEI(:,:,k)-YII(:,:,k);
     end    
     Yspm=reshape(permute(YI,[3,1,2]),length(INobj),[]);
-    INobj.Data=buildxp(xparam,Yspm,'Y',50,freq(INobj));
+    INobj.Data=buildxp(xparam,Yspm,'Y',50);
     INobj=setInfo(INobj,[getInfo(INobj),' Deembedded data.']);
     cOUT=INobj;
     

@@ -10,9 +10,9 @@ function b = subsref(a,SX)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.7  2005/05/03 12:32:02  koffer
 % Implemented "nested" indexing, e.g. data.S11(1:4).

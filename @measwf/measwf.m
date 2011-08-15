@@ -12,9 +12,9 @@ function cOUT=measwf(varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: e7koffe@CHALMERS.SE $
+% $Date: 2009-09-01 11:15:27 +0200 (ti, 01 sep 2009) $
+% $Revision: 113 $ 
 % $Log$
 
 inparam=varargin;

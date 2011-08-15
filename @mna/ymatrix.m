@@ -4,9 +4,9 @@ function Yx = ymatrix(x,val)
 %       conversion-matrices
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: koffer $
+% $Date: 2004-04-28 17:56:51 +0200 (Wed, 28 Apr 2004) $
+% $Revision: 190 $ 
 % $Log$
 % Revision 1.1  2004/04/28 15:56:51  koffer
 % Support for second order sensitivities

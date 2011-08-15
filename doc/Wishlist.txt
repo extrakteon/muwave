@@ -1,9 +1,9 @@
 MATLAB MILOU WISHLIST
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2004-10-26 17:31:37 +0200 (Tue, 26 Oct 2004) $
+% $Revision: 228 $ 
 % $Log$
 % Revision 1.1  2004/10/26 15:31:37  fager
 % Just the first ones that came to my mind...

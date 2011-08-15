@@ -3,9 +3,9 @@ function [J]=dsdz(a)
 % two-ports
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: kristoffer $
+% $Date: 2003-11-17 20:55:38 +0100 (Mon, 17 Nov 2003) $
+% $Revision: 172 $ 
 % $Log$
 % Revision 1.2  2003/11/17 19:55:37  kristoffer
 % *** empty log message ***

@@ -7,9 +7,9 @@ function Y=read_touchstone_file(input_filename,nports)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author$
-% $Date$
-% $Revision$ 
+% $Author: fager $
+% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
+% $Revision: 261 $ 
 % $Log$
 % Revision 1.12  2005/04/27 21:42:44  fager
 % * Changed from measSP to meassp.
