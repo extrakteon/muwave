@@ -3,7 +3,7 @@ function m = end(a,k,n);
 %
 
 % $Header$
-% $Author: koffe $
+% $Author: e7koffe $
 % $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
 % $Revision: 96 $ 
 % $Log$

@@ -6,9 +6,9 @@ function [chksum]=adler32(str)
 %   chksum - checksum
 %
 % $Header$
-% $Author: SYSTEM $
-% $Date: 2004-09-28 21:06:59 +0200 (Tue, 28 Sep 2004) $
-% $Revision: 213 $ 
+% $Author: e7koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.1  2004/09/28 19:06:46  SYSTEM
 % read_milousweep now has a caching function. Speeds up consecutive loads of identical-data!

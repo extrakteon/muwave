@@ -7,9 +7,9 @@ function len=length(cIN)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2004-10-20 19:01:34 +0200 (Wed, 20 Oct 2004) $
-% $Revision: 218 $ 
+% $Author: e7koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.4  2004/10/20 16:59:20  fager
 % Help comments added

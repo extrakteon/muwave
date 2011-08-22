@@ -9,9 +9,9 @@ function b = subsref(a,SX)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-12 23:52:26 +0200 (Thu, 12 May 2005) $
-% $Revision: 287 $ 
+% $Author: e7koffe@CHALMERS.SE $
+% $Date: 2009-09-01 11:16:10 +0200 (ti, 01 sep 2009) $
+% $Revision: 114 $ 
 % $Log$
 % Revision 1.5  2005/05/12 21:52:26  fager
 % Nested indexing implemented also for meassweep, e.g. mswp(1).S11(20)
@@ -36,8 +36,15 @@ case '()', % The n'th measmnt object
     end
 case '.'
     try
+        % Koffe, 2009-08-28
+        b = [];        
         for k=1:length(a.data)
-            b = cat(2,b,subsref(a.data{k},S));
+            tmp = subsref(a.data{k},S);
+            dim = find(size(tmp)>1==0); % select the first "empty" dimension for concatination
+            if isempty(dim)
+                dim = ndims(tmp)+1;
+            end
+            b = cat(dim,b,tmp);
         end
     catch
         b = get(a,S.subs);        
