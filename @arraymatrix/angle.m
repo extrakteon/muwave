@@ -1,14 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-% returns the angle of each matrix
 function c = angle(a)
+% ANGLE returns the angle of each matrix element
 
 c = arraymatrix(a);
 mtrx = a.mtrx;

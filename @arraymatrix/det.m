@@ -1,14 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-% returns the determinant of each matrix
 function c = det(a)
+% DET returns the determinant of each matrix
 
 if a.nx == a.ny
     mtrx = a.mtrx;

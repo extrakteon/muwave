@@ -1,14 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-%
 function c = get(a,param)
+% GET get basic properties for arraymatrix
 
 if isa(param,'char')
     switch param

@@ -1,14 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-% Overloads method subsasgn, eg A(S) = B
 function a = subsasgn(a,S,b)
+% SUBSASGN Overloads method subsasgn, eg A(S) = B
 
 switch S.type
 case '()'

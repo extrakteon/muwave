@@ -1,24 +1,6 @@
 function am = arraymatrix(a,b,c)
 %ARRAYMATRIX    Constructor.
 
-% $Header$
-% $Author: koffer $
-% $Date: 2005-10-12 18:17:34 +0200 (Wed, 12 Oct 2005) $
-% $Revision: 300 $ 
-% $Log$
-% Revision 1.6  2005/10/12 16:17:34  koffer
-% Changed to scalar binary operators (& -> &&, | -> ||).
-%
-% Revision 1.5  2005/05/11 10:12:52  fager
-% Error in constructor fixed.
-%
-% Revision 1.4  2003/11/17 07:47:02  kristoffer
-% *** empty log message ***
-%
-% Revision 1.3  2003/08/25 10:37:59  fager
-% Added assignment method for single vector input argument.
-%
-
 if nargin==0
     % Default: Return an empty matrix with dimension 2
     p.nx = 2; % matrix dimension 

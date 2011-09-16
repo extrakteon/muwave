@@ -1,13 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-% Overload operator unary -
 function c=uminus(a)
+% UMINUS Overload operator unary -
 
 c=arraymatrix(a);
 mtrx = c.mtrx;

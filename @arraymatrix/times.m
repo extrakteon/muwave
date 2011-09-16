@@ -1,20 +1,6 @@
 function c = times(a,b)
 %TIMES Overload operator .*
 
-% $Header$
-% $Author: fager $
-% $Date: 2004-11-24 14:56:45 +0100 (Wed, 24 Nov 2004) $
-% $Revision: 236 $ 
-% $Log$
-% Revision 1.5  2004/11/24 13:56:45  fager
-% Added possibility of multipying 1x1xN - vector with n x m x N arraymatrix.
-% The multiplication is done element-wise
-%
-% Revision 1.4  2004/09/27 15:23:52  SYSTEM
-% Major overhaul of valid operations.
-%
-%
-
 if isa(a,'double') 
     c = itimes_pre(a,b);
 elseif isa(b,'double')

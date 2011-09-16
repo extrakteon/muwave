@@ -1,14 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-% returns the square root of each matrix-element
 function c = sqrt(a)
+% SQRT returns the square root of each matrix-element
 
 c = arraymatrix(a);
 mtrx = a.mtrx;

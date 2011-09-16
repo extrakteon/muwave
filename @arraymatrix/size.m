@@ -1,15 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-% returns the size of ArrayMatrix
-
 function m = size(a,dim)
+% SIZE returns the size of ArrayMatrix
 
 x = [a.nx a.ny a.m];
 if nargin==2

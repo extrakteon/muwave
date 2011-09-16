@@ -1,14 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-
-
-% Overladed ctranspose *
 function c = ctranspose(a)
+% CTRANSPOSE Overladed ctranspose *
 
 M = a.m;
 mtrx = zeros(a.ny,a.nx,a.m);

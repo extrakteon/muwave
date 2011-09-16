@@ -1,12 +1,5 @@
-%
-% ArrayMatrix
-% class for handling arrays of matrices
-%
-% author: Kristoffer Andersson
-%
-%
-% Method inv
 function b=inv(a)
+% INV Returns the matrix inverse of a
 
 b=a;
 % mtrx=a.mtrx;

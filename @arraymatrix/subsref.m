@@ -1,16 +1,6 @@
 function c = subsref(a,S)
 % SUBSREF Overloads method subsref, eg B = A(S)
 
-% $Header$
-% $Author: koffer $
-% $Date: 2005-05-04 11:50:23 +0200 (Wed, 04 May 2005) $
-% $Revision: 271 $ 
-% $Log$
-% Revision 1.2  2005/05/04 09:50:23  koffer
-% Support for 3D-indexing.
-%
-%
-
 if S.type ~= '()',
     error('ARRAYMATRIX.SUBSREF: Unsupported indexing.');
 end
