@@ -7,7 +7,7 @@ case '()'
      if KK == 1
          % A(n) = B type of assignment, where B is a matrix
          b = arraymatrix(b);
-         K =cell2mat(S.subs{:});
+         K = S.subs{:};
          if b.m ~= length(K)
              error('ARRAYMATRIX.SUBSASGN: Length of vectors must be equal.');
          elseif (b.nx ~= a.nx) & (b.ny ~= a.ny)
