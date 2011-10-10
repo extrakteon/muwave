@@ -37,8 +37,8 @@ Sei = S(idxE,idxI);
 See = S(idxE,idxE);
 
 % partition waveform data
-ae = get(wf_in,'a');
-be = get(wf_in,'b');
+ae = get(wf_in,'A');
+be = get(wf_in,'B');
 
 % Calculate intrinsic waveforms
 ai = Sei\(be - See*ae);
@@ -46,6 +46,6 @@ bi = Sie*ae + Sii*ai;
 
 % Assign output data
 wf_out = wf_in;
-wf_out = set(wf_out,'a',ai);
-wf_out = set(wf_out,'b',bi);
+wf_out = set(wf_out,'A',ai);
+wf_out = set(wf_out,'B',bi);
 
