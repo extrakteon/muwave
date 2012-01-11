@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\agilent_4156_analyzer.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>DC Power Supply</InstrumentType>
+   <InstrumentManufacturer>HAMEG</InstrumentManufacturer>
+   <InstrumentModel>H4040</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>*ESE?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Set the instrument in a known state.
+fprintf(g, '*RST');
+
+% Turn off outputs.
+CHANNELS = get(obj, 'SMUs');
+
+% Start with high channels so that we end up with Ch1 as active
+for k = CHANNELS:-1:1
+    % select active channel
+    cmdstr = sprintf('INST:NSEL %d', k);
+    fprintf(g, cmdstr);
+    
+    % turn off output
+    str = sprintf('OUTP %d', 0);
+    fprintf(g, str);
+end
+
+cmdstr = sprintf('OUTP:GEN 0');
+fprintf(g, cmdstr);</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Turn off outputs.
+CHANNELS = get(obj, 'SMUs');
+
+% Start with high channels so that we end up with Ch1 as active
+for k = CHANNELS:-1:1
+    % select active channel
+    cmdstr = sprintf('INST:NSEL %d', k);
+    fprintf(g, cmdstr);
+    
+    % turn off output
+    str = sprintf('OUTP %d', 0);
+    fprintf(g, str);
+end
+
+cmdstr = sprintf('OUTP:GEN 0');
+fprintf(g, cmdstr);
+
+% set to local
+cmdstr = sprintf('SYST:LOC');
+fprintf(g, cmdstr);</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Output</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% get object interface.
+g = get(obj, 'Interface');
+
+% Check if the Output is on or off
+fprintf(g, 'OUTP:GEN?');
+propertyValue = fscanf(g, '%d');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% get object interface.
+g = get(obj, 'Interface');
+
+% Set output state.
+cmdstr = sprintf('OUTP:GEN %d', propertyValue);
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>SMUs</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% get object interface.
+g = get(obj, 'Interface');
+
+% read the model number string
+fprintf(g, '*IDN?');
+idn = fscanf(g, '%s');
+
+% look up the model string:
+switch upper(idn(7:13))
+    case 'HMP4040'
+        channels = 4;
+    otherwise
+        channels = 1;
+end
+
+% return the number of channels
+propertyValue = channels;
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo/>
+      </Group>
+      <Group>
+         <Name>smu</Name>
+         <Description/>
+         <Command/>
+         <Size>4</Size>
+         <Mappings>
+            <ChannelMap Command="4" Index="4"/>
+            <ChannelMap Command="3" Index="3"/>
+            <ChannelMap Command="2" Index="2"/>
+            <ChannelMap Command="1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Current</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% Read the current setting for the active channel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+
+fprintf(g, 'CURR?');
+iset = fscanf(g, '%g');
+
+propertyValue = iset;
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% Set the current setting for the active channel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+
+cmdstr = sprintf('CURR %g', abs(propertyValue));
+fprintf(g, cmdstr);
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Output</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% Get the ActiveChannel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+
+% Check if the Output is on or off
+fprintf(g, 'OUTP?');
+propertyValue = fscanf(g, '%d');
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% Get the ActiveChannel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+
+% Set the Output to on or off
+if isa(propertyValue,'char')
+    switch upper(propertyValue)
+        case 'ON'
+            outp = 1;
+        case 'OFF'
+            outp = 0;
+    end
+else
+    outp = propertyValue;
+end
+
+% Set the Output-state
+cmdstr = sprintf('OUTP %d', outp);
+fprintf(g, cmdstr);
+</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Value>0.0</Value>
+                     <Value>1.0</Value>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Voltage</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% Read the voltage setting for the active channel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+
+fprintf(g, 'VOLT?');
+vset = fscanf(g, '%g');
+
+propertyValue = vset;</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% get ActiveChannel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+
+% Set the voltage setting for the active channel
+cmdstr = sprintf('VOLT %g', abs(propertyValue));
+fprintf(g, cmdstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>MeasCurrent</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function iout = MeasCurrent(obj, channel)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% get Interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% if channel is not given use the active channel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+    
+% Measure Current.
+fprintf(g, 'MEAS:CURR?');
+iout = fscanf(g, '%g');</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>MeasVoltage</Name>
+               <Location>smu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function vout = MeasVoltage(obj, channel)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% get Interface object.
+% g = get(obj, 'Interface');
+g = get(get(obj, 'Parent'), 'Interface');
+
+% if channel is not given use the active channel
+CHANNEL = str2num(get(obj, 'HwName'));
+cmdstr = sprintf('INST:NSEL %d',CHANNEL);
+fprintf(g, cmdstr);
+    
+% Measure Voltage.
+fprintf(g, 'MEAS:VOLT?');
+vout = fscanf(g, '%g');</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>
