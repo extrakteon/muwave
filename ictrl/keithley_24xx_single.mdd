@@ -172,6 +172,8 @@ switch mode
     case 'Voltage'
         % Set compliance
         fprintf(g, ':SENS:CURRENT:PROTECTION %g', propertyValue);
+        fprintf(g, ':SENS:CURRENT:RANG:AUTO:LLIM %g', -abs(propertyValue));
+        fprintf(g, ':SENS:CURRENT:RANG:AUTO:ULIM %g', abs(propertyValue));
     case 'Current'
         % Set current setting
         fprintf(g, ':SOURCE:CURRENT:LEVEL %g', propertyValue);
@@ -288,6 +290,7 @@ end
 
 % Set the Output-state
 fprintf(g, ':OUTP %d', outp);
+fprintf(g, ':SENS:CURR:RANG:AUTO 1');
 </SetMCode>
                </Code>
                <PermissibleType>
@@ -299,6 +302,45 @@ fprintf(g, ':OUTP %d', outp);
                   </ConstraintValue>
                </PermissibleType>
                <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Sense</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Check if the remote sensing is on or off
+fprintf(g, ':SYSTem:RSENse?');
+propertyValue = fscanf(g, '%d');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Set remote sensing on or off
+outp = propertyValue;
+fprintf(g, '::SYSTem:RSENse %d', outp);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
                <ReadOnly>never</ReadOnly>
                <Description/>
             </Property>
@@ -348,6 +390,15 @@ switch mode
         fprintf(g, ':SENS:VOLTAGE:PROTECTION %g', propertyValue);
     case 'Voltage'
         % Set voltage setting
+%         if abs(propertyValue) &gt; 21
+
+          %CHRISTER: Removed this line, seems to give error message on instrument display
+          %fprintf(g, ':SENS:VOLT:RANG: %g', abs(propertyValue));
+          fprintf(g, ':SENS:VOLT:RANG: %g', sign(propertyValue)*ceil(abs(propertyValue)));
+          
+%         else
+%             fprintf(g, ':SENS:VOLTAGE:RANG:AUTO:ULIM %g', abs(propertyValue));
+%         end   
         fprintf(g, ':SOURCE:VOLTAGE:LEVEL %g', propertyValue);
 end
 </SetMCode>
