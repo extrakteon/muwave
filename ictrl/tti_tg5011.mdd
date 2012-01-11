@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\agilent_66xxx_single.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Signal Generator</InstrumentType>
+   <InstrumentManufacturer>TTi</InstrumentManufacturer>
+   <InstrumentModel>TG5011</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify>*IDN?</Identify>
+   <Reset>*RST</Reset>
+   <Selftest>*TST?</Selftest>
+   <Error>*ESE?</Error>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Set the instrument in a known state.
+fprintf(g, '*RST');</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+% get Interface object.
+g = get(obj, 'Interface');
+
+% Turn off Output.
+cmdstr = sprintf(':POW:STAT 0');
+fprintf(g, cmdstr);
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>AmplUnit</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% % Get interface object.
+% g = get(obj, 'Interface');
+% 
+% % Get the amplitude unit
+% cmdstr = sprintf('AMPUNIT?');
+% fprintf(g, cmdstr);
+% propertyValue = fscanf(g);
+% 
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% set amplitude unit
+cmdstr = sprintf('AMPUNIT %s', propertyValue);
+fprintf(g,cmdstr);
+
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Frequency</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Get the frequency in Hz
+cmdstr = sprintf('FREQ?');
+fprintf(g, cmdstr);
+propertyValue = fscanf(g);
+
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% set frequency in Hz
+cmdstr = sprintf('FREQ %1.6f', propertyValue);
+fprintf(g,cmdstr);
+
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Output</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Get the Output-state
+cmdstr = sprintf('OUTPUT?');
+fprintf(g, cmdstr);
+propertyValue = fscanf(g);
+
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+keyboard
+
+% Get interface object.
+g = get(obj, 'Interface');
+keyboard
+if isnumeric(propertyValue)
+    switch propertyValue
+        case 1
+            outp = 'ON';
+        case 0
+            outp = 'OFF';
+    end
+else
+    outp = propertyValue;
+end
+keyboard
+% Set the Output-state
+cmdstr = sprintf('OUTPUT %s', outp);
+fprintf(g, cmdstr);
+keyboard
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>enum</Constraint>
+                  <ConstraintValue>
+                     <Value>0.0</Value>
+                     <Value>1.0</Value>
+                  </ConstraintValue>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Power</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% Get the power in dBm
+cmdstr = sprintf('AMPL?');
+fprintf(g, cmdstr);
+propertyValue = fscanf(g);
+
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get interface object.
+g = get(obj, 'Interface');
+
+% set source power in dBm
+cmdstr = sprintf('AMPL %d', propertyValue);
+fprintf(g,cmdstr);
+
+% % operation complete?
+% cmdstr = sprintf('*OPC?');
+% fprintf(g,cmdstr);
+% fscanf(g);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo/>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>
