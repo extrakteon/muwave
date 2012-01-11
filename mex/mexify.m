@@ -14,7 +14,9 @@ switch computer('arch')
     case 'win32'
         path_lapack = sprintf('%s/extern/lib/win32/%s/libmwlapack.lib %s/extern/lib/win32/%s/libmwblas.lib',matlabroot,'lcc',matlabroot,'lcc');
     case 'win64'
-        path_lapack = sprintf('%s/extern/lib/win64/%s/libmwlapack.lib %s/extern/lib/win64/%s/libmwblas.lib','C:\PROGRA~1\MATLAB\R2009A\','microsoft','C:\PROGRA~1\MATLAB\R2009A\','microsoft');
+        add_path = sprintf('%s/extern/lib/win64/microsoft/',matlabroot);
+        path(path, add_path);
+        path_lapack = 'libmwlapack.lib libmwblas.lib';
 end
         
 switch computer('arch')
