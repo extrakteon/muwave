@@ -1,0 +1,56 @@
+function init_smith(ax)
+
+axes(ax);
+plot(exp(1i.*linspace(-pi, pi)),'k-');
+hold on;
+plot([-1 1],[0 0],'k-');
+Ztmp = 0.2 + 1i.*linspace(-1,1);
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = 0.5 + 1i.*linspace(-2,2);
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = 1 + 1i.*linspace(-2,2);
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = 2 + 1i.*linspace(-15,15);
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+% Ztmp = 5 + 1i.*linspace(-20,20);
+% G = (Ztmp-1)./(Ztmp+1);
+% plot(G,'k-');
+Ztmp = linspace(0,0.5) + 0.2i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,0.5) - 0.2i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,1) + 0.5i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,1) - 0.5i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,2) + 1i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,2) - 1i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,15) + 2i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+Ztmp = linspace(0,15) - 2i;
+G = (Ztmp-1)./(Ztmp+1);
+plot(G,'k-');
+% Ztmp = linspace(0,5) + 5i;
+% G = (Ztmp-1)./(Ztmp+1);
+% plot(G,'k-');
+% Ztmp = linspace(0,5) - 5i;
+% G = (Ztmp-1)./(Ztmp+1);
+% plot(G,'k-');
+axis equal;
+axis([-1.1 1.1 -1.1 1.1]);
+set(gca,'XTick',[],'YTick',[],...
+    'Box','off','XColor',[1 1 1],...
+    'YColor',[1 1 1]);

@@ -1,0 +1,11 @@
+Freq 
+I1 
+V1 
+abs(S11) 
+dB(swp.S22) 
+gradient(I1) 
+gradient(I1)./gradient(V1) 
+gradient(I2) 
+imag(S11) 
+swp.S22 
+w 
