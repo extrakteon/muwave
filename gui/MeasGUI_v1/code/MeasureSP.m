@@ -117,7 +117,8 @@ for Idx = 1:NMEAS
     sp = set(sp, 'measstate', measstate);
     sp.data = xp;
     swp = add(swp, sp);
-    save('data/backup.mat','swp'); % save a backup copy of the measurement
+    save('./data/backup.mat','swp'); % save a backup copy of the measurement
+% %     Changed path from /backup/ to . /MF
     
     % update plots and data boxes
     if DC1

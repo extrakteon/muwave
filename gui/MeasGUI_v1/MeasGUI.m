@@ -24,6 +24,11 @@ function varargout = MeasGUI(varargin)
 
 % Last Modified by GUIDE v2.5 03-Aug-2011 14:39:39
 
+% Initialization added by Mattias Ferndahl. 
+if isempty(dir('data')) % check if default save folder: data/ exist:
+    mkdir('data');      % create data/ if not
+end
+
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
