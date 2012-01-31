@@ -1,13 +1,25 @@
 function a = subsasgn(a,S,b)
-% SUBSASGN Overloads method subsasgn, eg A(S) = B
-
+% Overloads method subsasgn, eg A(S) = B
+%
+% ArrayMatrix
+% class for handling arrays of matrices
+%
+% author: Kristoffer Andersson
+%
+%
+% $Header$
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
+% $Log$
+%
 switch S.type
 case '()'
      KK = length(S.subs);
      if KK == 1
          % A(n) = B type of assignment, where B is a matrix
          b = arraymatrix(b);
-         K = S.subs{:};
+         K =cell2mat(S.subs{:});
          if b.m ~= length(K)
              error('ARRAYMATRIX.SUBSASGN: Length of vectors must be equal.');
          elseif (b.nx ~= a.nx) & (b.ny ~= a.ny)
@@ -21,13 +33,17 @@ case '()'
          % A(nx,ny,m) = b type of assignment, where b is a vector
          x = S.subs{1};
          y = S.subs{2};
-         if (x > a.nx | y > a.ny)
-             error('ARRAYMATRIX.SUBSASGN: Subscript larger than matrix dimension.');    
-         elseif length(b) ~= a.m
+         %if (x > a.nx | y > a.ny)
+         %    error('ARRAYMATRIX.SUBSASGN: Subscript larger than matrix dimension.');    
+         if length(b) ~= a.m
              error('ARRAYMATRIX.SUBSASGN: Length of vectors must be equal.');
          else    
             mtrx = a.mtrx;
-            mtrx(x,y,:) = b;
+            if strcmp(class(b),'arraymatrix')
+                mtrx(x,y,:) = b.mtrx;
+            else
+                mtrx(x,y,:) = b;
+            end
             a.mtrx = mtrx;
         end
      end
