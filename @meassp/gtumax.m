@@ -6,9 +6,9 @@ function gtu = gtumax(a)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 261 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.5  2005/04/27 21:37:11  fager
 % * Changed from measSP to meassp.

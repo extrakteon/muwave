@@ -9,9 +9,9 @@ function ft = ft(varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 261 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.6  2005/04/27 21:37:11  fager
 % * Changed from measSP to meassp.
@@ -28,14 +28,26 @@ else
     spline = 1;
 end
 
+x = freq(a);
 H21 = 20*log10(abs(h21(a)));
-% see if we have measured the zero-dB crossing
 
-if any(H21<=0) & spline
+% see if we have measured the zero-dB crossing
+if all(H21<=0)
+    ft = 0;
+elseif (any(H21<=0) && any(H21>0)) && spline
     % then use interpolation
-    ft = interp1(H21,freq(a),0,'spline',NaN);
+    p = interp1(H21,log10(x),0,'spline');
+    ft = 10^(p);
+    if ft > max(x) % impossible if we measured the transition
+        p = interp1(H21,log10(x),0,'linear');
+    end
+    ft = 10^(p);
 else
     % otherwise use extrapolation
-    p = polyfit(H21,log10(freq(a)),1);
+    % first remove low frequencies
+    idx = find(x < 0.4*max(x));
+    idx = (1+idx(end)):length(x);
+    % then extrapolate
+    p = polyfit(H21(idx),log10(x(idx)),1);
     ft = 10^(p(2));
 end

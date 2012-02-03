@@ -3,9 +3,9 @@ function m = end(a,k,n);
 %
 
 % $Header$
-% $Author: koffer $
-% $Date: 2005-05-04 11:51:11 +0200 (Wed, 04 May 2005) $
-% $Revision: 272 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.1  2005/05/04 09:50:47  koffer
 % First introduction of end-operator

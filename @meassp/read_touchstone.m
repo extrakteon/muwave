@@ -12,9 +12,9 @@ function cOUT=read_touchstone(cIN,fname,nports)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:44:23 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 260 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.9  2005/04/27 21:44:23  fager
 % * Frequencies -> xparam

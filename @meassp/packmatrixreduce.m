@@ -10,9 +10,9 @@ function cOUT = PackMatrixReduce(cIN)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: koffer $
-% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
-% $Revision: 306 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:41:32  fager
 % * Changed from measSP to meassp.

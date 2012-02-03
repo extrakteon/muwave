@@ -9,17 +9,6 @@ function fmax = fmax(varargin)
 
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
-% $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:44:52 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 261 $ 
-% $Log$
-% Revision 1.6  2005/04/27 21:37:11  fager
-% * Changed from measSP to meassp.
-%
-% Revision 1.5  2004/10/20 22:18:23  fager
-% Help comments added
-%
 
 a = varargin{1};
 if nargin > 1
@@ -44,19 +33,31 @@ x_unstable = x(idx_unstable);
 MSG = 20*log10(gmsg(a_unstable));
 MAG = 20*log10(ga(a_stable));
 % see if we have measured the zero-dB crossing
-if any(MSG<=0) & spline
+if all(MSG<=0)
+    fmax = 0;
+elseif (any(MSG<=0) && any(MSG>0)) & spline
     fmax = interp1(MSG,x_unstable,0,'spline',NaN);
-elseif any(MAG<=0) & spline
+elseif (any(MAG<=0) && any(MAG>0)) & spline
     fmax = interp1(MAG,x_stable,0,'spline',NaN);
 else
     if length(x_stable)<2
         LFU = log10(x_unstable);
+        % do some pruning
+        id = find(x_unstable<(0.8*max(x_unstable)));
+        id = id(end):length(LFU);
         pU = polyfit(MSG,LFU,1);
         fmax = 10^(pU(2));
     else
         LFS = log10(x_stable);
-        pS = polyfit(MAG,LFS,1);
-        fmax = 10^(pS(2));
+        % do some pruning
+        id = find(x_stable<(0.8*max(x_stable)));
+        if length(id)<2
+            id = find(x_stable<max(x_stable));
+        else
+            id = id(end):length(LFS);
+        end
+        pS = polyfit(MAG(id),LFS(id),1);
+        fmax = 10^(pS(2));        
     end
 end
 

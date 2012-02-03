@@ -11,9 +11,9 @@ function cOUT = interp(cIN,fout,prop)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-05-23 16:11:30 +0200 (Mon, 23 May 2005) $
-% $Revision: 289 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.4  2005/05/23 14:11:30  fager
 % *** empty log message ***

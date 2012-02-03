@@ -10,9 +10,9 @@ function ParamPlot(varargin)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: koffer $
-% $Date: 2006-08-18 06:47:51 +0200 (Fri, 18 Aug 2006) $
-% $Revision: 306 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.3  2005/04/27 21:41:32  fager
 % * Changed from measSP to meassp.
@@ -21,15 +21,23 @@ function ParamPlot(varargin)
 % Help comments added
 %
 
-
 nin=nargin;
-haxes=varargin{nin};
-param=varargin{nin-2};
-type=varargin{nin-1};
+if isa(varargin{nin},'double')
+    haxes = varargin{nin};
+    param = varargin{nin-2};
+    type = varargin{nin-1};
+    nargs = 3; 
+else
+    haxes = gca;
+    param = varargin{nin-1};
+    type = varargin{nin};
+    nargs = 2;
+end
+ 
 Xin=varargin;
 Xvect=[];
 fvect=[];
-for k=1:nin-3
+for k=1:(nin - nargs)
     if ~isa(Xin{k},'meassp')
         error('Wrong input argument');
     end
