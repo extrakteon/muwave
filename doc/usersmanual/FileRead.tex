@@ -1,17 +1,17 @@
 % $Header$
 % $Author: fager $
-% $Date: 2004-10-21 20:59:19 +0200 (Thu, 21 Oct 2004) $
-% $Revision: 223 $
+% $Date: 2009-04-28 20:51:04 +0200 (ti, 28 apr 2009) $
+% $Revision: 99 $
 % $Log$
 % Revision 1.2  2004/10/21 18:59:06  fager
 % Version logging added. Comments from KA implemented.
 %
 \section{Reading and storing single measurement files}
-The easiest and best way to introduce the functionality of Milou
+The easiest and best way to introduce the functionality of MuWave
 is probably by an example. The example measurement used here is
 for an InP-HEMT device biased in the active region. The
 measurement is stored as a TouchStone file at: \newline
-\verb"matlab_milou/test/d0509/d0509_20".
+\verb"muwave/test/d0509/d0509_20".
 
 \subsection{The TouchStone file format}
 The most commonly used file format for storing S-parameter files
@@ -68,31 +68,28 @@ where in this case the \verb"RI" format has been assumed.
 
 \subsection{read\_touchstone}
 The \verb"read_touchstone" function allows a straightforward way
-of importing TouchStone files into Milou:
+of importing TouchStone files into MuWave:
 
 \begin{small}
 \begin{verbatim}
-    >> msp = read_touchstone(meassp,...
-        'matlab_milou/test/d0509/d0509_20')
+    >> msp = read_touchstone(meassp,'muwave/test/d0509/d0509_20')
     Measurement info
         Date : 2002-10-25, 08:50
-        Origin : matlab_milou\test\d0509\d0509_20
+        Origin : muwave/test/d0509/d0509_20
         Operator :
         Info :
     Measurement state
-        MeasType:   SP
-        Vgs:    -0.1
-        Vds:    1.5
-        Igs:    -2.784E-007
-        Ids:    0.019745
-        Freq,min:   1E+009
-        Freq,max:   5E+010
-    Measurement Data
+    	MeasType:	SP
+    	Vgs:	-0.1
+    	Vds:	1.5
+    	Igs:	-2.784e-007
+    	Ids:	0.019745
     xparam-object
-        type:  S
-        reference: 50
-        ports: 2
-        elements:  101
+    	 type:	S
+    	 reference:	50
+    	 ports:	2
+    	 elements:	101
+    	 freq:	1E+009 -> 5E+010
 \end{verbatim}
 \end{small}
 

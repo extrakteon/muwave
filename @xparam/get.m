@@ -7,9 +7,9 @@ function val = get(a,param)
 %   (c) Kristoffer Andersson & Christian Fager, Chalmers University of Technology, Sweden
 
 % $Header$
-% $Author: fager $
-% $Date: 2005-04-27 23:46:37 +0200 (Wed, 27 Apr 2005) $
-% $Revision: 263 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.4  2005/04/27 21:39:13  fager
 % * Version logging added.
@@ -20,7 +20,6 @@ function val = get(a,param)
 % Help comments added
 %
 
-a = xparam(a);
 if square(a)
     ports = get(a.data,'nx');
 else
@@ -86,7 +85,9 @@ switch lower(param)
                 if ~err
                     % Get correct parameter
                     a = convert(a, param(1));
-                    val = a.data(x, y);
+                    temp = get(a.data,'mtrx');
+                    val = squeeze(temp(x, y, :));
+                    
                 else
                     error('XPARAM.GET: Index out of range.');
                 end

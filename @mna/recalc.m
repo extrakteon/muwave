@@ -4,9 +4,9 @@ function x = recalc(x,val)
 %       conversion-matrices
 
 % $Header$
-% $Author: koffer $
-% $Date: 2005-09-12 16:25:30 +0200 (Mon, 12 Sep 2005) $
-% $Revision: 296 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+% $Revision: 96 $ 
 % $Log$
 % Revision 1.4  2005/09/12 14:19:26  koffer
 % *** empty log message ***
@@ -101,5 +101,5 @@ if ~isempty(tmap)
     end
 end
 
-x.Yc = xparam(Yc,'Y',50);
+x.Yc = xparam(Yc,'Y',50,freq(x));
 x.valid_calc = true;

@@ -3,9 +3,9 @@ function [x,Yx] = calc(x,val)
 %       if the parameter list is a cell-array the paramers are treated as
 %       conversion-matrices
 % $Header$
-% $Author: koffer $
-% $Date: 2005-09-12 16:25:30 +0200 (Mon, 12 Sep 2005) $
-% $Revision: 296 $ 
+% $Author: koffe $
+% $Date: 2009-01-13 11:05:46 +0100 (ti, 13 jan 2009) $
+
 % $Log$
 % Revision 1.8  2005/09/12 14:19:11  koffer
 % *** empty log message ***
@@ -19,3 +19,6 @@ end
 
 x = recalc(x,xval);
 Yx = x.Yc;
+if nargout == 1
+    x = Yx;
+end
