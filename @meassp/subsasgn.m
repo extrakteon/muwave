@@ -36,7 +36,7 @@ switch S.type
     case {'()','{}'}
         try
             cOUT.data = subsasgn(cIN.data,S,b);
-        catch
+        catch err
             error('Illegal assignment type.');
         end
     case '.'
@@ -51,7 +51,7 @@ switch S.type
         else
             try
                 cOUT.data = subsasgn(cIN.data,S,b);
-            catch
+            catch err
                 error('Illegal assignment.');
             end
         end

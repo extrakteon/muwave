@@ -46,7 +46,7 @@ case '.'
             end
             b = cat(dim,b,tmp);
         end
-    catch
+    catch err
         b = get(a,S.subs);        
     end
 otherwise

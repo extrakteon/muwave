@@ -52,10 +52,10 @@ switch S.type
     case '.'
         try
             b = get(a,S.subs);
-        catch
+        catch err
             try
                 b = subsref(a.data,S);
-            catch
+            catch err
                 error(['Unknown property: ',S.subs]);
             end
         end

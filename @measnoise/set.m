@@ -55,10 +55,10 @@ elseif nargin>2 & mod(nargin,2)==1   %set(cIN,'Prop1',val,'Prop2',val2,...)
         otherwise,
             try
                 INclass.measmnt=set(INclass.measmnt,prop,val);
-            catch
+            catch err
                 try
                     INclass.State=set(INclass.State,prop,val);
-                catch
+                catch err
                     error(['Unknown property "',prop,'".']);
                 end
             end

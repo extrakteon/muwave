@@ -131,7 +131,7 @@ try
     % does a cachefile exist?
     tmp = load(cachefile);
     cOUT = tmp.cOUT;
-catch
+catch err
     % otherwise read each-file and create one!
     for k=1:length(sort_index)
         file_name = strcat(FilePath, file_name_list{sort_index(k)});

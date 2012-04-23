@@ -21,15 +21,15 @@ switch lower(prop_name)
     otherwise
         try		% Try if it works if operated on the measstate object
             val = get(INclass.measstate,prop_name);
-        catch
+        catch err
             try		% Try if it works if operated on the measmnt object
                 val = get(INclass.measmnt,prop_name);
-            catch   % It is a data object - or?
+            catch err  % It is a data object - or?
                 try
                 val = get(INclass.data,prop_name);
-            catch
-                error('Unknown property.');
-            end
+                catch err
+                    error('Unknown property.');
+                end
             end
         end
 end

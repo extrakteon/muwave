@@ -75,7 +75,7 @@ elseif nargin>2 & mod(nargin,2)==1   %set(cIN,'Prop1',val,'Prop2',val2,...)
                     % Is it an attempt to set an measmnt
                     % property?
                     INclass.measmnt = set(INclass.measmnt,prop,val);
-                catch
+                catch err
                     error('Illegal input argument.');
                 end
         end

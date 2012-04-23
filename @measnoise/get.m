@@ -22,10 +22,10 @@ case 'NF'
 otherwise
     try
         val=get(INclass.measmnt,prop_name);
-    catch
+    catch err
         try
             val=get(INclass.State,prop_name);
-        catch
+        catch err
             error(['Unknown property "',prop_name,'".']);
         end
     end

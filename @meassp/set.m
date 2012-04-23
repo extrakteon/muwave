@@ -71,12 +71,12 @@ elseif nargin>2 & mod(nargin,2)==1   %set(cIN,'Prop1',val,'Prop2',val2,...)
                     % Try if it is an attempt to set an measstate
                     % property?
                     INclass.measstate = set(INclass.measstate,prop,val);
-                catch
+                catch err
                     try
                         % Is it an attempt to set an measmnt
                         % property?
                         INclass.measmnt = set(INclass.measmnt,prop,val);
-                    catch
+                    catch err
                         % Try if it is an attempt to set an xparam property?
                         INclass.data = set(INclass.data,prop,val);
                     end
