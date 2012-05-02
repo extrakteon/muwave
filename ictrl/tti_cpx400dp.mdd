@@ -49,7 +49,9 @@ for k = channels:-1:1
     str = sprintf('OP%d %d', k, 0);
     fprintf(g, str);
 end
-</Code>
+
+% set to local
+fprintf(g, 'LOCAL');</Code>
    </CleanupCode>
    <GroupInfo>
       <Group>
