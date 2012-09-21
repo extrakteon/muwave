@@ -55,15 +55,14 @@ waitbar(0.2, h_wb, 'Initializing Bias. Please wait.');
 if ~strcmp(V2driver,'none')
     instr.measure_dc2 = 1;
     if (instruments.dc1_gpib == instruments.dc2_gpib) && ~strcmp(V1driver,'none')
-        if (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd') || strcmp(V1driver,'agilent_662x.mdd')  || strcmp(V1driver,'tti_cpx400dp.mdd'))
+        if (strcmp(V2driver,'agilent_4156_dc.mdd') || strcmp(V2driver,'keithley_2602A_dc.mdd') || strcmp(V2driver,'agilent_662x.mdd')  || strcmp(V2driver,'tti_cpx400dp.mdd'))
             instr.dc2 = SMU(instruments.dc2_channel);
-        elseif strcmp(V1driver,'agilent_4156_analyzer.mdd')
+        elseif strcmp(V2driver,'agilent_4156_analyzer.mdd')
             instr.dc2 = [];
             instr.smu2 = instruments.dc2_channel;
         end
     else    
-        
-        if (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd') || strcmp(V1driver,'agilent_662x.mdd')  || strcmp(V1driver,'tti_cpx400dp.mdd'))
+        if (strcmp(V2driver,'agilent_4156_dc.mdd') || strcmp(V2driver,'keithley_2602A_dc.mdd') || strcmp(V2driver,'agilent_662x.mdd')  || strcmp(V2driver,'tti_cpx400dp.mdd'))
             g_dc2 = gpib('ni', 0, instruments.dc2_gpib);
             instr.dc2multi = icdevice(V2driver,g_dc2);
             connect(instr.dc2multi);
