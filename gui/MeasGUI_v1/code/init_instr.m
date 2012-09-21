@@ -13,14 +13,7 @@ waitbar(0, h_wb, 'Initializing Bias. Pleas Wait.');
 % INPUT VOLTAGE SUPPLY
 if ~strcmp(V1driver,'none')
     instr.measure_dc1 = 1;
-    
-    if strcmp(V1driver,'agilent_66xx.mdd')
-        g_dc1 = gpib('ni', 0, instruments.dc1_gpib);
-        instr.dc1multi = icdevice(V1driver,g_dc1);
-        connect(instr.dc1multi);
-        Channels = get(instr.dc1multi,'Channel');
-        instr.dc1 = Channels(instruments.dc1_channel);
-    elseif (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd') )
+    if (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd') || strcmp(V1driver,'agilent_662x.mdd')  || strcmp(V1driver,'tti_cpx400dp.mdd'))
         g_dc1 = gpib('ni', 0, instruments.dc1_gpib);
         instr.dc1multi = icdevice(V1driver,g_dc1);
         connect(instr.dc1multi);
@@ -62,9 +55,7 @@ waitbar(0.2, h_wb, 'Initializing Bias. Please wait.');
 if ~strcmp(V2driver,'none')
     instr.measure_dc2 = 1;
     if (instruments.dc1_gpib == instruments.dc2_gpib) && ~strcmp(V1driver,'none')
-        if strcmp(V2driver,'agilent_66xx.mdd')
-            instr.dc2 = Channels(instruments.dc2_channel);
-        elseif (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd'))
+        if (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd') || strcmp(V1driver,'agilent_662x.mdd')  || strcmp(V1driver,'tti_cpx400dp.mdd'))
             instr.dc2 = SMU(instruments.dc2_channel);
         elseif strcmp(V1driver,'agilent_4156_analyzer.mdd')
             instr.dc2 = [];
@@ -72,13 +63,7 @@ if ~strcmp(V2driver,'none')
         end
     else    
         
-        if strcmp(V2driver,'agilent_66xx.mdd')
-            g_dc2 = gpib('ni', 0, instruments.dc2_gpib);
-            instr.dc2multi = icdevice(V2driver,g_dc2);
-            connect(instr.dc2multi);
-            Channels = get(instr.dc2multi,'Channel');
-            instr.dc2 = Channels(instruments.dc2_channel);
-        elseif (strcmp(V2driver,'agilent_4156_dc.mdd') || strcmp(V2driver,'keithley_2602A_dc.mdd'))
+        if (strcmp(V1driver,'agilent_4156_dc.mdd') || strcmp(V1driver,'keithley_2602A_dc.mdd') || strcmp(V1driver,'agilent_662x.mdd')  || strcmp(V1driver,'tti_cpx400dp.mdd'))
             g_dc2 = gpib('ni', 0, instruments.dc2_gpib);
             instr.dc2multi = icdevice(V2driver,g_dc2);
             connect(instr.dc2multi);
@@ -186,13 +171,15 @@ switch char(instr)
     case 'Agilent 4156 DC'
         driver = 'agilent_4156_dc.mdd';
     case 'Agilent 662x multi'
-        driver = 'agilent_66xx.mdd';
+        driver = 'agilent_662x.mdd';
     case 'Agilent 66xx single'
         driver = 'agilent_66xx_single.mdd';
     case 'Keithley 24xx single'
         driver = 'keithley_24xx_single.mdd';
     case 'Keithley 2600 dual'
         driver = 'keithley_2602A_dc.mdd';
+    case 'TTi 400'
+        driver = 'tti_cpx400dp.mdd';
     case 'Agilent 34401A'
         driver = 'agilent_34401A.mdd';
     case 'Use voltage supply'
