@@ -834,8 +834,8 @@ switch ID
         start = get(obj, 'Start');
         stop = get(obj, 'Stop');
         % Use the algorithm of the 4156...
-        step = (start - stop) / (round(propertyValue) - 1);
-        cstr = sprintf(':PAGE:MEAS:VAR1:STEP %g', abs(step));
+        step = (stop - start) / (round(propertyValue) - 1);
+        cstr = sprintf(':PAGE:MEAS:VAR1:STEP %g', step);
         fprintf(g, cstr);
     case 'VAR2'
         cstr = sprintf(':PAGE:MEAS:VAR2:POIN %d', propertyValue);
@@ -974,7 +974,7 @@ propertyValue = fscanf(g, '%g');
 g = get(get(obj, 'Parent'), 'Interface');
 ID = get(obj, 'HwName');
 
-cstr = sprintf(':PAGE:MEAS:%s:STEP %g', ID, abs(propertyValue));
+cstr = sprintf(':PAGE:MEAS:%s:STEP %g', ID, propertyValue);
 fprintf(g, cstr);
 </SetMCode>
                </Code>
