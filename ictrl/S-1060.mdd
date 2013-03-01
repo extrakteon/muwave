@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>1.0</FileVersion>
+   <DriverName>C:\Program Files\MATLAB\R2006a\work\icontrol\temptronic.mdd</DriverName>
+   <DriverType>MATLAB interface object</DriverType>
+   <InstrumentType>Thermo Chuck</InstrumentType>
+   <InstrumentManufacturer>Signatone</InstrumentManufacturer>
+   <InstrumentModel>S-1060</InstrumentModel>
+   <InstrumentVersion>1.0</InstrumentVersion>
+   <Identify/>
+   <Reset/>
+   <Selftest/>
+   <Error/>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Lamp</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Read lamp setting
+cmdstr = '#01R12';
+fprintf(g, cmdstr);
+LampStr = fscanf(g);
+if strcmp(LampStr(11:14), '0001')
+    propertyValue = 0;
+elseif strcmp(LampStr(11:14), '0600')
+    propertyValue = 1;
+else
+    propertyValue = -1;
+end</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Set lamp setting
+if propertyValue == 0
+    cmdstr = '#01M12 0001C';
+elseif propertyValue == 1
+    cmdstr = '#01M12 0600C';
+end
+
+fprintf(g, cmdstr);
+fscanf(g);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>Temp</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Read set temperature
+cmdstr = '#01R1';
+fprintf(g, cmdstr);
+TempStr = fscanf(g);
+propertyValue = str2num(TempStr(10:13));
+</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% read out present temp setting
+PresentSetTemp = get(obj, 'Temp');
+ChuckTemp = invoke(obj, 'ReadTemp');
+
+% convert input number to string
+SetTemp = num2str(propertyValue);
+
+% generate command string
+TempStr = '0000';
+for ix = length(SetTemp):-1:1
+    TempStr(5-ix) = SetTemp(length(SetTemp) + 1 - ix)
+end
+cmdstr = sprintf('#01M1 %sC', TempStr);
+
+% Write set temperature
+fprintf(g, cmdstr);
+fscanf(g);
+
+% Check if parameter #11 needs to be changed
+if (SetTemp &lt; PresentSetTemp) &amp;&amp; (SetTemp &lt; ChuckTemp) 
+    cmdstr = sprintf('#01M11 %sC', TempStr);
+    
+    % Write set temperature
+    fprintf(g, cmdstr);
+    fscanf(g);
+else
+    TempStr = '0600';
+    cmdstr = sprintf('#01M11 %sC', TempStr);
+    
+    % Write set temperature
+    fprintf(g, cmdstr);
+    fscanf(g);
+end</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue>0</DefaultValue>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>ReadTemp</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Temp = ReadTemp(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+% Get the interface object.
+g = get(obj, 'Interface');
+
+% Read set temperature
+cmdstr = '#01R0';
+fprintf(g, cmdstr);
+TempStr = fscanf(g);
+Temp = str2num(TempStr(9:12));</MCode>
+               </Code>
+               <Description>temp = INVOKE(obj, 'ReadTemp') Returns the current Chuck Temperature.</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>
