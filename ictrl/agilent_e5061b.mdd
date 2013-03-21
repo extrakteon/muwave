@@ -267,7 +267,7 @@ fprintf(g, cmd);</SetMCode>
                   <Type>Double</Type>
                   <Constraint>none</Constraint>
                </PermissibleType>
-               <DefaultValue/>
+               <DefaultValue>0</DefaultValue>
                <ReadOnly>never</ReadOnly>
                <Description/>
             </Property>
@@ -307,7 +307,7 @@ fprintf(g, cmd);</SetMCode>
                   <Type>Double</Type>
                   <Constraint>none</Constraint>
                </PermissibleType>
-               <DefaultValue/>
+               <DefaultValue>0</DefaultValue>
                <ReadOnly>never</ReadOnly>
                <Description/>
             </Property>
@@ -347,7 +347,7 @@ fprintf(g, cmd);</SetMCode>
                   <Type>Double</Type>
                   <Constraint>none</Constraint>
                </PermissibleType>
-               <DefaultValue/>
+               <DefaultValue>0</DefaultValue>
                <ReadOnly>never</ReadOnly>
                <Description/>
             </Property>
@@ -673,26 +673,9 @@ fprintf(g, cmdstr);
 
 g = get(obj, 'Interface');
 
-channel = 1; % channel 1 is used for voltage measurement
-
-% % turn off RF for measurement
-% cmd = ':OUTP OFF';
-% fprintf(g, cmd);
-% cmd = '*OPC?';
-% fprintf(g, cmd);
-% fscanf(g);
-
-% Read out DC current
-cmd = sprintf(':SENS%d:DC:MEAS:DATA?', channel); 
+cmd = sprintf(':SOURCE:BIAS:VOLT?'); % Get output voltage
 fprintf(g, cmd);
-propertyValue = str2double(fscanf(g));
-
-% % turn on RF after measurement
-% cmd = ':OUTP ON';
-% fprintf(g, cmd);
-% cmd = '*OPC?';
-% fprintf(g, cmd);
-% fscanf(g);</GetMCode>
+propertyValue = str2double(fscanf(g));</GetMCode>
                   <SetMCode>function set(obj, propertyName, propertyValue)
 % Set a property value.
 %   This function is called to set the device or group object property
@@ -809,6 +792,28 @@ end
                <Description/>
             </Method>
             <Method>
+               <Name>MeasCurrent</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function propertyValue = MeasCurrent(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 2; % channel 2 is used for current measurement
+
+% Read out DC current
+cmd = sprintf(':SENS%d:DC:MEAS:DATA?', channel); 
+fprintf(g, cmd);
+propertyValue = str2double(fscanf(g));
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
                <Name>Measure</Name>
                <Location>parent</Location>
                <CapabilityGroup>Base</CapabilityGroup>
@@ -853,6 +858,28 @@ switch caltype
         freq = invoke(obj, 'Freq');
         xp = xparam(s, 'S', 50, freq);
 end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>MeasVoltage</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function propertyValue = MeasVoltage(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(obj, 'Interface');
+
+channel = 1; % channel 1 is used for voltage measurement
+
+% Read out DC current
+cmd = sprintf(':SENS%d:DC:MEAS:DATA?', channel); 
+fprintf(g, cmd);
+propertyValue = str2double(fscanf(g));
+</MCode>
                </Code>
                <Description/>
             </Method>

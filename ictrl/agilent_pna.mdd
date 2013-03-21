@@ -1205,7 +1205,10 @@ switch caltype
         s(2,2,:) = invoke(obj, 'Read', 'S22');
         freq = invoke(obj, 'Freq');
         xp = xparam(s, 'S', 50, freq);
-end</MCode>
+end
+
+% disable hold
+set(obj, 'Hold', 0);</MCode>
                </Code>
                <Description/>
             </Method>
