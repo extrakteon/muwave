@@ -279,7 +279,7 @@ if outp &gt; 0
 else
     % turn off output switch
     %fprintf(g, 'CL %d', CHANNEL);
-    cmd = sprintf('DV%d',CHANNEL);
+    cmd = sprintf('DV%d;',CHANNEL);
     fprintf(g, cmd);
 end
 </SetMCode>
