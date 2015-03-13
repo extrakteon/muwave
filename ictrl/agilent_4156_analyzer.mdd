@@ -1188,5 +1188,126 @@ end
          </PropertyInfo>
          <MethodInfo/>
       </Group>
+      <Group>
+         <Name>Vmu</Name>
+         <Description/>
+         <Command/>
+         <Size>2</Size>
+         <Mappings>
+            <ChannelMap Command="VMU2" Index="2"/>
+            <ChannelMap Command="VMU1" Index="1"/>
+         </Mappings>
+         <PropertyInfo>
+            <Property>
+               <Name>Mode</Name>
+               <Location>Vmu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwName');
+
+fprintf(g, ':PAGE:CHAN:%s:MODE?', ID);
+str = fscanf(g, '%s');
+
+switch str
+    case 'V'
+        propertyValue = 'Voltage';
+    otherwise
+        propertyValue = 'Disabled';
+end  </GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwName');
+
+switch lower(propertyValue)
+    case 'voltage'
+        str = 'V';
+    case 'diffvoltage'
+        str = 'DVOL'
+end
+
+cstr = sprintf(':PAGE:CHAN:%s:MODE %s', ID, str);
+fprintf(g, cstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+            <Property>
+               <Name>VoltageName</Name>
+               <Location>Vmu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <GetMCode>function propertyValue = getProperty(obj, propertyName)
+% Return a property value.
+%   This function is called to return the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwName');
+
+fprintf(g, ':PAGE:CHAN:%s:VNAM?', ID);
+propertyValue = fscanf(g, '%s');</GetMCode>
+                  <SetMCode>function set(obj, propertyName, propertyValue)
+% Set a property value.
+%   This function is called to set the device or group object property
+%   value. If the property is a group property, OBJ is the group object. If
+%   the property is a base device property, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwName');
+VNAME = propertyValue(1:min(length(propertyValue),6)); % Max 6 character long
+
+cstr = sprintf(':PAGE:CHAN:%s:VNAM ''%s''', ID, VNAME);
+fprintf(g, cstr);</SetMCode>
+               </Code>
+               <PermissibleType>
+                  <Type>Double</Type>
+                  <Constraint>none</Constraint>
+               </PermissibleType>
+               <DefaultValue/>
+               <ReadOnly>never</ReadOnly>
+               <Description/>
+            </Property>
+         </PropertyInfo>
+         <MethodInfo>
+            <Method>
+               <Name>Disable</Name>
+               <Location>Vmu</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function Disable(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+g = get(get(obj, 'Parent'), 'Interface');
+ID = get(obj, 'HwName');
+
+cstr = sprintf(':PAGE:CHAN:%s:DIS', ID);
+fprintf(g, cstr);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+         </MethodInfo>
+      </Group>
    </GroupInfo>
 </MATLABInstrumentDriver>
